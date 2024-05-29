@@ -1,6 +1,21 @@
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,python,macos,windows,microsoftoffice
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,python,macos,windows,microsoftoffice
 
+# Ignore Mac system files
+.DS_store
+
+# Ignore node_modules folder
+node_modules
+
+# Ignore all text files
+*.txt
+
+# Ignore files related to API keys
+.env
+
+# Ignore SASS config files
+.sass-cache
+
 ### macOS ###
 # General
 .DS_Store
