@@ -1,0 +1,26 @@
+input.dialog-box {
+    padding: 10px;
+    width: 100%;
+    border-radius: 25px;
+    box-sizing: border-box;
+    margin: auto auto 10px;
+}
+
+.dialog-header {
+    color: black;
+    font-weight: bold;
+    font-size: 22px;
+}
+
+.dialog-label {
+    margin: 20px 15px 15px;
+}
+
+.dialog-button {
+    background-color: black;
+    color: white;
+    border-radius: 25px;
+    display: table-cell;
+    width: 100%;
+    text-align: center;
+}
