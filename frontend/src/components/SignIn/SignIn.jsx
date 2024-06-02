@@ -2,31 +2,26 @@
 Modified it to use enums instead of string
  */
 
-import {SetStateAction, useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {DefaultButton, Dialog, Checkbox} from '@fluentui/react';
 import './SignIn.css';
-import api from "../../api";
+import api from "../../api.js";
 
-interface SignInProps {
-    isOpen: boolean;
-    onClose: () => void;
-}
+const Window = {
+    Login: 'LOGIN',
+    Signup: 'SIGNUP',
+    ResetPassword: 'RESET_PASSWORD',
+};
 
-enum Window {
-    Login = 'LOGIN',
-    Signup = 'SIGNUP',
-    ResetPassword = 'RESET_PASSWORD'
-}
-
-const SignIn = (signInProps: SignInProps) => {
+const SignIn = (signInProps) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [window, setWindow] = useState(Window.Login);
     const [agreedToTos, setAgreedToTos] = useState(false);
 
-    const handleLoginIdInput = (e: { target: { value: SetStateAction<string>; }; }) => setEmail(e.target.value);
-    const handlePasswordInput = (e: { target: { value: SetStateAction<string>; }; }) => setPassword(e.target.value);
-    const handleTosInput = (e: any) => setAgreedToTos(e.target.checked);
+    const handleLoginIdInput = (e) => setEmail(e.target.value);
+    const handlePasswordInput = (e) => setPassword(e.target.value);
+    const handleTosInput = (e) => setAgreedToTos(e.target.checked);
 
     useEffect(() => setWindow(Window.Login), []); // Default window
 
