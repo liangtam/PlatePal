@@ -4,7 +4,10 @@
 
 # Setting up backend connection (if connecting for the first time)
 **Precondition**: You need to be added as an admin to the database first.
-- Create a file called `.env` for your **env**ironment variables. This file will hold sensitive information, which is why the `.gitignore` file will ignore all `.env` files so it does not get published to the repository.
+- Login to MongoDB Atlas. Add yourself as a database user in the **Database access** side bar.
+![image](https://github.com/ubc-cpsc455-2024S/project-23_moai/assets/63375678/49d26ae4-0e33-40cb-bd6d-3ba9dc477c22)
+
+- Back to the code--create a file called `.env` for your **env**ironment variables. This file will hold sensitive information, which is why the `.gitignore` file will ignore all `.env` files so it does not get published to the repository.
 - In your `.env` file, write:
 ```
 PORT=4000
