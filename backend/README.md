@@ -3,6 +3,7 @@
 - Open your terminal, write `npm i` to install the dependencies
 
 # Setting up backend connection (if connecting for the first time)
+**Precondition**: You need to be added as an admin to the database first.
 - Create a file called `.env` for your **env**ironment variables. This file will hold sensitive information, which is why the `.gitignore` file will ignore all `.env` files so it does not get published to the repository.
 - In your `.env` file, write:
 ```
