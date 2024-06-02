@@ -5,6 +5,7 @@ Modified it to use enums instead of string
 import {SetStateAction, useEffect, useState} from 'react';
 import {DefaultButton, Dialog, Checkbox} from '@fluentui/react';
 import './SignIn.css';
+import api from "../../api";
 
 interface SignInProps {
     isOpen: boolean;
@@ -29,28 +30,38 @@ const SignIn = (signInProps: SignInProps) => {
 
     useEffect(() => setWindow(Window.Login), []); // Default window
 
-    const handleSignIn = () => {
-        // TODO: Handle sign-in logic here
-        console.log('Sign In:', {loginId: email, password});
+    const handleSignIn = async () => {
+        try {
+            const response = await api.post('/login', {email, password});
+            console.log(response.data);
+        } catch (error) {
+            console.error(error);
+        }
     };
 
-    const handleSignUp = () => {
-        // TODO: handle sign up
-        console.log('Sign Up:', {loginId: email, password});
+    const handleSignUp = async () => {
+        try {
+            const response = await api.post('/signup', {email, password});
+            console.log(response.data);
+        } catch (error) {
+            console.error(error);
+        }
     }
 
-    const handlePasswordReset = () => {
-        // TODO: handle password reset
-        console.log('Password reset:', {password});
+    const handlePasswordReset = async () => {
+        try {
+            const response = await api.post('/passwordReset', {email});
+            console.log(response.data);
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     const handleToggleSignUp = () => {
-        // TODO: Handle toggling to SignUp screen
         setWindow(Window.Signup);
     };
 
     const handleResetPassword = () => {
-        // TODO: Handle password reset logic here
         setWindow(Window.ResetPassword);
     };
 

@@ -16,4 +16,5 @@ mongoose.connect(process.env.MONGO_URI)
     console.log("Error connecting to db: ", err);
 });
 
-
+const routes = require('./routes');
+app.use('/api', routes);
