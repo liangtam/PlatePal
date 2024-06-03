@@ -14,8 +14,14 @@ function handlePasswordReset(req, res) {
     res.status(200).send(`Called reset password successfully: email ${req.body.email}`);
 }
 
+const handleGetRecipesFromUser = (req, res) => {
+    // TODO: implement
+    res.status(200).send(`Retrieved recipes from user: email ${req.body.email}`);
+}
+
 module.exports = {
     handleSignup,
     handleLogin,
-    handlePasswordReset
+    handlePasswordReset,
+    handleGetRecipesFromUser
 }
