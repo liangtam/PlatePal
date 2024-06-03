@@ -1,7 +1,9 @@
+import {SignIn} from "../../components";
+
 const Home = () => {
     return (
-        <div>Temporary home page</div>
-    )
+        <SignIn onClose={()=>{}} isOpen={true}></SignIn>
+    );
 }
 
 export default Home;

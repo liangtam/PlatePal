@@ -31,6 +31,8 @@ const SignIn = (signInProps) => {
             console.log(response.data);
         } catch (error) {
             console.error(error);
+        } finally {
+            setPassword(''); // Always clear password
         }
     };
 
@@ -40,6 +42,8 @@ const SignIn = (signInProps) => {
             console.log(response.data);
         } catch (error) {
             console.error(error);
+        } finally {
+            setPassword('');
         }
     }
 
@@ -53,10 +57,14 @@ const SignIn = (signInProps) => {
     }
 
     const handleToggleSignUp = () => {
+        setEmail('');
+        setPassword('');
         setWindow(Window.Signup);
     };
 
     const handleResetPassword = () => {
+        setEmail('');
+        setPassword('');
         setWindow(Window.ResetPassword);
     };
 
