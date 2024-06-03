@@ -3,6 +3,9 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 require('dotenv').config();
 
+const userRoutes = require('./routes/userRoutes');
+const recipeRoutes = require('./routes/recipeRoutes');
+
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -17,5 +20,5 @@ mongoose.connect(process.env.MONGO_URI)
     console.log("Error connecting to db: ", err);
 });
 
-const routes = require('./routes');
-app.use('/api', routes);
+app.use('/api/users', userRoutes);
+app.use('/api/recipes', recipeRoutes);
