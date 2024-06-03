@@ -2,55 +2,69 @@
 Modified it to use enums instead of string
  */
 
-import {SetStateAction, useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {DefaultButton, Dialog, Checkbox} from '@fluentui/react';
 import './SignIn.css';
+import api from "../../api.js";
 
-interface SignInProps {
-    isOpen: boolean;
-    onClose: () => void;
-}
+const Window = {
+    Login: 'LOGIN',
+    Signup: 'SIGNUP',
+    ResetPassword: 'RESET_PASSWORD',
+};
 
-enum Window {
-    Login = 'LOGIN',
-    Signup = 'SIGNUP',
-    ResetPassword = 'RESET_PASSWORD'
-}
-
-const SignIn = (signInProps: SignInProps) => {
+const SignIn = (signInProps) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [window, setWindow] = useState(Window.Login);
     const [agreedToTos, setAgreedToTos] = useState(false);
 
-    const handleLoginIdInput = (e: { target: { value: SetStateAction<string>; }; }) => setEmail(e.target.value);
-    const handlePasswordInput = (e: { target: { value: SetStateAction<string>; }; }) => setPassword(e.target.value);
-    const handleTosInput = (e: any) => setAgreedToTos(e.target.checked);
+    const handleLoginIdInput = (e) => setEmail(e.target.value);
+    const handlePasswordInput = (e) => setPassword(e.target.value);
+    const handleTosInput = (e) => setAgreedToTos(e.target.checked);
 
     useEffect(() => setWindow(Window.Login), []); // Default window
 
-    const handleSignIn = () => {
-        // TODO: Handle sign-in logic here
-        console.log('Sign In:', {loginId: email, password});
+    const handleSignIn = async () => {
+        try {
+            const response = await api.post('/login', {email, password});
+            console.log(response.data);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setPassword(''); // Always clear password
+        }
     };
 
-    const handleSignUp = () => {
-        // TODO: handle sign up
-        console.log('Sign Up:', {loginId: email, password});
+    const handleSignUp = async () => {
+        try {
+            const response = await api.post('/signup', {email, password});
+            console.log(response.data);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setPassword('');
+        }
     }
 
-    const handlePasswordReset = () => {
-        // TODO: handle password reset
-        console.log('Password reset:', {password});
+    const handlePasswordReset = async () => {
+        try {
+            const response = await api.post('/passwordReset', {email});
+            console.log(response.data);
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     const handleToggleSignUp = () => {
-        // TODO: Handle toggling to SignUp screen
+        setEmail('');
+        setPassword('');
         setWindow(Window.Signup);
     };
 
     const handleResetPassword = () => {
-        // TODO: Handle password reset logic here
+        setEmail('');
+        setPassword('');
         setWindow(Window.ResetPassword);
     };
 
