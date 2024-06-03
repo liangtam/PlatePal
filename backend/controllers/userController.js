@@ -1,9 +1,3 @@
-const express = require('express');
-const router = express.Router();
-
-router.post('/signup', handleSignup);
-router.post('/login', handleLogin);
-router.post('/passwordReset', handlePasswordReset);
 
 function handleSignup(req, res) {
     // TODO: signup
@@ -20,4 +14,8 @@ function handlePasswordReset(req, res) {
     res.status(200).send(`Called reset password successfully: email ${req.body.email}`);
 }
 
-module.exports = router;
+module.exports = {
+    handleSignup,
+    handleLogin,
+    handlePasswordReset
+}
