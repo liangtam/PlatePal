@@ -1,8 +1,15 @@
 import {SignIn} from "../../components";
+import {useState} from "react";
+import Navbar from "../../components/Navbar";
 
 const Home = () => {
+    const [showSignIn, setShowSignIn] = useState(false);
+
     return (
-        <SignIn onClose={()=>{}} isOpen={true}></SignIn>
+        <>
+            <Navbar onSignIn={() => setShowSignIn(true)}></Navbar>
+            <SignIn onClose={() => setShowSignIn(false)} isOpen={showSignIn}></SignIn>
+        </>
     );
 }
 
