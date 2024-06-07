@@ -1,0 +1,43 @@
+.landing-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+    padding-top: 15%;
+    margin-left: 10%;
+}
+
+h1 {
+    font-size: 80px;
+}
+
+h2 {
+    font-size: 40px;
+}
+
+.btn {
+    margin: 50px 0px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    border: none;
+    background-color: #0ebac5;
+    color: black;
+    transition: all 0.3s linear;
+}
+
+
+.btn:hover {
+    cursor: pointer;
+    width: 200px;
+    border-radius: 25px;
+}
+
+.btn span {
+    font-size: 22px;
+    font-weight: 500;
+    white-space: nowrap;
+    padding: 0 12px;
+}
+
+
