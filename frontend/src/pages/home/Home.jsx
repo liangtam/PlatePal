@@ -1,8 +1,15 @@
-import {SignIn} from "../../components";
+import { useState } from 'react';
+import { SignIn } from "../../components";
+import LandingPage from "../../components/LandingPage/LandingPage";
 
 const Home = () => {
+    const [showSignIn, setShowSignIn] = useState(true);
+
     return (
-        <SignIn onClose={()=>{}} isOpen={true}></SignIn>
+        <>
+            <SignIn onClose={() => setShowSignIn(false)} isOpen={showSignIn}></SignIn>
+            <LandingPage />
+        </>
     );
 }
 
