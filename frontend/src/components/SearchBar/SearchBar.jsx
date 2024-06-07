@@ -5,10 +5,12 @@ import { SearchIcon } from '@chakra-ui/icons';
 
 function SearchableIngredient() {
   const [inputValue, setInputValue] = useState('');
+  // putting same variables in the main page, will refactor
   const [ingredients, setIngredients] = useState([]);
 
 
 
+  // TODO: going to move these handle change to the page view
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
   };
@@ -28,6 +30,7 @@ function SearchableIngredient() {
   //
 
   return (
+    // add styling by using chatgpt
     <ChakraProvider>
       <Box p={20}>
         <InputGroup>
