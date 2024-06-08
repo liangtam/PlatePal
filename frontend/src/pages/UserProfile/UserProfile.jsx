@@ -10,17 +10,25 @@ const UserProfile = () => {
   const [recipes, setRecipes] = useState(user ? user.recipes : []);
 
   const handleDelete = (id) => {
-    setRecipes((prev) => (
-        prev.filter((recipe) => recipe._id !== id)
-    ))
-  }
+    setRecipes((prev) => prev.filter((recipe) => recipe._id !== id));
+  };
 
   return (
     <ChakraProvider>
       <div className="flex-col align-items-center">
         <div className="flex-col align-items-center" style={{ width: "80%" }}>
-          <div className="marY-4 w-100 flex-row">
+          <div className="marY-4 w-100 flex-row justify-content-between">
             <h2>{user && user.email}</h2>
+            <div
+              className="flex-row w-100"
+              style={{ justifyContent: "flex-end" }}
+            >
+              <p
+                className={`${styles.noOfRecipes} flex-row align-items-center pad-3 radius-10`}
+              >
+                Number of recipes: {recipes.length}
+              </p>
+            </div>
           </div>
           <div className="h-1 bg-base-1000 marY-3 w-100"></div>
           <div
