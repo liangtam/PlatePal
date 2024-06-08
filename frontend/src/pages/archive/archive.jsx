@@ -3,6 +3,7 @@ import { SignIn } from "../../components";
 import LandingPage from "../LandingPage/LandingPage";
 import Navbar from "../../components/Navbar/Navbar";
 
+// ARCHIVED PAGE (useless)
 const Archive = () => {
   return (
     <>

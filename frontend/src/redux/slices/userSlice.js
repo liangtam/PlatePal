@@ -1,12 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { dummyUser } from '../../constants/dummyData';
 
 const getUser = async() => {
-    const user = await JSON.parse(localStorage.getItem('user'));
-    if (user) {
-        return user;
-    } else {
-        return null;
-    }
+    return dummyUser; // test
+    // const user = await JSON.parse(localStorage.getItem('user'));
+    // if (user) {
+    //     return user;
+    // } else {
+    //     return null;
+    // }
 }
 
 export const userSlice = createSlice({

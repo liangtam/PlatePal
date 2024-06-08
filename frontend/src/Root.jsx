@@ -9,11 +9,10 @@ const Root = () => {
 
   return (
     <BrowserRouter>
-      {!user && (
-        <ShowSignInContextProvider>
-          <Navbar />
-        </ShowSignInContextProvider>
-      )}
+      <ShowSignInContextProvider>
+        <Navbar />
+      </ShowSignInContextProvider>
+
       <Routes>
         <Route
           exact
