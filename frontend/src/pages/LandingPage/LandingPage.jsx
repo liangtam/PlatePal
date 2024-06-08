@@ -1,7 +1,10 @@
 import './LandingPage.css'
-import SignIn from '../../components/SignIn/SignIn';
+import {SignIn} from '../../components';
+import { useState } from 'react';
 
-const LandingPage = ({onSignInClick}) => {
+const LandingPage = () => {
+    const [showSignIn, setShowSignIn] = useState(false);
+
     return (
         <>
             <div className="landing-page">
@@ -9,9 +12,10 @@ const LandingPage = ({onSignInClick}) => {
                     <h1>PlatePal</h1> 
                     <h2>Your Personalized AI-Chef</h2>
                 </div>
-                <button className="btn" onClick={onSignInClick}>
+                <button className="btn" onClick={() => setShowSignIn(true)}>
                     <span>Get Started</span>
                 </button>
+                <SignIn onClose={() => setShowSignIn(false)} isOpen={showSignIn} ></SignIn>
             </div>
         </>
     );

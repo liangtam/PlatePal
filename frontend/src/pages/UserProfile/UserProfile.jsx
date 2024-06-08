@@ -1,6 +1,12 @@
+import { useSelector } from "react-redux";
+
 const UserProfile = () => {
+    const user = useSelector((state) => state.user.value);
+
     return (
-        <div>User profile</div>
+        <div>
+            <h1>{user.email}</h1>
+        </div>
     )
 }
 

@@ -1,7 +1,4 @@
-import { useEffect } from 'react';
-import { createSlice } from 'react-redux';
-
-let user = null;
+import { createSlice } from '@reduxjs/toolkit'
 
 const getUser = async() => {
     const user = await JSON.parse(localStorage.getItem('user'));
@@ -29,6 +26,6 @@ export const userSlice = createSlice({
     }
 });
 
-export const { login, logout } = userSlice.action;
+export const { login, logout } = userSlice.actions;
 
 export default userSlice.reducer;
