@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { SignIn } from "../../components";
 import LandingPage from "../LandingPage/LandingPage";
-import Navbar from "../../components/Navbar";
+import Navbar from "../../components/Navbar/Navbar";
 
-const Home = () => {
+const Archive = () => {
   return (
     <>
       <Navbar></Navbar>
@@ -13,4 +13,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Archive;
