@@ -1,5 +1,5 @@
 import './LandingPage.css'
-import SignIn from '../SignIn/SignIn';
+import SignIn from '../../components/SignIn/SignIn';
 
 const LandingPage = ({onSignInClick}) => {
     return (

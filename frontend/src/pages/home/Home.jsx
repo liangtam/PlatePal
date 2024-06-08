@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { SignIn } from "../../components";
-import LandingPage from "../../components/LandingPage/LandingPage";
+import LandingPage from "../LandingPage/LandingPage";
 import Navbar from "../../components/Navbar";
 
 
