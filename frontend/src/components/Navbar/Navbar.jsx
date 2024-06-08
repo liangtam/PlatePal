@@ -39,7 +39,7 @@ const Navbar = () => {
         }}
         className="flex-row pad-2 marL-6 w-100"
       >
-        <h2>PlatePal</h2>
+        <p><b>PlatePal</b></p>
       </div>
       <div
         className="w-100 flex-row gap-6 align-items-center marR-6"
@@ -54,7 +54,7 @@ const Navbar = () => {
           onClick={() => setShowSignIn(true)}
         />
       </div>
-      <SignIn onClose={() => setShowSignIn(false)} isOpen={showSignIn}></SignIn>
+      {showSignIn && <SignIn onClose={() => setShowSignIn(false)} isOpen={showSignIn}></SignIn>}
     </div>
   );
 };

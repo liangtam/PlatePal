@@ -27,7 +27,7 @@ const SignIn = (signInProps) => {
 
     const handleSignIn = async () => {
         try {
-            const response = await api.post('/login', {email, password});
+            const response = await api.post('/users/login', {email, password});
             console.log(response.data);
         } catch (error) {
             console.error(error);
@@ -38,7 +38,11 @@ const SignIn = (signInProps) => {
 
     const handleSignUp = async () => {
         try {
-            const response = await api.post('/signup', {email, password});
+            if (!agreedToTos) {
+                alert('You must accept the terms and conditions.');
+                return;
+            }
+            const response = await api.post('/users/signup', {email, password});
             console.log(response.data);
         } catch (error) {
             console.error(error);
@@ -49,7 +53,7 @@ const SignIn = (signInProps) => {
 
     const handlePasswordReset = async () => {
         try {
-            const response = await api.post('/passwordReset', {email});
+            const response = await api.post('/users/passwordReset', {email});
             console.log(response.data);
         } catch (error) {
             console.error(error);
