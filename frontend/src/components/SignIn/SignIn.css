@@ -30,3 +30,15 @@ input.dialog-box {
 .dialog-button:hover {
     background-color: #005a9e; /* Darker background on hover */
 }
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    justify-content: center;
+}
+
+.checkbox-container label {
+    margin-left: 8px;
+    cursor: pointer;
+}

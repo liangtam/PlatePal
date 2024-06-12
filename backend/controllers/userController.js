@@ -1,6 +1,6 @@
 const User = require("../models/userModel");
 const {sign} = require("jsonwebtoken");
-const {hash} = require("bcrypt");
+const {hash, compare} = require("bcrypt");
 
 const handleSignup = async (req, res) => {
     const { email, password } = req.body;
@@ -33,16 +33,30 @@ const handleSignup = async (req, res) => {
 };
 
 const handleLogin = async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, rememberMe } = req.body;
 
     if (!email || !password) {
         return res.status(400).json({ error: 'Email and password are required.' });
     }
 
     try {
-        // TODO: Implement login logic here
+        const user = await User.findOne({email: email});
+        if (!user) {
+            console.log('User does not exist'); // Detailed error message on backend only for security.
+            return res.status(400).json({error: 'Invalid email or password.'});
+        }
+        const match = await compare(password, user.password);
+        if (!match) {
+            console.log('Wrong password')
+            return res.status(400).json({error: 'Invalid email or password.'});
+        }
 
-        return res.status(200).json({ message: 'Login successful.' });
+        const token = sign(
+            { email: email },
+            process.env.JWT_SECRET,
+            rememberMe ? {} : { expiresIn: '1h' }
+        );
+        return res.status(200).json({ message: 'Login successful.', token: token });
     } catch (error) {
         return res.status(500).json({ error: 'Internal Server Error' });
     }
