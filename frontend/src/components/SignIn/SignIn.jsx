@@ -42,14 +42,29 @@ const SignIn = (signInProps) => {
                 alert('You must accept the terms and conditions.');
                 return;
             }
-            const response = await api.post('/users/signup', {email, password});
+            const response = await api.post('/users/signup', { email, password });
             console.log(response.data);
+
+            if (response.status === 201) {
+                localStorage.setItem('authToken', response.data.token);
+                alert('Signup successful.');
+            } else {
+                alert(response.data.error);
+            }
         } catch (error) {
-            console.error(error);
+            if (error.response) {
+                if (error.response.status >= 400 && error.response.status < 500) {
+                    alert(error.response.data.error || 'An error occurred.');
+                } else {
+                    alert('Internal Server Error');
+                }
+            } else {
+                alert('Network error or server is not reachable.');
+            }
         } finally {
             setPassword('');
         }
-    }
+    };
 
     const handlePasswordReset = async () => {
         try {
@@ -98,7 +113,7 @@ const SignIn = (signInProps) => {
                                     className={'dialog-box'}
                                 />
                                 <h5 className={'dialog-label'}>Password</h5>
-                                <input type='password' onChange={handlePasswordInput} className={'dialog-box'}/>
+                                <input type='password' onChange={handlePasswordInput} className={'dialog-box'} value={password}/>
                                 <h5
                                     style={{
                                         textDecoration: 'underline',
@@ -137,7 +152,7 @@ const SignIn = (signInProps) => {
                                     className={'dialog-box'}
                                 />
                                 <h5 className={'dialog-label'}>Password</h5>
-                                <input type='password' onChange={handlePasswordInput} className={'dialog-box'}/>
+                                <input type='password' onChange={handlePasswordInput} className={'dialog-box'} value={password}/>
                                 <div style={{display: 'flex', alignItems: 'center'}}>
                                     <Checkbox
                                         name='agreeToTerms'

@@ -1,3 +1,7 @@
+const User = require("../models/userModel");
+const {sign} = require("jsonwebtoken");
+const {hash} = require("bcrypt");
+
 const handleSignup = async (req, res) => {
     const { email, password } = req.body;
 
@@ -5,10 +9,24 @@ const handleSignup = async (req, res) => {
         return res.status(400).json({ error: 'Email and password are required.' });
     }
 
-    try {
-        // TODO: Implement signup logic here
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return res.status(400).json({ error: 'Invalid email format.' });
+    }
 
-        return res.status(201).json({ message: 'Signup successful.' });
+    try {
+        const user = await User.findOne({email: email});
+        if (user) {
+            return res.status(400).json({error: 'Error: email already in use.'});
+        }
+        const hashedPassword = await hash(password, 10);
+        const newUser = new User({ email: email, password: hashedPassword, recipes: [] });
+        const token = sign(
+            { email: email },
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' }
+        );
+        await newUser.save();
+        return res.status(201).json({ message: 'Signup successful.', token });
     } catch (error) {
         return res.status(500).json({ error: 'Internal Server Error' });
     }
