@@ -16,7 +16,7 @@ const handleSignup = async (req, res) => {
     try {
         const user = await User.findOne({email: email});
         if (user) {
-            return res.status(404).json({message: 'Error: email already in use.'});
+            return res.status(400).json({error: 'Error: email already in use.'});
         }
         const hashedPassword = await hash(password, 10);
         const newUser = new User({ email: email, password: hashedPassword, recipes: [] });
