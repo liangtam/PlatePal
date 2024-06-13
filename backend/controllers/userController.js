@@ -51,6 +51,27 @@ const handleLogin = async (req, res) => {
             return res.status(400).json({error: 'Invalid email or password.'});
         }
 
+        // In case of password reset, check temp password as well
+        let tempPasswordCleared = false;
+        if (user.tempPassword && user.tempPassword.password) {
+            if (user.tempPassword.expiry > new Date()) {
+                // Temporary password is valid, compare it
+                const isTempMatch = await compare(password, user.tempPassword.password);
+                if (isTempMatch) {
+                    return true;
+                }
+            } else {
+                // Temporary password has expired, clear it
+                user.tempPassword.password = null;
+                user.tempPassword.expiry = null;
+                tempPasswordCleared = true;
+            }
+        }
+
+        if (tempPasswordCleared) {
+            await user.save();
+        }
+
         const token = sign(
             { email: email },
             process.env.JWT_SECRET,

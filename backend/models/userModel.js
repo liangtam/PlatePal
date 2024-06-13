@@ -15,6 +15,16 @@ const userSchema = new Schema({
     recipes: {
         type: Array,
         required: true
+    },
+    tempPassword: {
+        password: {
+            type: String,
+            required: false
+        },
+        expiry: {
+            type: Date,
+            required: false
+        }
     }
 });
 
