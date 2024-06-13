@@ -2,6 +2,8 @@ const User = require("../models/userModel");
 const {sign} = require("jsonwebtoken");
 const {hash, compare} = require("bcrypt");
 const sendEmail = require("./emailService");
+const validator = require('validator');
+const crypto = require('crypto');
 
 const handleSignup = async (req, res) => {
     const {email, password} = req.body;
@@ -123,6 +125,7 @@ const handlePasswordReset = async (req, res) => {
 
         return res.status(200).json({message: 'Done.'});
     } catch (error) {
+        console.error(error);
         return res.status(500).json({error: 'Internal Server Error'});
     }
 };

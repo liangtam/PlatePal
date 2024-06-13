@@ -83,9 +83,22 @@ const SignIn = (signInProps) => {
     const handlePasswordReset = async () => {
         try {
             const response = await api.post('/users/passwordReset', {email});
-            console.log(response.data);
+            if (response.status === 200) {
+                alert("If an account exists with that email, we've sent a password reset email.");
+                signInProps.onClose();
+            } else {
+                alert(response.data.error);
+            }
         } catch (error) {
-            console.error(error);
+            if (error.response) {
+                if (error.response.status >= 400 && error.response.status < 500) {
+                    alert(error.response.data.error || 'An error occurred.');
+                } else {
+                    alert('Internal Server Error');
+                }
+            } else {
+                alert('Network error or server is not reachable.');
+            }
         }
     }
 
