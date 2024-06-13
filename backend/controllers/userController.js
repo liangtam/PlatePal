@@ -1,16 +1,17 @@
 const User = require("../models/userModel");
 const {sign} = require("jsonwebtoken");
 const {hash, compare} = require("bcrypt");
+const sendEmail = require("./emailService");
 
 const handleSignup = async (req, res) => {
-    const { email, password } = req.body;
+    const {email, password} = req.body;
 
     if (!email || !password) {
-        return res.status(400).json({ error: 'Email and password are required.' });
+        return res.status(400).json({error: 'Email and password are required.'});
     }
 
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        return res.status(400).json({ error: 'Invalid email format.' });
+    if (!validator.isEmail(email)) {
+        return res.status(400).json({error: 'Invalid email format.'});
     }
 
     try {
@@ -19,24 +20,28 @@ const handleSignup = async (req, res) => {
             return res.status(400).json({error: 'Error: email already in use.'});
         }
         const hashedPassword = await hash(password, 10);
-        const newUser = new User({ email: email, password: hashedPassword, recipes: [] });
+        const newUser = new User({email: email, password: hashedPassword, recipes: []});
         const token = sign(
-            { email: email },
+            {email: email},
             process.env.JWT_SECRET,
-            { expiresIn: '1h' }
+            {expiresIn: '1h'}
         );
         await newUser.save();
-        return res.status(201).json({ message: 'Signup successful.', token });
+        return res.status(201).json({message: 'Signup successful.', token});
     } catch (error) {
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return res.status(500).json({error: 'Internal Server Error'});
     }
 };
 
 const handleLogin = async (req, res) => {
-    const { email, password, rememberMe } = req.body;
+    const {email, password, rememberMe} = req.body;
 
     if (!email || !password) {
-        return res.status(400).json({ error: 'Email and password are required.' });
+        return res.status(400).json({error: 'Email and password are required.'});
+    }
+
+    if (!validator.isEmail(email)) {
+        return res.status(400).json({error: 'Invalid email.'});
     }
 
     try {
@@ -73,45 +78,68 @@ const handleLogin = async (req, res) => {
         }
 
         const token = sign(
-            { email: email },
+            {email: email},
             process.env.JWT_SECRET,
-            rememberMe ? {} : { expiresIn: '1h' }
+            rememberMe ? {} : {expiresIn: '1h'}
         );
-        return res.status(200).json({ message: 'Login successful.', token: token });
+        return res.status(200).json({message: 'Login successful.', token: token});
     } catch (error) {
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return res.status(500).json({error: 'Internal Server Error'});
     }
 };
 
 const handlePasswordReset = async (req, res) => {
-    const { email } = req.body;
+    const {email} = req.body;
 
     if (!email) {
-        return res.status(400).json({ error: 'Email is required.' });
+        return res.status(400).json({error: 'Email is required.'});
+    }
+
+    if (!validator.isEmail(email)) {
+        return res.status(400).json({error: 'Invalid email.'});
     }
 
     try {
-        // TODO: Implement password reset logic here
+        const user = await User.findOne({email: email});
+        if (!user) {
+            return res.status(200).json({message: 'Done.'});
+        }
 
-        return res.status(200).json({ message: 'Password reset link sent.' });
+        // Generate a cryptographically secure random temporary password
+        const tempPassword = crypto.randomBytes(16).toString('hex');
+        const hashedTempPassword = await hash(tempPassword, 10);
+        const tempPasswordExpiry = new Date(Date.now() + 60 * 60 * 1000); // 1 hour from now
+
+        user.tempPassword = {
+            password: hashedTempPassword,
+            expiry: tempPasswordExpiry
+        }
+
+        await Promise.all([
+            user.save(),
+            sendEmail(email, 'Password Reset',
+                `Your temporary password is ${tempPassword}. It will expire in 1 hour. Please do not share it with anyone.`)
+        ]);
+
+        return res.status(200).json({message: 'Done.'});
     } catch (error) {
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return res.status(500).json({error: 'Internal Server Error'});
     }
 };
 
 const handleGetRecipesFromUser = async (req, res) => {
-    const { email } = req.body;
+    const {email} = req.body;
 
     if (!email) {
-        return res.status(400).json({ error: 'Email is required.' });
+        return res.status(400).json({error: 'Email is required.'});
     }
 
     try {
         // TODO: Implement logic to get recipes here
 
-        return res.status(200).json({ message: `Retrieved recipes for user: ${email}` });
+        return res.status(200).json({message: `Retrieved recipes for user: ${email}`});
     } catch (error) {
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return res.status(500).json({error: 'Internal Server Error'});
     }
 };
 
