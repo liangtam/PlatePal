@@ -36,57 +36,52 @@ const handleSignup = async (req, res) => {
 };
 
 const handleLogin = async (req, res) => {
-    const {email, password, rememberMe} = req.body;
+    const { email, password, rememberMe } = req.body;
 
     if (!email || !password) {
-        return res.status(400).json({error: 'Email and password are required.'});
+        return res.status(400).json({ error: 'Email and password are required.' });
     }
 
     if (!validator.isEmail(email)) {
-        return res.status(400).json({error: 'Invalid email.'});
+        return res.status(400).json({ error: 'Invalid email.' });
     }
 
     try {
-        const user = await User.findOne({email: email});
+        const user = await User.findOne({ email: email });
         if (!user) {
             console.log('User does not exist'); // Detailed error message on backend only for security.
-            return res.status(400).json({error: 'Invalid email or password.'});
-        }
-        const match = await compare(password, user.password);
-        if (!match) {
-            console.log('Wrong password')
-            return res.status(400).json({error: 'Invalid email or password.'});
+            return res.status(400).json({ error: 'Invalid email or password.' });
         }
 
-        // In case of password reset, check temp password as well
-        let tempPasswordCleared = false;
-        if (user.tempPassword && user.tempPassword.password) {
+        let match = await compare(password, user.password);
+
+        // Check for temporary password only if primary password fails
+        if (!match && user.tempPassword && user.tempPassword.password) {
             if (user.tempPassword.expiry > new Date()) {
                 // Temporary password is valid, compare it
-                const isTempMatch = await compare(password, user.tempPassword.password);
-                if (isTempMatch) {
-                    return true;
-                }
-            } else {
-                // Temporary password has expired, clear it
+                match = await compare(password, user.tempPassword.password);
+            }
+            if (match) {
+                // Temporary password matched
                 user.tempPassword.password = null;
                 user.tempPassword.expiry = null;
-                tempPasswordCleared = true;
+                await user.save();
             }
         }
 
-        if (tempPasswordCleared) {
-            await user.save();
+        if (!match) {
+            console.log('Invalid password');
+            return res.status(400).json({ error: 'Invalid email or password.' });
         }
 
         const token = sign(
-            {email: email},
+            { email: email },
             process.env.JWT_SECRET,
-            rememberMe ? {} : {expiresIn: '1h'}
+            rememberMe ? {} : { expiresIn: '1h' }
         );
-        return res.status(200).json({message: 'Login successful.', token: token});
+        return res.status(200).json({ message: 'Login successful.', token: token });
     } catch (error) {
-        return res.status(500).json({error: 'Internal Server Error'});
+        return res.status(500).json({ error: 'Internal Server Error' });
     }
 };
 
