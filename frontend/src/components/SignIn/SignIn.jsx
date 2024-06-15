@@ -18,6 +18,7 @@ const SignIn = (signInProps) => {
     const [password, setPassword] = useState('');
     const [window, setWindow] = useState(Window.Login);
     const [agreedToTos, setAgreedToTos] = useState(false);
+    const [rememberMe, setRememberMe] = useState(false);
 
     const handleLoginIdInput = (e) => setEmail(e.target.value);
     const handlePasswordInput = (e) => setPassword(e.target.value);
@@ -27,10 +28,23 @@ const SignIn = (signInProps) => {
 
     const handleSignIn = async () => {
         try {
-            const response = await api.post('/users/login', {email, password});
-            console.log(response.data);
+            const response = await api.post('/users/login', {email, password, rememberMe});
+            if (response.status === 200) {
+                localStorage.setItem('authToken', response.data.token);
+                signInProps.onClose();
+            } else {
+                alert(response.data.error);
+            }
         } catch (error) {
-            console.error(error);
+            if (error.response) {
+                if (error.response.status >= 400 && error.response.status < 500) {
+                    alert(error.response.data.error || 'An error occurred.');
+                } else {
+                    alert('Internal Server Error');
+                }
+            } else {
+                alert('Network error or server is not reachable.');
+            }
         } finally {
             setPassword(''); // Always clear password
         }
@@ -42,12 +56,12 @@ const SignIn = (signInProps) => {
                 alert('You must accept the terms and conditions.');
                 return;
             }
-            const response = await api.post('/users/signup', { email, password });
+            const response = await api.post('/users/signup', {email, password});
             console.log(response.data);
 
             if (response.status === 201) {
                 localStorage.setItem('authToken', response.data.token);
-                alert('Signup successful.');
+                signInProps.onClose();
             } else {
                 alert(response.data.error);
             }
@@ -69,9 +83,22 @@ const SignIn = (signInProps) => {
     const handlePasswordReset = async () => {
         try {
             const response = await api.post('/users/passwordReset', {email});
-            console.log(response.data);
+            if (response.status === 200) {
+                alert("If an account exists with that email, we've sent a password reset email.");
+                signInProps.onClose();
+            } else {
+                alert(response.data.error);
+            }
         } catch (error) {
-            console.error(error);
+            if (error.response) {
+                if (error.response.status >= 400 && error.response.status < 500) {
+                    alert(error.response.data.error || 'An error occurred.');
+                } else {
+                    alert('Internal Server Error');
+                }
+            } else {
+                alert('Network error or server is not reachable.');
+            }
         }
     }
 
@@ -113,7 +140,19 @@ const SignIn = (signInProps) => {
                                     className={'dialog-box'}
                                 />
                                 <h5 className={'dialog-label'}>Password</h5>
-                                <input type='password' onChange={handlePasswordInput} className={'dialog-box'} value={password}/>
+                                <input type='password' onChange={handlePasswordInput} className={'dialog-box'}
+                                       value={password}/>
+                                <div className={'checkbox-container'}>
+                                    <Checkbox
+                                        name='rememberMe'
+                                        checked={rememberMe}
+                                        onChange={(e) => setRememberMe(e.target.checked)}
+                                        id='rememberMe'
+                                    />
+                                    <label htmlFor='rememberMe'>
+                                        Remember me
+                                    </label>
+                                </div>
                                 <h5
                                     style={{
                                         textDecoration: 'underline',
@@ -152,7 +191,8 @@ const SignIn = (signInProps) => {
                                     className={'dialog-box'}
                                 />
                                 <h5 className={'dialog-label'}>Password</h5>
-                                <input type='password' onChange={handlePasswordInput} className={'dialog-box'} value={password}/>
+                                <input type='password' onChange={handlePasswordInput} className={'dialog-box'}
+                                       value={password}/>
                                 <div style={{display: 'flex', alignItems: 'center'}}>
                                     <Checkbox
                                         name='agreeToTerms'
