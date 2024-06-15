@@ -1,0 +1,121 @@
+@keyframes squish {
+    to {
+        transform: scaleY(0.98);
+    }
+}
+
+
+.landingPage {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle, rgba(255,237,173,1) 15%, rgba(255,203,139,1) 96%);
+}
+
+.intro {
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing-7);
+    background-color: var(--base-50);
+    gap: var(--spacing-3);
+    justify-content: center;
+    align-items: center;
+}
+
+.intro h1 {
+    font-size: 70px;
+}
+
+.intro h2 {
+    font-size: 35px;
+}
+
+.btn {
+    padding: var(--spacing-3);
+    width: 160px;
+    border-radius: 50px;
+    border: none;
+    background-color: var(--blue-500);
+    color: rgb(255, 255, 255);
+    transition: all 0.3s linear;
+}
+
+.landingImg {
+    justify-content: center;
+    display: flex;
+    background: radial-gradient(circle, rgba(255,237,173,1) 15%, rgba(255,203,139,1) 96%);
+  }
+  
+  .landingImg img {
+    max-width: 100%;
+    max-height: 500px;
+    object-fit: contain;
+    animation: squish 1.2s infinite linear alternate;
+    transform-origin: bottom;
+  }
+
+
+.btn span {
+    font-size: var(--font-size-6);
+    font-weight: var(--font-weight-500);
+    white-space: nowrap;
+}
+
+.btn:hover {
+    cursor: pointer;
+    width: 200px;
+    border-radius: 25px;
+}
+
+@media screen and (min-width: 768px){
+
+    .intro {
+        align-items: start;
+        text-align: left;
+        background-image: url('../../assets/455-white-divider.png');
+        background-size: cover;
+        background-position: center;
+        background-color: transparent;
+        width: 90%;
+    }
+
+    .landingImg {
+        width: 100%;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+        background: none;
+    }
+
+    .landingImg img {
+        position: absolute;
+        max-height: 100%;
+        width: auto;
+        object-fit: cover;
+        bottom: -50px;
+    }
+
+    .landingPage {
+        flex-direction: row;
+        height: 90vh;
+    }
+    .landingPage h1 {
+        font-size: 80px;
+    }
+    
+    .landingPage h2 {
+        font-size: 40px;
+    }
+    
+}
+
+@media screen and (min-width: 1024px) {
+    .intro {
+        padding-left: var(--spacing-8);
+    }
+    
+}
+
+
+

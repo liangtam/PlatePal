@@ -29,7 +29,7 @@ const Navbar = () => {
 
   return (
     <div
-      className={`${styles.navbar} flex-row align-items-center justify-space-between`}
+      className={`${styles.navbar} hide-navbar flex-row align-items-center justify-space-between`}
     >
       <div
         style={{
@@ -50,7 +50,7 @@ const Navbar = () => {
         </Link>
         <DefaultButton
           text="Sign In"
-          className="radius-10 font-size-3"
+          className="radius-10 font-size-3 blue-500"
           onClick={() => setShowSignIn(true)}
         />
       </div>

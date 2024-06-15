@@ -16,6 +16,11 @@ code {
   --base-50: white;
   --base-1000: black;
 
+  --yellow-400: #ffedad;
+  --turquoise-500: #0ebac5;
+  --blue-400: rgb(86, 193, 255);
+  --blue-500: rgb(35, 174, 255);
+
   --font-size-1: 0.75rem;
   --font-size-2: 0.875rem;
   --font-size-3: 1rem;
@@ -129,6 +134,22 @@ a {
 
 .bg-base-1000 {
   background-color: var(--base-1000);
+}
+
+.bg-yellow-400 {
+  background-color: var(--yellow-400);
+}
+
+.yellow-400 {
+  background-color: var(--yellow-400);
+}
+
+.bg-turquoise-500 {
+  background-color: var(--turquoise-500);
+}
+
+.turquoise-500 {
+  background-color: var(--turquoise-500);
 }
 
 .pad-1 {
