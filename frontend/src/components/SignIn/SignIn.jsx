@@ -6,6 +6,8 @@ import {useEffect, useState} from 'react';
 import {DefaultButton, Dialog, Checkbox} from '@fluentui/react';
 import './SignIn.css';
 import api from "../../api.js";
+import {useDispatch} from "react-redux";
+import {login} from "../../redux/slices/userSlice";
 
 const Window = {
     Login: 'LOGIN',
@@ -14,6 +16,8 @@ const Window = {
 };
 
 const SignIn = (signInProps) => {
+    const dispatch = useDispatch();
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [window, setWindow] = useState(Window.Login);
@@ -31,6 +35,7 @@ const SignIn = (signInProps) => {
             const response = await api.post('/users/login', {email, password, rememberMe});
             if (response.status === 200) {
                 localStorage.setItem('authToken', response.data.token);
+                dispatch(login(email));
                 signInProps.onClose();
             } else {
                 alert(response.data.error);
