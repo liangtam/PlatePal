@@ -23,4 +23,10 @@ input.dialog-box {
     display: table-cell;
     width: 100%;
     text-align: center;
+    margin: 10px 5px; /* Margin: 10px top/bottom, 5px left/right */
+    transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
+
+.dialog-button:hover {
+    background-color: #005a9e; /* Darker background on hover */
 }
