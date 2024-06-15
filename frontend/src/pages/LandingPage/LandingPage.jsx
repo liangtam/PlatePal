@@ -20,7 +20,6 @@ const LandingPage = () => {
           <span>Get Started</span>
         </button>
       </div>
-
       <SignIn onClose={() => setShowSignIn(false)} isOpen={showSignIn}></SignIn>
       <div className={styles.landingImg}>
         <img src={landingImg} alt="plate pal" />

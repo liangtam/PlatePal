@@ -71,18 +71,17 @@
 @media screen and (min-width: 768px){
 
     .intro {
-        grid-column: 1;
         align-items: start;
         text-align: left;
         background-image: url('../../assets/455-white-divider.png');
         background-size: cover;
         background-position: center;
         background-color: transparent;
+        width: 90%;
     }
 
     .landingImg {
-        grid-column: 2;
-        align-items: end;
+        width: 100%;
         justify-content: center;
         position: relative;
         overflow: hidden;
@@ -98,8 +97,7 @@
     }
 
     .landingPage {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
+        flex-direction: row;
         height: 90vh;
     }
     .landingPage h1 {
