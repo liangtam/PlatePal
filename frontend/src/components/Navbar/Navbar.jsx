@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
-import {DefaultButton, Link} from "@fluentui/react";
+import {ContextualMenu, DefaultButton, Link} from "@fluentui/react";
 import styles from "./Navbar.module.css";
 import {ShowSignInContext} from "../context/ShowSignInContext";
 import SignIn from "../SignIn/SignIn";
@@ -13,10 +13,6 @@ const Navbar = () => {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user.value);
     const dropdownRef = useRef(null);
-
-    const handleLogout = () => {
-        dispatch(logout());
-    };
 
     const handleScroll = () => {
         setScrollPosition(window.scrollY);
@@ -65,20 +61,20 @@ const Navbar = () => {
                     Home
                 </Link>
                 {user ? (
-                    <div className="dropdown-container" style={{ position: "relative" }}>
-                        <span onClick={() => setDropdownVisible(true)} style={{ cursor: "pointer" }}>
-                            {user}
-                        </span>
+                    <div className="dropdown-container" ref={dropdownRef}>
+                        <DefaultButton text={user} onClick={() => setDropdownVisible(true)}/>
                         {dropdownVisible && (
-                            <div
-                                className={'dropdown show'}
-                                ref={dropdownRef}
-                            >
-                                <Link
-                                    onClick={handleLogout}
-                                    className={'link'}
-                                >Logout</Link>
-                            </div>
+                            <ContextualMenu
+                                items={[
+                                    {
+                                        key: 'logout',
+                                        text: 'Logout',
+                                        onClick: () => dispatch(logout()),
+                                    },
+                                ]}
+                                target={dropdownRef.current}
+                                onDismiss={() => setDropdownVisible(false)}
+                            />
                         )}
                     </div>
                 ) : (
