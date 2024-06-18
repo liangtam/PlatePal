@@ -1,29 +1,24 @@
-import { createSlice } from '@reduxjs/toolkit'
-import { dummyUser } from '../../constants/dummyData';
+import { createSlice } from '@reduxjs/toolkit';
 
-const getUser = async() => {
-    return dummyUser; // test
-    // const user = await JSON.parse(localStorage.getItem('user'));
-    // if (user) {
-    //     return user;
-    // } else {
-    //     return null;
-    // }
-}
+const getUser = () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    return user || null;
+};
 
 export const userSlice = createSlice({
     name: 'user',
     initialState: {
-        value: await getUser()
+        value: getUser()
     },
     reducers: {
         login: (state, action) => {
             state.value = action.payload;
-            localStorage.setItem('user', action.payload);
+            localStorage.setItem('user', JSON.stringify(action.payload));
         },
         logout: (state) => {
             state.value = null;
             localStorage.removeItem('user');
+            localStorage.removeItem('authToken'); // Remove authToken on logout
         }
     }
 });
