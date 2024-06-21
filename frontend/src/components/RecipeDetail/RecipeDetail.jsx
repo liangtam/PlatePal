@@ -1,32 +1,44 @@
 import React from 'react';
-import { Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Text, Box, Image } from '@chakra-ui/react';
+import { Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Text, Box, Image, Checkbox, Stack } from '@chakra-ui/react';
+import './RecipeDetail.css';
 
 const RecipeDetail = ({ selectFood, isModalOpen, handleClose }) => {
+    const ingredients = selectFood.ingredients;
+    const instructions = selectFood.instructions;
 
     return (
         <div>
             <Modal isOpen={isModalOpen} onClose={handleClose}>
                 <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>{selectFood.name}</ModalHeader>
+                <ModalContent className="modal-content">
+                    <ModalHeader className="modal-header">{selectFood.name}</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
                         <Box>
                             <Image
                                 src={selectFood.image}
-                                borderRadius="md"
+                                borderRadius="full"
                                 mb={4}
+                                className="animated-image"
                             />
-                            <Text fontWeight="bold">Ingredients:</Text>
-                            <Text mb={2}>- {selectFood.ingredients}</Text>
+                            <Text fontWeight="bold" mb={2} className="section-title">Ingredients:</Text>
+                            <Stack spacing={1} mb={4} className="ingredient-list">
+                                {ingredients.map((ingredient, index) => (
+                                    <Checkbox key={index} colorScheme="green">{ingredient}</Checkbox>
+                                ))}
+                            </Stack>
 
-                            <Text fontWeight="bold">Instructions:</Text>
-                            <Text mb={2}>{selectFood.instructions}</Text>
+                            <Text fontWeight="bold" mb={2} className="section-title">Instructions:</Text>
+                            <Stack spacing={1} className="instruction-list">
+                                {instructions.map((instruction, index) => (
+                                    instruction && <Checkbox key={index} colorScheme="orange">{instruction.trim()}</Checkbox>
+                                ))}
+                            </Stack>
                         </Box>
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button colorScheme="blue" mr={3} onClick={handleClose}>
+                        <Button colorScheme="orange" mr={3} onClick={handleClose}>
                             Close
                         </Button>
                     </ModalFooter>

@@ -39,7 +39,7 @@
 
 .save-button {
     background-color: #ff7043 !important;
-    color: white;
+    color: white !important;
 }
 
 .save-button:hover {
