@@ -84,7 +84,7 @@ const Navbar = () => {
           <div className="dropdown-container" ref={dropdownRef}>
             <DefaultButton
               text={user.email}
-              className="radius-10 font-size-3 blue-500"
+              className="radius-10 font-size-3"
               onClick={() => setDropdownVisible(true)}
             />
             {dropdownVisible && (

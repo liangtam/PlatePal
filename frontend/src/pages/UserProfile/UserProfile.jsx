@@ -15,13 +15,14 @@ const UserProfile = () => {
   };
 
   return (
-      <div className={`${styles.container} flex-col align-items-center padT-5`}>
-        <div className="flex-row gap-6" style={{ width: "80%" }}>
+      <div className={`${styles.container} flex-col align-items-center padT-5 h-100`}>
+        <div className="flex-row gap-6 h-100" style={{ width: "80%" }}>
           <UserInfo user={user}/>
-          <div className="flex-col gap-3 align-items-start">
+          <div style={{overflow: 'auto', maxHeight: 'fit-content', height: '100%'}}>
+          <div className="flex-col gap-3 align-items-start padL-5" style={{borderLeft: '1px solid rgb(214, 214, 214)'}}>
             <h1 className="b"> Saved recipes </h1>
           <div
-            className={`${styles.recipes} flex-row gap-5 justify-content-center align-items-center padY-5`}
+            className={`${styles.recipes} flex-row gap-5 align-items-center padY-5`}
           >
             {user.recipes &&
               user.recipes.map((recipe, index) => {
@@ -34,6 +35,8 @@ const UserProfile = () => {
                 );
               })}
           </div>
+          </div>
+        
           </div>
           
         </div>
