@@ -3,7 +3,7 @@ import { SignIn } from "../../components";
 import { useContext } from "react";
 import { ShowSignInContext } from "../../components/context/ShowSignInContext";
 import landingImg from "../../assets/455-landing-bg.png";
-import blackLogo from "../../assets/455-platepal-logo-black.png";
+import colorLogo from "../../assets/455-platepal-logo-color.png";
 
 const LandingPage = () => {
   const { showSignIn, setShowSignIn } = useContext(ShowSignInContext);
@@ -13,7 +13,7 @@ const LandingPage = () => {
     <div className={styles.landingPage}>
       <div className={styles.intro}>
         <div className="flex-row align-items-center">
-        <img className={styles.logo} src={blackLogo}/>
+        <img className={styles.logo} src={colorLogo}/>
         <h1>PlatePal</h1>
         </div>
 

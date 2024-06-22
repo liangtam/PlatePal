@@ -27,6 +27,11 @@ const Navbar = () => {
     }
   };
 
+  const handleLogoutClick = (e) => {
+    dispatch(logout());
+    navigate("/");
+  }
+
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     document.addEventListener("mousedown", handleClickOutside);
@@ -86,9 +91,14 @@ const Navbar = () => {
               <ContextualMenu
                 items={[
                   {
+                    key: "userprofile",
+                    text: "Profile",
+                    onClick: () => navigate(`/users/${user._id}`),
+                  },
+                  {
                     key: "logout",
                     text: "Logout",
-                    onClick: () => dispatch(logout()),
+                    onClick: handleLogoutClick,
                   },
                 ]}
                 target={dropdownRef.current}

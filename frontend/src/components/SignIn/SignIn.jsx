@@ -171,13 +171,13 @@ const SignIn = (signInProps) => {
                                 <div style={{display: 'table', margin: '0 auto'}}>
                                     <DefaultButton
                                         onClick={handleSignIn}
-                                        className={'dialog-button'}
+                                        className="black-dialog-button"
                                     >
                                         Login
                                     </DefaultButton>
                                     <DefaultButton
                                         onClick={handleToggleSignUp}
-                                        className={'dialog-button'}
+                                        className="blue-dialog-button"
                                     >
                                         Create new account
                                     </DefaultButton>
@@ -211,8 +211,8 @@ const SignIn = (signInProps) => {
                                 </div>
                                 <DefaultButton
                                     onClick={handleSignUp}
-                                    className={'dialog-button'}
-                                >
+                                    className="blue-dialog-button"
+                                    >
                                     Sign Up
                                 </DefaultButton>
                             </div>
