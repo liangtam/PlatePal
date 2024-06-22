@@ -38,6 +38,6 @@ export const userSlice = createSlice({
     }
 });
 
-export const { login, logout } = userSlice.actions;
+export const { login, logout, deleteUserRecipe } = userSlice.actions;
 
 export default userSlice.reducer;

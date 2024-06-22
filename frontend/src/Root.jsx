@@ -24,6 +24,8 @@ const Root = () => {
           }
         />
         <Route exact path="/users/:id" element={<UserProfile />} />
+        <Route exact path="/users/:id" element={<UserProfile />} />
+
         <Route exact path="/home" element={<Home />}></Route>
       </Routes>
     </BrowserRouter>
