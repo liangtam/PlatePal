@@ -19,7 +19,7 @@ const Root = () => {
           path="/"
           element={
             <ShowSignInContextProvider>
-              <LandingPage />
+            <LandingPage />
             </ShowSignInContextProvider>
           }
         />

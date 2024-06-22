@@ -8,6 +8,7 @@ const UserProfile = () => {
   const user = useSelector((state) => state.user.value);
 
   const [recipes, setRecipes] = useState(user ? user.recipes : []);
+  console.log(recipes)
 
   const handleDelete = (id) => {
     setRecipes((prev) => prev.filter((recipe) => recipe._id !== id));
