@@ -1,0 +1,52 @@
+
+
+.dialog-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    margin-top: 20px;
+}
+
+.dialog-text {
+    background-color: #ed996b;
+    border: 2px solid #e0e0e0; /* Light border */
+    border-radius: 10px; /* Rounded corners */
+    padding: 20px;
+    max-width: 600px;
+    font-size: 20px;
+    font-family: 'Marker Felt';
+    color: #fffefe;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.dialog-text::after {
+    border-width: 10px;
+    border-style: solid;
+}
+
+.landing-image {
+    width: 700px;
+    height: auto;
+    margin-top: 40px;
+}
+
+@keyframes jump {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-20px);
+    }
+    60% {
+        transform: translateY(-10px);
+    }
+}
+
+.animated-text {
+    animation: jump 2s infinite;
+}

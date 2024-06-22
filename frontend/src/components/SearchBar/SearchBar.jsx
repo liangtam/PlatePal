@@ -4,10 +4,10 @@ import { SearchIcon } from '@chakra-ui/icons';
 import loadingCook from '../../assets/loadingCook.gif'
 import './SearchBar.css';
 
-function SearchBar() {
+function SearchBar({handleGenerateRecipe, isGenerating}) {
     const [inputValue, setInputValue] = useState('');
     const [ingredients, setIngredients] = useState([]);
-    const [isGenerating, setIsGenerating] = useState(false);
+    //const [isGenerating, setIsGenerating] = useState(false);
 
     const handleInputChange = (event) => {
         setInputValue(event.target.value);
@@ -24,15 +24,15 @@ function SearchBar() {
         setIngredients(ingredients.filter(ingredient => ingredient !== ingredientToRemove));
     };
 
-    const handleGenerateRecipe = () => {
-        setIsGenerating(true);
-        // Simulate an API call
-        setTimeout(() => {
-            setIsGenerating(false);
-           // alert('Recipe generated!');
+    // const handleGenerateRecipe = () => {
+    //     setIsGenerating(true);
+    //     // Simulate an API call
+    //     setTimeout(() => {
+    //         setIsGenerating(false);
+    //        // alert('Recipe generated!');
            
-        }, 5000);
-    };
+    //     }, 5000);
+    // };
 
     return (
         <ChakraProvider>
