@@ -1,17 +1,17 @@
 import React from 'react';
-import { Flex, Card, CardBody, CardFooter, Image, Stack, Heading, Text, Divider, ButtonGroup, Button } from '@chakra-ui/react'
-
+import { Flex, Box, ChakraProvider, Card, CardBody, CardFooter, Image, Stack, Heading, Text, Divider, ButtonGroup, Button } from '@chakra-ui/react'
+import './RecipeSnippet.css'
 
 const RecipeSnippet = ({ recipe, onClick }) => {
 
     return (
-        <div>
-            <Card maxW='sm' onClick={() => onClick()}>
+        <ChakraProvider>
+        <Box className="card-container" onClick={() => onClick()}>
+            <Card maxW='sm'>
                 <CardBody>
                     <Image
                         src={recipe.image}
-                        width={200}
-                        height={200}
+                        className="card-image"
                         borderRadius='lg'
                     />
                     <Stack mt='6' spacing='3'>
@@ -22,20 +22,21 @@ const RecipeSnippet = ({ recipe, onClick }) => {
                     </Stack>
                 </CardBody>
                 <Divider />
-                <CardFooter >
+                <CardFooter>
                     <Flex justify="flex-end" w="100%">
-                        <ButtonGroup spacing='2' >
-                            <Button onClick={() => onClick()} variant='solid' colorScheme='blue'>
+                        <ButtonGroup spacing='2'>
+                            <Button onClick={() => onClick()} variant='solid' className="save-button">
                                 Save it
                             </Button>
-                            <Button variant='ghost' colorScheme='blue'>
+                            <Button variant='ghost' colorScheme='orange' className="ghost-button">
                                 I don't like it
                             </Button>
                         </ButtonGroup>
                     </Flex>
                 </CardFooter>
             </Card>
-        </div>
+        </Box>
+    </ChakraProvider>
     );
 }
 
