@@ -11,7 +11,7 @@ const ProfileRecipeSnippet = ({ recipe, onClick }) => {
           {recipe && recipe.name}
         </h3>
 
-        <div className="flex-row gap-3">
+        <div className="flex-row gap-3 w-100">
           <img className={styles.image} src={recipe.image} alt={recipe.name} />
           <div className={`${styles.ingredients}`}>
             <h3 className="padB-2">Ingredients</h3>

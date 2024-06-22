@@ -3,6 +3,11 @@
     max-width: 300px;
 }
 
+.recipes {
+    flex-wrap: wrap;
+}
+
 body {
-    background: radial-gradient(circle, rgba(255,237,173,1) 15%, rgba(255,203,139,1) 96%);
+    /* background: radial-gradient(circle, rgba(255,237,173,1) 15%, rgba(255,203,139,1) 96%); */
+    background: white;
 }

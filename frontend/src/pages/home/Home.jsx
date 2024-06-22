@@ -4,6 +4,8 @@ import { RecipeSnippet, RecipeDetail, SearchBar } from "../../components";
 import { dummyRecipe1, dummyRecipe2 } from '../../constants/dummyData';
 import landingImg from "../../assets/455-landing-bg.png";
 import './Home.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { setRecipes } from '../../redux/recipes/recipesSlice';
 
 const Home = () => {
     // test food data 
@@ -12,10 +14,13 @@ const Home = () => {
         dummyRecipe2
     ];
 
+    const recipeData = useSelector((state) => state.recipes.value);
+    const dispatch = useDispatch();
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedFood, setSelectedFood] = useState(null);
     const [ingredients, setIngredients] = useState([]);
-    const [recipeData, setRecipeData] = useState([]);
+    // const [recipeData, setRecipeData] = useState([]);
     const [inputValue, setInputValue] = useState('');
     const [isGenerating, setIsGenerating] = useState(false);
 
@@ -35,7 +40,7 @@ const Home = () => {
         setTimeout(() => {
             //apiCall(ingredients)
             setIsGenerating(false);
-            setRecipeData(foodData);
+            dispatch(setRecipes(foodData))
            // alert('Recipe generated!');
            
         }, 5000);
