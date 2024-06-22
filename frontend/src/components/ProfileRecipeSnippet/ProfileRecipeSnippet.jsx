@@ -26,7 +26,7 @@ const ProfileRecipeSnippet = ({ recipe, onClick }) => {
         <div className="h-1 bg-base-1000 marY-3 w-100"></div>
 
         <div className="flex-row w-100 gap-2" style={{justifyContent: 'flex-end'}}>
-        <button className={styles.editBtn}>
+        <button className={styles.editBtn} disabled>
             Edit
           </button>
           <button className={styles.deleteBtn} onClick={onClick}>
