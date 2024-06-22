@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { dummyUser } from '../../constants/dummyData';
 
 const getUser = () => {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -8,8 +9,7 @@ const getUser = () => {
 export const userSlice = createSlice({
     name: 'user',
     initialState: {
-        value: getUser(),
-        recipes: []
+        value: dummyUser
     },
     reducers: {
         login: (state, action) => {
@@ -38,6 +38,6 @@ export const userSlice = createSlice({
     }
 });
 
-export const { login, logout } = userSlice.actions;
+export const { login, logout, deleteUserRecipe } = userSlice.actions;
 
 export default userSlice.reducer;
