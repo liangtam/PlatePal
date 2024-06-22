@@ -5,7 +5,8 @@ import { ShowSignInContext } from "../context/ShowSignInContext";
 import SignIn from "../SignIn/SignIn";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/users/userSlice";
-import blackLogo from '../../assets/455-platepal-logo-black.png';
+import blackLogo from "../../assets/455-platepal-logo-black.png";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -13,6 +14,7 @@ const Navbar = () => {
   const { showSignIn, setShowSignIn } = useContext(ShowSignInContext);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
+  const navigate = useNavigate();
   const dropdownRef = useRef(null);
 
   const handleScroll = () => {
@@ -45,24 +47,30 @@ const Navbar = () => {
     <div
       className={`${styles.navbar} flex-row align-items-center justify-space-between`}
     >
-      <div className="flex-row gap-2 padL-5">
-        <img className={styles.navbarLogo} src={blackLogo} alt="black-logo"/>
       <div
-        style={{
-          opacity: titleOpacity,
-          transition: "opacity 0.3s, font-size 0.3s",
-          fontSize: titleFontSize,
-          textAlign: "center",
-          width: "100%",
-        }}
+        className="flex-row gap-2 padL-5 align-items-center"
+        onClick={() => navigate("/home")}
+        style={{ cursor: "pointer" }}
       >
-          <b>PlatePal</b>
+        <img className={styles.navbarLogo} src={blackLogo} alt="black-logo" />
+        <div
+          style={{
+            opacity: titleOpacity,
+            transition: "opacity 0.3s, font-size 0.3s",
+            fontSize: titleFontSize,
+            textAlign: "center",
+            width: "100%",
+          }}
+        >
+          <p>
+            <b>PlatePal</b>
+          </p>
+        </div>
       </div>
-      </div>
-      
+
       <div
         className="w-100 flex-row gap-6 align-items-center padR-5"
-        style={{ justifyContent: "flex-end"}}
+        style={{ justifyContent: "flex-end" }}
       >
         <Link href="/home" className="font-size-4 base-1000">
           Home
