@@ -4,7 +4,7 @@ import styles from "./Navbar.module.css";
 import {ShowSignInContext} from "../context/ShowSignInContext";
 import SignIn from "../SignIn/SignIn";
 import {useDispatch, useSelector} from "react-redux";
-import {logout} from "../../redux/slices/userSlice";
+import {logout} from "../../redux/users/userSlice";
 
 const Navbar = () => {
     const [scrollPosition, setScrollPosition] = useState(0);

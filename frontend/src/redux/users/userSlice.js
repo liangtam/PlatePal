@@ -8,7 +8,8 @@ const getUser = () => {
 export const userSlice = createSlice({
     name: 'user',
     initialState: {
-        value: getUser()
+        value: getUser(),
+        recipes: []
     },
     reducers: {
         login: (state, action) => {
@@ -19,6 +20,20 @@ export const userSlice = createSlice({
             state.value = null;
             localStorage.removeItem('user');
             localStorage.removeItem('authToken'); // Remove authToken on logout
+        },
+        setUserRecipes: (state, action) => {
+            state.value.recipes = action.payload;
+        },
+        addUserRecipe: (state, action) => {
+            state.value.recipes = [...state.value.recipes, action.payload];
+        },
+        deleteUserRecipe: (state, action) => {
+            const idToDelete = action.payload;
+            state.value.recipes = state.value.recipes.filter((recipe) => recipe._id !== idToDelete);
+        },
+        updateUserRecipes: (state, action) => {
+            let index = state.value.recipes.findIndex((recipe) => recipe._id === action.payload._id)
+            state.value.recipes[index] = action.payload;
         }
     }
 });

@@ -7,7 +7,7 @@ import {DefaultButton, Dialog, Checkbox} from '@fluentui/react';
 import './SignIn.css';
 import api from "../../api.js";
 import {useDispatch} from "react-redux";
-import {login} from "../../redux/slices/userSlice";
+import {login} from "../../redux/users/userSlice.js";
 
 const Window = {
     Login: 'LOGIN',
