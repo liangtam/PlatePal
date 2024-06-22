@@ -1,8 +1,9 @@
 import React from 'react';
 import { Flex, Box, ChakraProvider, Card, CardBody, CardFooter, Image, Stack, Heading, Text, Divider, ButtonGroup, Button } from '@chakra-ui/react'
 import './RecipeSnippet.css'
+import { useDispatch, useSelector } from 'react-redux';
 
-const RecipeSnippet = ({ recipe, onClick }) => {
+const RecipeSnippet = ({ recipe, onClick, handleSave, handleDislike }) => {
 
     return (
         <ChakraProvider>
@@ -25,10 +26,10 @@ const RecipeSnippet = ({ recipe, onClick }) => {
                 <CardFooter>
                     <Flex justify="flex-end" w="100%">
                         <ButtonGroup spacing='2'>
-                            <Button onClick={() => onClick()} variant='solid' className="save-button">
+                            <Button onClick={handleSave} variant='solid' className="save-button">
                                 Save it
                             </Button>
-                            <Button variant='ghost' colorScheme='orange' className="ghost-button">
+                            <Button onClick={handleDislike} variant='ghost' colorScheme='orange' className="ghost-button">
                                 I don't like it
                             </Button>
                         </ButtonGroup>
