@@ -49,6 +49,23 @@ export const dummyRecipe3 = {
   instructions: ["defrost chicken", "boil water"],
 };
 
+export const dummyRecipe4 = {
+  _id: "test4",
+  name: "Chow mein",
+  image:
+    "https://www.cookwithmanali.com/wp-content/uploads/2024/01/Veg-Chowmein-500x500.jpg",
+  ingredients: [
+    "salt",
+    "pepper",
+    "chow mein noodles",
+    "garlic",
+    "green onion",
+    "chicken",
+    "soy sauce"
+  ],
+  instructions: ["boil noodles in water", "put noodles in pan"],
+};
+
 export const dummyUser = {
   _id: "defaultId",
   email: "dummyuser.email.com",

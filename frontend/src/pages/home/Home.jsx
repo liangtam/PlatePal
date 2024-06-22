@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ChakraProvider, Flex, Box, Text } from '@chakra-ui/react';
 import { RecipeSnippet, RecipeDetail, SearchBar } from "../../components";
-import { dummyRecipe1, dummyRecipe2 } from '../../constants/dummyData';
+import { dummyRecipe1, dummyRecipe2, dummyRecipe3, dummyRecipe4 } from '../../constants/dummyData';
 import landingImg from "../../assets/455-landing-bg.png";
 import './Home.css';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,7 +12,9 @@ const Home = () => {
     // test food data 
     const foodData = [
         dummyRecipe1,
-        dummyRecipe2
+        dummyRecipe2,
+        dummyRecipe3,
+        dummyRecipe4
     ];
 
     const recipeData = useSelector((state) => state.recipes.value);
