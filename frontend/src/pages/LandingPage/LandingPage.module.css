@@ -4,7 +4,9 @@
     }
 }
 
-
+.logo {
+    width: 120px;
+}
 .landingPage {
     display: flex;
     flex-direction: column;
@@ -24,7 +26,7 @@
 }
 
 .intro h1 {
-    font-size: 70px;
+    font-size: 60px;
 }
 
 .intro h2 {
@@ -66,6 +68,12 @@
     cursor: pointer;
     width: 200px;
     border-radius: 25px;
+}
+
+@media screen and (min-width: 640px) {
+    .logo {
+        width: 170px;
+    }  
 }
 
 @media screen and (min-width: 768px){

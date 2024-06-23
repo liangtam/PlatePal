@@ -5,6 +5,10 @@
     height: 10vh;
 }
 
+.navbarLogo {
+    width: 50px;
+}
+
 div.dropdown {
     position: absolute;
     top: 100%;

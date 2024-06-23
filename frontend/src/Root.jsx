@@ -19,11 +19,13 @@ const Root = () => {
           path="/"
           element={
             <ShowSignInContextProvider>
-              <LandingPage />
+            <LandingPage />
             </ShowSignInContextProvider>
           }
         />
         <Route exact path="/users/:id" element={<UserProfile />} />
+        <Route exact path="/users/:id" element={<UserProfile />} />
+
         <Route exact path="/home" element={<Home />}></Route>
       </Routes>
     </BrowserRouter>

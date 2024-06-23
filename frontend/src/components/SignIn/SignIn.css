@@ -16,7 +16,24 @@ input.dialog-box {
     margin: 20px 15px 15px;
 }
 
-.dialog-button {
+.blue-dialog-button {
+    background-color: var(--blue-500);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    display: table-cell;
+    width: 100%;
+    text-align: center;
+    margin: 10px 5px; /* Margin: 10px top/bottom, 5px left/right */
+    transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
+
+.blue-dialog-button:hover {
+    color: white;
+    background-color: #0083e7; /* Darker background on hover */
+}
+
+.black-dialog-button {
     background-color: black;
     color: white;
     border-radius: 25px;
@@ -27,8 +44,9 @@ input.dialog-box {
     transition: background-color 0.3s ease; /* Smooth transition for background color */
 }
 
-.dialog-button:hover {
-    background-color: #005a9e; /* Darker background on hover */
+.black-dialog-button:hover {
+    color: white;
+    background-color: rgb(100, 100, 100); /* Darker background on hover */
 }
 
 .checkbox-container {

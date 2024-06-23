@@ -108,6 +108,14 @@ a {
   align-items: center;
 }
 
+.justify-content-start {
+  justify-content: flex-start;
+}
+
+.align-items-start {
+  align-items: flex-start;
+}
+
 .w-auto {
   width: auto;
 }
@@ -138,6 +146,22 @@ a {
 
 .bg-yellow-400 {
   background-color: var(--yellow-400);
+}
+
+.blue-400 {
+  color: var(--blue-400);
+}
+
+.bg-blue-400 {
+  background-color: var(--blue-400);
+}
+
+.blue-500 {
+  color: var(--blue-500);
+}
+
+.bg-blue-500 {
+  background-color: var(--blue-500);
 }
 
 .yellow-400 {
@@ -874,4 +898,8 @@ a {
 
 .radius-10 {
   border-radius: 10px;
+}
+
+.radius-25 {
+  border-radius: 25px;
 }

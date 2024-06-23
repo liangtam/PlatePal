@@ -1,66 +1,39 @@
 import React from "react";
-import {
-  Flex,
-  Card,
-  CardBody,
-  CardFooter,
-  Image,
-  Stack,
-  Heading,
-  Text,
-  Divider,
-  ButtonGroup,
-  Button,
-} from "@chakra-ui/react";
+import styles from "./ProfileRecipeSnippet.module.css";
+import { useNavigate } from "react-router-dom";
 
 const ProfileRecipeSnippet = ({ recipe, onClick }) => {
+  const navigate = useNavigate();
   return (
-    <div>
-      <Card maxW="sm" onClick={() => onClick()}>
-        <CardBody>
-          <Stack spacing="3">
-            <Heading size="md">{recipe.name}</Heading>
+    <div className={styles.container}>
+      <div>
+        <h3 className="padB-2" style={{ textAlign: "left" }}>
+          {recipe && recipe.name}
+        </h3>
 
-            <Image
-              src={recipe.image}
-              width={200}
-              height={200}
-              borderRadius="lg"
-            />
-          </Stack>
-          <Stack align="flex-start" mt='3'>
-            <b>Ingredients:</b>
-            <Flex align="flex-start" spacing="2">
-              {recipe &&
-                recipe.ingredients.map((ingredient, index) => {
-                  return <Text>{`${ingredient}${index===recipe.ingredients.length - 1 ? "" : ','}`}</Text>;
-                })}
-            </Flex>
-            <b>Instructions:</b>
-            <Flex align="flex-start" spacing="2">
-              {recipe &&
-                recipe.instructions.map((instruction, index) => {
-                  return <Text>{`${instruction}${index===recipe.instructions.length - 1 ? "" : ','}`}</Text>;
-                })}
-            </Flex>
-          </Stack>
-        </CardBody>
-        <Divider />
-        <CardFooter>
-          <Flex justify="flex-end" w="100%">
-            <ButtonGroup spacing="2">
-              <Button
-                size="sm"
-                onClick={() => onClick()}
-                variant="solid"
-                colorScheme="red"
-              >
-                Delete
-              </Button>
-            </ButtonGroup>
-          </Flex>
-        </CardFooter>
-      </Card>
+        <div className="flex-row gap-3 w-100">
+          <img className={styles.image} src={recipe.image} alt={recipe.name} />
+          <div className={`${styles.ingredients}`}>
+            <h3 className="padB-2">Ingredients</h3>
+            {recipe &&
+              recipe.ingredients.map((ingredient) => {
+                return <div>{ingredient}</div>;
+              })}
+          </div>
+        </div>
+      </div>
+      <div>
+        <div className="h-1 bg-base-1000 marY-3 w-100"></div>
+
+        <div className="flex-row w-100 gap-2" style={{justifyContent: 'flex-end'}}>
+        <button className={styles.editBtn} disabled>
+            Edit
+          </button>
+          <button className={styles.deleteBtn} onClick={onClick}>
+            Delete
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
