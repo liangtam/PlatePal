@@ -66,6 +66,7 @@ const SignIn = (signInProps) => {
 
             if (response.status === 201) {
                 localStorage.setItem('authToken', response.data.token);
+                dispatch(login(email));
                 signInProps.onClose();
             } else {
                 alert(response.data.error);
