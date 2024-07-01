@@ -24,12 +24,12 @@ const handleSignup = async (req, res) => {
         const hashedPassword = await hash(password, 10);
         const newUser = new User({email: email, password: hashedPassword, recipes: []});
         const token = sign(
-            {email: email},
+            {email: email, id: newUser._id},
             process.env.JWT_SECRET,
             {expiresIn: '1h'}
         );
         await newUser.save();
-        return res.status(201).json({message: 'Signup successful.', token});
+        return res.status(201).json({message: 'Signup successful.', token, user: { email: user.email, id: user._id }});
     } catch (error) {
         return res.status(500).json({error: 'Internal Server Error'});
     }
@@ -75,11 +75,11 @@ const handleLogin = async (req, res) => {
         }
 
         const token = sign(
-            { email: email },
+            { email: email, id: user._id },
             process.env.JWT_SECRET,
             rememberMe ? {} : { expiresIn: '1h' }
         );
-        return res.status(200).json({ message: 'Login successful.', token: token });
+        return res.status(200).json({ message: 'Login successful.', token: token, user: { email: user.email, id: user._id } });
     } catch (error) {
         return res.status(500).json({ error: 'Internal Server Error' });
     }
@@ -141,9 +141,43 @@ const handleGetRecipesFromUser = async (req, res) => {
     }
 };
 
+/*
+gpt-4o 6/30 16:58 add an endpoint to api/users/ that favorites / unfavorites a recipe
+ */
+const handleFavoriteRecipe = async (req, res) => {
+    const { userId, recipeId } = req.body;
+    console.log(req.body);
+
+    try {
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const recipeIndex = user.favoriteRecipes.indexOf(recipeId);
+
+        if (recipeIndex === -1) {
+            // Recipe is not in the favorites, add it
+            user.favoriteRecipes.push(recipeId);
+        } else {
+            // Recipe is in the favorites, remove it
+            user.favoriteRecipes.splice(recipeIndex, 1);
+        }
+
+        await user.save();
+
+        return res.status(200).json({ favoriteRecipes: user.favoriteRecipes });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Server error', error });
+    }
+};
+
 module.exports = {
     handleSignup,
     handleLogin,
     handlePasswordReset,
-    handleGetRecipesFromUser
+    handleGetRecipesFromUser,
+    handleFavoriteRecipe
 };
