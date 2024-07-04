@@ -13,8 +13,14 @@ const userSchema = new Schema({
         required: true
     },
     recipes: {
-        type: Array,
+        type: [Schema.Types.ObjectId],
+        ref: 'Recipe',
         required: true
+    },
+    favoriteRecipes: {
+        type: [Schema.Types.ObjectId],
+        ref: 'Recipe',
+        required: false
     },
     tempPassword: {
         password: {

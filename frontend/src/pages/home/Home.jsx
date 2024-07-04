@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { ChakraProvider, Flex, Box, Text } from '@chakra-ui/react';
-import { RecipeSnippet, RecipeDetail, SearchBar } from "../../components";
-import { dummyRecipe1, dummyRecipe2, dummyRecipe3, dummyRecipe4 } from '../../constants/dummyData';
+import React, {useState} from 'react';
+import {Box, ChakraProvider, Flex, Text} from '@chakra-ui/react';
+import {RecipeDetail, RecipeSnippet, SearchBar} from "../../components";
+import {dummyRecipe1, dummyRecipe2, dummyRecipe3, dummyRecipe4} from '../../constants/dummyData';
 import landingImg from "../../assets/455-landing-bg.png";
 import './Home.css';
-import { useDispatch, useSelector } from 'react-redux';
-import { deleteRecipe, setRecipes } from '../../redux/recipes/recipesSlice';
-import { addUserRecipe } from '../../redux/users/userSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import {deleteRecipe, setRecipes} from '../../redux/recipes/recipesSlice';
+import {addUserRecipe} from '../../redux/users/userSlice';
 
 const Home = () => {
-    // test food data 
+    // test food data
     const foodData = [
         dummyRecipe1,
         dummyRecipe2,
@@ -38,15 +38,15 @@ const Home = () => {
     };
 
     const handleGenerateRecipe = () => {
-        // 
+        //
         setIsGenerating(true);
         // Simulate an API call
         setTimeout(() => {
             //apiCall(ingredients)
             setIsGenerating(false);
             dispatch(setRecipes(foodData))
-           // alert('Recipe generated!');
-           
+            // alert('Recipe generated!');
+
         }, 5000);
     }
 
@@ -63,26 +63,30 @@ const Home = () => {
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter' && inputValue.trim() !== '') {
-          setIngredients([...ingredients, inputValue.trim()]);
-          setInputValue('');
+            setIngredients([...ingredients, inputValue.trim()]);
+            setInputValue('');
         }
     };
 
     return (
-<ChakraProvider>
-            <SearchBar handleGenerateRecipe={handleGenerateRecipe} isGenerating={isGenerating} />
-            <Flex wrap="wrap" justify="center" >
-                {recipeData.length === 0 &&  
-                <Box className="dialog-container">
-                    <Text className="dialog-text animated-text">Let PlatePal help you get a recipe by entering your available ingredients!</Text>
-                    <img src={landingImg} alt="plate pal" className="landing-image" />
-                </Box>
+        <ChakraProvider>
+            <SearchBar handleGenerateRecipe={handleGenerateRecipe} isGenerating={isGenerating}/>
+            <Flex wrap="wrap" justify="center">
+                {recipeData.length === 0 &&
+                    <Box className="dialog-container">
+                        <Text className="dialog-text animated-text">Let PlatePal help you get a recipe by entering your
+                            available ingredients!</Text>
+                        <img src={landingImg} alt="plate pal" className="landing-image"/>
+                    </Box>
                 }
                 {recipeData && recipeData.map((recipe, index) => (
-                    <RecipeSnippet key={index} recipe={recipe} onClick={() => handleCardClick(recipe)} handleSave={(e) => handleRecipeSave(e, recipe)} handleDislike={(e) => handleDislike(e, recipe)} handleClose={handleModalClose} />
+                    <RecipeSnippet key={index} recipe={recipe} onClick={() => handleCardClick(recipe)}
+                                   handleSave={(e) => handleRecipeSave(e, recipe)}
+                                   handleDislike={(e) => handleDislike(e, recipe)} handleClose={handleModalClose}/>
                 ))}
             </Flex>
-            {selectedFood && <RecipeDetail selectFood={selectedFood} isModalOpen={isModalOpen} handleClose={handleModalClose} />}
+            {selectedFood &&
+                <RecipeDetail selectFood={selectedFood} isModalOpen={isModalOpen} handleClose={handleModalClose}/>}
         </ChakraProvider>
     );
 }

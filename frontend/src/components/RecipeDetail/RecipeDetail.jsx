@@ -1,10 +1,37 @@
 import React from 'react';
 import { Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Text, Box, Image, Checkbox, Stack } from '@chakra-ui/react';
 import './RecipeDetail.css';
+import api from "../../api";
 
 const RecipeDetail = ({ selectFood, isModalOpen, handleClose }) => {
     const ingredients = selectFood.ingredients;
     const instructions = selectFood.instructions;
+
+    const handleFavorite = async () => {
+        const authToken = localStorage.getItem('authToken');
+        const user = JSON.parse(localStorage.getItem('user'));
+        const userId = user ? user.id : null;
+
+        if (!userId) {
+            console.error('User not found in localStorage');
+            return;
+        }
+
+        try {
+            const response = await api.post('/users/favorite', {
+                userId,
+                recipeId: selectFood._id
+            }, {
+                headers: {
+                    'auth-token': authToken
+                }
+            });
+
+            console.log(response.data.favoriteRecipes);
+        } catch (error) {
+            console.error('Error favoriting recipe:', error);
+        }
+    };
 
     return (
         <div>
@@ -40,6 +67,9 @@ const RecipeDetail = ({ selectFood, isModalOpen, handleClose }) => {
                     <ModalFooter>
                         <Button colorScheme="orange" mr={3} onClick={handleClose}>
                             Close
+                        </Button>
+                        <Button colorScheme="blue" onClick={handleFavorite}>
+                            {selectFood.isFavorite ? 'Unfavorite' : 'Favorite'}
                         </Button>
                     </ModalFooter>
                 </ModalContent>

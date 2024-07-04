@@ -35,7 +35,7 @@ const SignIn = (signInProps) => {
             const response = await api.post('/users/login', {email, password, rememberMe});
             if (response.status === 200) {
                 localStorage.setItem('authToken', response.data.token);
-                dispatch(login(email));
+                dispatch(login(response.data.user));
                 signInProps.onClose();
             } else {
                 alert(response.data.error);
@@ -66,7 +66,7 @@ const SignIn = (signInProps) => {
 
             if (response.status === 201) {
                 localStorage.setItem('authToken', response.data.token);
-                dispatch(login(email));
+                dispatch(login(response.data.user));
                 signInProps.onClose();
             } else {
                 alert(response.data.error);
