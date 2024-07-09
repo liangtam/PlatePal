@@ -174,10 +174,34 @@ const handleFavoriteRecipe = async (req, res) => {
     }
 };
 
+const handleUpdateUser = async (req, res) => {
+    const userId = req.params.id;
+    let updatedData = req.body;
+
+    // Filter out null values from updatedData
+    updatedData = Object.fromEntries(Object.entries(updatedData).filter(([key, value]) => value !== null));
+
+    try {
+        if (updatedData.password) {
+            updatedData.password = await hash(updatedData.password, 10);
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(userId, updatedData, { new: true, runValidators: true });
+        if (!updatedUser) {
+            return res.status(404).send({ message: 'User not found' });
+        }
+        return res.send(updatedUser);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Server error', error });
+    }
+};
+
 module.exports = {
     handleSignup,
     handleLogin,
     handlePasswordReset,
     handleGetRecipesFromUser,
-    handleFavoriteRecipe
+    handleFavoriteRecipe,
+    handleUpdateUser
 };
