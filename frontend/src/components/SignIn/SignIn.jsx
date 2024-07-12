@@ -3,7 +3,7 @@ Modified it to use enums instead of string
  */
 
 import {useEffect, useState} from 'react';
-import {DefaultButton, Dialog, Checkbox} from '@fluentui/react';
+import {DefaultButton, Dialog, Checkbox, Link} from '@fluentui/react';
 import './SignIn.css';
 import api from "../../api.js";
 import {useDispatch} from "react-redux";
@@ -207,7 +207,7 @@ const SignIn = (signInProps) => {
                                         id='agreeToTerms'
                                     />
                                     <label htmlFor='agreeToTerms' style={{marginLeft: '8px'}}>
-                                        I agree to the terms of service and privacy policy.
+                                        I agree to the <Link href={'/terms-of-service'}>terms of service</Link> and <Link href={'/privacy-policy'}>privacy policy</Link>.
                                     </label>
                                 </div>
                                 <DefaultButton
