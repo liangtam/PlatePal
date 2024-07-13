@@ -21,7 +21,7 @@ const handleCreateRecipe = async (req, res) => {
         if (!user) {
             throw new Error("User not found.");
         }
-        const recipe = await Recipe.create({name, ingredients, instructions});
+        const recipe = await Recipe.create({name, ingredients, instructions, userId});
         if (!recipe) {
             throw new Error("Could not create recipe");
         }
