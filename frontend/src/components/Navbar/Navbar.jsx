@@ -93,7 +93,7 @@ const Navbar = () => {
                   {
                     key: "userprofile",
                     text: "Profile",
-                    onClick: () => navigate(`/users/${user._id}`),
+                    onClick: () => navigate(`/users/${user.id}`),
                   },
                   {
                     key: "logout",

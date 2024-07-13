@@ -82,7 +82,8 @@ const Home = () => {
                 {recipeData && recipeData.map((recipe, index) => (
                     <RecipeSnippet key={index} recipe={recipe} onClick={() => handleCardClick(recipe)}
                                    handleSave={(e) => handleRecipeSave(e, recipe)}
-                                   handleDislike={(e) => handleDislike(e, recipe)} handleClose={handleModalClose}/>
+                                   handleDislike={(e) => handleDislike(e, recipe)}
+                                   handleClose={handleModalClose}/>
                 ))}
             </Flex>
             {selectedFood &&
