@@ -138,14 +138,12 @@ const handleGetRecipesFromUser = async (req, res) => {
     // }
 
     try {
-        const user = await User.findById(id);
+        const user = await User.findById(id).populate("recipes");
         if (!user) {
             return res.status(404).json({ error: 'User not found.' });
         }
 
-        const recipes = user.recipes;
-
-        return res.status(200).json(recipes);
+        return res.status(200).json(user.recipes);
     } catch (error) {
         return res.status(500).json({error: 'Internal Server Error'});
     }
