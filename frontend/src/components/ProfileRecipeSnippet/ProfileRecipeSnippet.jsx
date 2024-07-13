@@ -1,11 +1,12 @@
 import React from "react";
 import styles from "./ProfileRecipeSnippet.module.css";
-import { useNavigate } from "react-router-dom";
 import api from "../../api";
 import defaultRecipeImage from "../../assets/455-platepal-logo-color.png";
+import { deleteUserRecipe } from "../../redux/users/userSlice";
+import { useDispatch } from "react-redux";
 
 const ProfileRecipeSnippet = ({ fetchingData, setFetchingData, recipe }) => {
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const setFallback = (e) => {
     e.target.src = defaultRecipeImage;
@@ -17,6 +18,7 @@ const ProfileRecipeSnippet = ({ fetchingData, setFetchingData, recipe }) => {
       if (response.status === 200) {
           alert('Successfully Deleted');
           setFetchingData(!fetchingData);
+          dispatch(deleteUserRecipe(recipe._id))
       } else {
           alert(response.data.error);
       }
