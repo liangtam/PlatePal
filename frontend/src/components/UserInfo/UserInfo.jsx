@@ -1,5 +1,6 @@
 import styles from "./UserInfo.module.css";
 import userAvatar from "../../assets/455-user-avatar.png";
+import CreateRecipe from "../CreateRecipe/CreateRecipe";
 
 const UserInfo = ({ user, recipes, favouriteRecipes }) => {
   return (
@@ -19,8 +20,7 @@ const UserInfo = ({ user, recipes, favouriteRecipes }) => {
       </span>
       <p>Bro's cooking today!</p>
       </div>
-      <button className="pad-3 marY-5 w-100 radius-25" style={{border: '1px solid grey', background: 'none'}} disabled>Create Recipe</button>
-
+      <CreateRecipe></CreateRecipe>
     </div>
   );
 };
