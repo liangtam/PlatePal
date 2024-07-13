@@ -3,7 +3,7 @@ import styles from "./ProfileRecipeSnippet.module.css";
 import { useNavigate } from "react-router-dom";
 import api from "../../api";
 
-const ProfileRecipeSnippet = ({ fetchingData, setFetchingData, recipe, onClick }) => {
+const ProfileRecipeSnippet = ({ fetchingData, setFetchingData, recipe }) => {
   const navigate = useNavigate();
 
 
