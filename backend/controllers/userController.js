@@ -132,10 +132,19 @@ const handleGetRecipesFromUser = async (req, res) => {
         return res.status(400).json({error: 'Email is required.'});
     }
 
-    try {
-        // TODO: Implement logic to get recipes here
+    if (!validator.isEmail(email)) {
+        return res.status(400).json({ error: 'Invalid email.' });
+    }
 
-        return res.status(200).json({message: `Retrieved recipes for user: ${email}`});
+    try {
+        const user = await User.findOne({ email: email });
+        if (!user) {
+            return res.status(404).json({ error: 'User not found.' });
+        }
+
+        const recipes = user.recipes;
+
+        return res.status(200).json({message: `Retrieved recipes for user: ${email}`, recipes});
     } catch (error) {
         return res.status(500).json({error: 'Internal Server Error'});
     }
