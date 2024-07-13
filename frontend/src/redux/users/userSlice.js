@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const getUser = () => {
     const user = JSON.parse(localStorage.getItem('user'));
-    return user || { recipes: [] };
+    return {...user, recipes: []} || { id: "", email: "", recipes: [] };
 };
 
 export const userSlice = createSlice({

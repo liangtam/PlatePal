@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Box, ChakraProvider, Flex, Text} from '@chakra-ui/react';
 import {RecipeDetail, RecipeSnippet, SearchBar} from "../../components";
 import {dummyRecipe1, dummyRecipe2, dummyRecipe3, dummyRecipe4} from '../../constants/dummyData';
@@ -6,7 +6,8 @@ import landingImg from "../../assets/455-landing-bg.png";
 import './Home.css';
 import {useDispatch, useSelector} from 'react-redux';
 import {deleteRecipe, setRecipes} from '../../redux/recipes/recipesSlice';
-import {addUserRecipe} from '../../redux/users/userSlice';
+import {addUserRecipe, setUserRecipes} from '../../redux/users/userSlice';
+import api from "../../api";
 
 const Home = () => {
     // test food data
@@ -16,6 +17,21 @@ const Home = () => {
         dummyRecipe3,
         dummyRecipe4
     ];
+
+    const fetchUserRecipes = async (userId) => {
+        try {
+            const response = await api.get(`/users/recipes/${userId}`);
+            if (response.status >= 200 && response.status < 300) {
+                dispatch(setUserRecipes(response.data));
+            } else {
+                console.error('Request was not successful. Status code:', response.status);
+                dispatch(setUserRecipes([]));
+            }
+        } catch (error) {
+            console.error('An error occurred:', error);
+            dispatch(setUserRecipes([]));
+        }
+    };
 
     const recipeData = useSelector((state) => state.recipes.value);
     const user = useSelector((state) => state.user.value);
@@ -67,6 +83,10 @@ const Home = () => {
             setInputValue('');
         }
     };
+
+    useEffect(() => {
+        fetchUserRecipes();
+    }, [])
 
     return (
         <ChakraProvider>
