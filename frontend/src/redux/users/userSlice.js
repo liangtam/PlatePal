@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const getUser = () => {
     const user = JSON.parse(localStorage.getItem('user'));
-    return user || null;
+    return user || { recipes: [] };
 };
 
 export const userSlice = createSlice({
@@ -24,6 +24,12 @@ export const userSlice = createSlice({
             state.value.recipes = action.payload;
         },
         addUserRecipe: (state, action) => {
+            if (!state.value) {
+                state.value = { recipes: [] };
+            }
+            if (!state.value.recipes) {
+                state.value.recipes = [];
+            }
             state.value.recipes = [...state.value.recipes, action.payload];
         },
         deleteUserRecipe: (state, action) => {
