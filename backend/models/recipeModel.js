@@ -14,8 +14,18 @@ const recipeSchema = new Schema({
     instructions: {
         type: Array,
         required: true
+    },
+    image: {
+        type: String,
+        required: false
+    },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true
     }
-});
+
+}, {timestamps: true});
 
 const Recipe = mongoose.model('Recipe', recipeSchema);
 module.exports = Recipe;

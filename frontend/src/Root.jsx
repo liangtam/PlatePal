@@ -25,9 +25,7 @@ const Root = () => {
                         </ShowSignInContextProvider>
                     }
                 />
-                <Route exact path="/users/:id" element={<UserProfile/>}/>
-                <Route exact path="/users/:id" element={<UserProfile/>}/>
-
+                <Route exact path="/users/:userId" element={<UserProfile/>}/>
                 <Route exact path="/home" element={<Home/>}></Route>
                 <Route exact path="/terms-of-service" element={<TermsOfService/>}></Route>
                 <Route exact path="/privacy-policy" element={<PrivacyPolicy/>}></Route>

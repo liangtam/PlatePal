@@ -1,0 +1,15 @@
+.popup {
+    max-width: 300px;
+    max-height: 400px;
+    border: 2px solid grey;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.popupButtons {
+    display: flex;
+    justify-content: end;
+    gap: var(--spacing-3);
+}

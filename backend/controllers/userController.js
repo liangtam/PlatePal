@@ -126,16 +126,24 @@ const handlePasswordReset = async (req, res) => {
 };
 
 const handleGetRecipesFromUser = async (req, res) => {
-    const {email} = req.body;
+    const {id} = req.params;
+    console.log(id)
 
-    if (!email) {
-        return res.status(400).json({error: 'Email is required.'});
-    }
+    // if (!email) {
+    //     return res.status(400).json({error: 'Email is required.'});
+    // }
+
+    // if (!validator.isEmail(email)) {
+    //     return res.status(400).json({ error: 'Invalid email.' });
+    // }
 
     try {
-        // TODO: Implement logic to get recipes here
+        const user = await User.findById(id).populate("recipes");
+        if (!user) {
+            return res.status(404).json({ error: 'User not found.' });
+        }
 
-        return res.status(200).json({message: `Retrieved recipes for user: ${email}`});
+        return res.status(200).json(user.recipes);
     } catch (error) {
         return res.status(500).json({error: 'Internal Server Error'});
     }

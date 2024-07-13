@@ -1,7 +1,8 @@
 import styles from "./UserInfo.module.css";
 import userAvatar from "../../assets/455-user-avatar.png";
+import CreateRecipe from "../CreateRecipe/CreateRecipe";
 
-const UserInfo = ({ user }) => {
+const UserInfo = ({ fetchingData, setFetchingData, user, recipes, favouriteRecipes }) => {
   return (
     <div className={styles.container} >
         <div className="flex-col gap-2 align-items-center marB-3">
@@ -12,15 +13,14 @@ const UserInfo = ({ user }) => {
       <div className="h-1 bg-base-1000 marT-3 marB-5 w-100"></div>
       <div className="flex-col gap-2 align-items-start w-100">
       <span>
-        <b>Saved recipes: </b> {user.recipes.length}
+        <b>Saved recipes: </b> {recipes.length}
       </span>
       <span>
-        <b>Created recipes: </b> 0
+        <b>Created recipes: </b> {favouriteRecipes.length}
       </span>
       <p>Bro's cooking today!</p>
       </div>
-      <button className="pad-3 marY-5 w-100 radius-25" style={{border: '1px solid grey', background: 'none'}} disabled>Create Recipe</button>
-
+      <CreateRecipe fetchingData = {fetchingData} setFetchingData = {setFetchingData} ></CreateRecipe>
     </div>
   );
 };
