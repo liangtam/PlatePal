@@ -1,4 +1,5 @@
 const Recipe = require("../models/recipeModel");
+const User = require("../models/userModel");
 
 const handleGetRecipe = (req, res) => {
     try {
@@ -14,12 +15,18 @@ const handleGetRecipe = (req, res) => {
 }
 
 const handleCreateRecipe = async (req, res) => {
-    const {name, ingredients, instructions } = req.body;
+    const {name, ingredients, instructions, userId } = req.body;
     try {
+        const user = await User.findById(userId);
+        if (!user) {
+            throw new Error("User not found.");
+        }
         const recipe = await Recipe.create({name, ingredients, instructions});
         if (!recipe) {
             throw new Error("Could not create recipe");
         }
+        user.recipes.push(recipe);
+        await user.save();
         return res.status(201).json(recipe);
     } catch (err) {
         return res.status(400).json({message: err.message})
