@@ -39,7 +39,7 @@ const ProfileRecipeSnippet = ({ fetchingData, setFetchingData, recipe }) => {
   return (
     <div className={styles.container}>
       <div>
-        <h3 className="padB-2" style={{ textAlign: "left" }}>
+        <h3 className="padB-2 font-weight-700" style={{ textAlign: "left" }}>
           {recipe && recipe.name}
         </h3>
 
