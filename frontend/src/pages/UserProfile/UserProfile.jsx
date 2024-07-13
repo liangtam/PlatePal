@@ -12,12 +12,6 @@ const UserProfile = () => {
   const recipes = useSelector((state) => state.recipes.value);
   const dispatch = useDispatch();
 
-  const handleDelete = (id) => {
-    dispatch(deleteUserRecipe(id));
-  };
-
-
-
   const fetchUserRecipes = async () => {
     try {
       const response = await api.get('/users/recipes/' + user.id);
@@ -35,8 +29,6 @@ const UserProfile = () => {
   useEffect(() => {
     fetchUserRecipes();
   }, [fetchingData])
-
-  console.log(fetchingData);
   return (
       <div className={`${styles.container} flex-col align-items-center padT-5 h-100`}>
         <div className="flex-row gap-6 h-100" style={{ width: "80%" }}>
@@ -55,7 +47,6 @@ const UserProfile = () => {
                     recipe={recipe}
                     fetchingData={fetchingData}
                     setFetchingData={setFetchingData}
-                    onClick={() => handleDelete(recipe._id)}
                   />
                 );
               })}

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../../api";
 import defaultRecipeImage from "../../assets/455-platepal-logo-color.png";
 
-const ProfileRecipeSnippet = ({ fetchingData, setFetchingData, recipe, onClick }) => {
+const ProfileRecipeSnippet = ({ fetchingData, setFetchingData, recipe }) => {
   const navigate = useNavigate();
 
   const setFallback = (e) => {
