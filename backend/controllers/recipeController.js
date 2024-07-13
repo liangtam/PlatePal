@@ -15,13 +15,13 @@ const handleGetRecipe = (req, res) => {
 }
 
 const handleCreateRecipe = async (req, res) => {
-    const {name, ingredients, instructions, userId } = req.body;
+    const {name, ingredients, instructions, image, userId } = req.body;
     try {
         const user = await User.findById(userId);
         if (!user) {
             throw new Error("User not found.");
         }
-        const recipe = await Recipe.create({name, ingredients, instructions, userId});
+        const recipe = await Recipe.create({name, ingredients, instructions, image, userId});
         if (!recipe) {
             throw new Error("Could not create recipe");
         }

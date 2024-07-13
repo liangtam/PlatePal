@@ -43,7 +43,7 @@ const UserProfile = () => {
           <UserInfo user={user} fetchingData={fetchingData} setFetchingData={setFetchingData} recipes={recipes} favouriteRecipes={[]}/>
           <div style={{overflow: 'auto', maxHeight: 'fit-content', height: '100%'}}>
           <div className="flex-col gap-3 align-items-start padL-5" style={{borderLeft: '1px solid rgb(214, 214, 214)'}}>
-            <h1 className="b"> Saved recipes </h1>
+            <h1 className="font-size-7"> Saved recipes </h1>
           <div
             className={`${styles.recipes} flex-row gap-5 align-items-center padY-5`}
           >

@@ -2,10 +2,14 @@ import React from "react";
 import styles from "./ProfileRecipeSnippet.module.css";
 import { useNavigate } from "react-router-dom";
 import api from "../../api";
+import defaultRecipeImage from "../../assets/455-platepal-logo-color.png";
 
 const ProfileRecipeSnippet = ({ fetchingData, setFetchingData, recipe, onClick }) => {
   const navigate = useNavigate();
 
+  const setFallback = (e) => {
+    e.target.src = defaultRecipeImage;
+  };
 
   const handleDelete = async () => {
     try {
@@ -38,16 +42,16 @@ const ProfileRecipeSnippet = ({ fetchingData, setFetchingData, recipe, onClick }
         </h3>
 
         <div className="profile flex-row gap-3 w-100">
-          {/* <img className={styles.image} src={recipe.image} alt={recipe.name} /> */}
+          {recipe && <img className={styles.image} src={recipe.image ? recipe.image : defaultRecipeImage} onError={setFallback} alt={recipe.name} />}
           <div className={`${styles.ingredients}`}>
-            <h3 className="padB-2">Ingredients</h3>
+            <b className="padB-2">Ingredients</b>
             {recipe &&
               recipe.ingredients.map((ingredient) => {
                 return <div>{ingredient}</div>;
               })}
           </div>
           <div className={`${styles.ingredients}`}>
-            <h3 className="padB-2">Instructions</h3>
+            <b className="padB-2">Instructions</b>
             {recipe &&
               recipe.instructions.map((instruction) => {
                 return <div>{instruction}</div>;

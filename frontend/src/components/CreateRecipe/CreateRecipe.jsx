@@ -18,17 +18,17 @@ import {
 } from "@chakra-ui/react";
 import api from "../../api";
 
-
 const CreateRecipe = ({fetchingData, setFetchingData}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [name, setName] = useState("");
   const [ingredients, setIngredients] = useState("");
   const [instructions, setInstructions] = useState("");
+  const [image, setImage] = useState("");
   const userId = useParams('userId').userId;
 
   const handleCreate = async () => {
     try {
-      const response = await api.post('/recipes/', {name, ingredients, instructions, userId});
+      const response = await api.post('/recipes/', {name, ingredients, instructions, image, userId});
       if (response.status === 201) {
           alert('Successfully created');
           setFetchingData(!fetchingData);
@@ -90,6 +90,15 @@ const CreateRecipe = ({fetchingData, setFetchingData}) => {
                 placeholder="Enter each instruction on a new line"
                 value={instructions}
                 onChange={(e) => setInstructions(e.target.value)}
+              />
+            </FormControl>
+
+            <FormControl mt={4}>
+              <FormLabel>Image</FormLabel>
+              <Input
+                placeholder="URL to the recipe image"
+                value={image}
+                onChange={(e) => setImage(e.target.value)}
               />
             </FormControl>
                     </ModalBody>

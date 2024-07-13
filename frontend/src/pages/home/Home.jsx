@@ -66,9 +66,26 @@ const Home = () => {
         }, 5000);
     }
 
-    const handleRecipeSave = (e, recipe) => {
+    const handleRecipeSave = async (e, recipe) => {
         e.stopPropagation();
-        dispatch(addUserRecipe(recipe));
+        try {
+            const response = await api.post('/recipes/', {...recipe, userId: user.id});
+            if (response.status === 201) {
+                alert('Successfully added');
+            } else {
+                alert(response.data.error);
+            }
+        } catch (error) {
+            if (error.response) {
+                if (error.response.status >= 400 && error.response.status < 500) {
+                    alert(error.response.data.error || 'An error occurred.');
+                } else {
+                    alert('Internal Server Error');
+                }
+            } else {
+                alert('Network error or server is not reachable.');
+            }
+        } 
         dispatch(deleteRecipe(recipe._id))
     }
 
