@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 import {
   ChakraProvider,
   Button,
@@ -15,21 +16,36 @@ import {
   Textarea,
   useDisclosure
 } from "@chakra-ui/react";
+import api from "../../api";
 
-const CreateRecipe = ({ onCreate }) => {
+
+const CreateRecipe = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [name, setName] = useState("");
   const [ingredients, setIngredients] = useState("");
   const [instructions, setInstructions] = useState("");
+  const userId = useParams('userId').userId;
 
-  const handleCreate = () => {
-    const newRecipe = {
-      name,
-      ingredients: ingredients.split("\n"),
-      instructions: instructions.split("\n"),
-    };
-    onCreate(newRecipe);
-    onClose();
+  const handleCreate = async () => {
+    try {
+      const response = await api.post('/recipes/', {name, ingredients, instructions, userId});
+      if (response.status === 201) {
+          alert('Successfully created');
+          onClose();
+      } else {
+          alert(response.data.error);
+      }
+  } catch (error) {
+      if (error.response) {
+          if (error.response.status >= 400 && error.response.status < 500) {
+              alert(error.response.data.error || 'An error occurred.');
+          } else {
+              alert('Internal Server Error');
+          }
+      } else {
+          alert('Network error or server is not reachable.');
+      }
+  } 
     setName("");
     setIngredients("");
     setInstructions("");
