@@ -7,15 +7,16 @@ import { deleteUserRecipe } from "../../redux/users/userSlice";
 import { setRecipes } from "../../redux/recipes/recipesSlice";
 
 const UserProfile = () => {
+  const [fetchingData, setFetchingData] = useState(false);
   const user = useSelector((state) => state.user.value);
   const recipes = useSelector((state) => state.recipes.value);
   const dispatch = useDispatch();
 
-  console.log(user.recipes);
-
   const handleDelete = (id) => {
     dispatch(deleteUserRecipe(id));
   };
+
+
 
   const fetchUserRecipes = async () => {
     try {
@@ -33,12 +34,13 @@ const UserProfile = () => {
 
   useEffect(() => {
     fetchUserRecipes();
-  }, [])
+  }, [fetchingData])
 
+  console.log(fetchingData);
   return (
       <div className={`${styles.container} flex-col align-items-center padT-5 h-100`}>
         <div className="flex-row gap-6 h-100" style={{ width: "80%" }}>
-          <UserInfo user={user} recipes={recipes} favouriteRecipes={[]}/>
+          <UserInfo user={user} fetchingData={fetchingData} setFetchingData={setFetchingData} recipes={recipes} favouriteRecipes={[]}/>
           <div style={{overflow: 'auto', maxHeight: 'fit-content', height: '100%'}}>
           <div className="flex-col gap-3 align-items-start padL-5" style={{borderLeft: '1px solid rgb(214, 214, 214)'}}>
             <h1 className="b"> Saved recipes </h1>
@@ -51,6 +53,8 @@ const UserProfile = () => {
                   <ProfileRecipeSnippet
                     key={index}
                     recipe={recipe}
+                    fetchingData={fetchingData}
+                    setFetchingData={setFetchingData}
                     onClick={() => handleDelete(recipe._id)}
                   />
                 );

@@ -2,7 +2,7 @@ import styles from "./UserInfo.module.css";
 import userAvatar from "../../assets/455-user-avatar.png";
 import CreateRecipe from "../CreateRecipe/CreateRecipe";
 
-const UserInfo = ({ user, recipes, favouriteRecipes }) => {
+const UserInfo = ({ fetchingData, setFetchingData, user, recipes, favouriteRecipes }) => {
   return (
     <div className={styles.container} >
         <div className="flex-col gap-2 align-items-center marB-3">
@@ -20,7 +20,7 @@ const UserInfo = ({ user, recipes, favouriteRecipes }) => {
       </span>
       <p>Bro's cooking today!</p>
       </div>
-      <CreateRecipe></CreateRecipe>
+      <CreateRecipe fetchingData = {fetchingData} setFetchingData = {setFetchingData} ></CreateRecipe>
     </div>
   );
 };

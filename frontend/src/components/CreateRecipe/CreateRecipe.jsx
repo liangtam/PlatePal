@@ -19,7 +19,7 @@ import {
 import api from "../../api";
 
 
-const CreateRecipe = () => {
+const CreateRecipe = ({fetchingData, setFetchingData}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [name, setName] = useState("");
   const [ingredients, setIngredients] = useState("");
@@ -31,6 +31,7 @@ const CreateRecipe = () => {
       const response = await api.post('/recipes/', {name, ingredients, instructions, userId});
       if (response.status === 201) {
           alert('Successfully created');
+          setFetchingData(!fetchingData);
           onClose();
       } else {
           alert(response.data.error);
