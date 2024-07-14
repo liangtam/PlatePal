@@ -40,7 +40,6 @@ const Home = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedFood, setSelectedFood] = useState(null);
     const [ingredients, setIngredients] = useState([]);
-    // const [recipeData, setRecipeData] = useState([]);
     const [inputValue, setInputValue] = useState('');
     const [isGenerating, setIsGenerating] = useState(false);
 
