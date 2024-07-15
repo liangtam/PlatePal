@@ -9,7 +9,7 @@
 
 .dialog-text {
     background-color: #ed996b;
-    border: 2px solid #e0e0e0; /* Light border */
+    /* border: 2px solid #e0e0e0; Light border */
     border-radius: 10px; /* Rounded corners */
     padding: 20px;
     max-width: 600px;
