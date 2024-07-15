@@ -50,7 +50,7 @@ const handleGenerateRecipes = async (req, res) => {
       messages: [
         {
           role: "system",
-          content: `You are a recipe database that outputs at most 10 different recipes that include all ${givenIngredients} in JSON.\n'The JSON object must use the schema: ${recipeSchema}`,
+          content: `You are a recipe database that outputs at most 8 different recipes that include all ${givenIngredients} in JSON.\n'The JSON object must use the schema: ${recipeSchema}`,
         },
 
         {
@@ -59,7 +59,7 @@ const handleGenerateRecipes = async (req, res) => {
         },
       ],
       model: "llama3-8b-8192",
-      temperature: 0.5,
+      temperature: 0.6,
       stream: false,
       response_format: { type: "json_object" },
     });
@@ -120,7 +120,7 @@ const handleGetRecipe = (req, res) => {
 };
 
 const handleCreateRecipe = async (req, res) => {
-  const { name, ingredients, instructions, image, userId } = req.body;
+  const { name, ingredients, instructions, estimatedTime, image, userId } = req.body;
   try {
     const user = await User.findById(userId);
     if (!user) {
@@ -130,6 +130,7 @@ const handleCreateRecipe = async (req, res) => {
       name,
       ingredients,
       instructions,
+      estimatedTime,
       image,
       userId,
     });
