@@ -13,6 +13,8 @@ code {
 }
 
 :root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+
   --base-50: white;
   --base-1000: black;
 
@@ -174,6 +176,10 @@ a {
 
 .turquoise-500 {
   background-color: var(--turquoise-500);
+}
+
+.bg-radial {
+  background: radial-gradient(circle, rgba(255,237,173,1) 15%, rgba(255,203,139,1) 96%);
 }
 
 .pad-1 {
