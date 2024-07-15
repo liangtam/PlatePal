@@ -19,6 +19,7 @@ code {
   --base-1000: black;
 
   --yellow-400: #ffedad;
+  --orange-600: #ff7043;
   --turquoise-500: #0ebac5;
   --blue-400: rgb(86, 193, 255);
   --blue-500: rgb(35, 174, 255);
@@ -164,6 +165,14 @@ a {
 
 .bg-blue-500 {
   background-color: var(--blue-500);
+}
+
+.bg-orange-600 {
+  background-color: var(--orange-600);
+}
+
+.orange-600 {
+  color: var(--orange-600);
 }
 
 .yellow-400 {
