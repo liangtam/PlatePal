@@ -2,6 +2,7 @@ const Recipe = require("../models/recipeModel");
 const User = require("../models/userModel");
 const Groq = require("groq-sdk");
 require("dotenv").config();
+const { v4: uuidv4 } = require('uuid');
 
 const handleGenerateRecipes = async (req, res) => {
   console.log("Trying to generate recipes with groq", req.query.ingredients);
@@ -90,7 +91,7 @@ const handleGenerateRecipes = async (req, res) => {
                 if (json.photos.length >= 1) {
                     imageUrl = json.photos[0].src.medium;
                 }
-                return recipe = {...recipe, image: imageUrl};
+                return recipe = {...recipe, generatedId: uuidv4() , image: imageUrl};
             }
         } catch (err) {
             console.log("Could not get image for recipe " + recipe.name);

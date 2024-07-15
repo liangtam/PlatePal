@@ -17,7 +17,7 @@ import { IngredientsContext } from "../../components/context/IngredientsContext"
 
 const Home = () => {
   // test food data
-//   const foodData = [dummyRecipe1, dummyRecipe2, dummyRecipe3, dummyRecipe4];
+  //   const foodData = [dummyRecipe1, dummyRecipe2, dummyRecipe3, dummyRecipe4];
 
   const fetchUserRecipes = async (userId) => {
     try {
@@ -43,9 +43,8 @@ const Home = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedFood, setSelectedFood] = useState(null);
-  const {ingredients} = useContext(IngredientsContext);
+  const { ingredients } = useContext(IngredientsContext);
   const [isGenerating, setIsGenerating] = useState(false);
-
 
   const handleCardClick = (food) => {
     setSelectedFood(food);
@@ -61,16 +60,19 @@ const Home = () => {
     try {
       const response = await api.get("/recipes/generate", {
         params: {
-        ingredients: ingredients
-      },});
+          ingredients: ingredients,
+        },
+      });
       if (response.status >= 200 && response.status < 300) {
         dispatch(setRecipes(response.data));
-        console.log(response.data)
+        console.log(response.data);
       } else {
         alert("Error fetching recipes");
       }
       setIsGenerating(false);
     } catch (err) {
+      alert("Error fetching recipes. Please try again.");
+      setIsGenerating(false);
       console.log(err);
     }
   };
@@ -83,7 +85,7 @@ const Home = () => {
         userId: user.id,
       });
       if (response.status === 201) {
-        alert("Successfully added");
+        dispatch(deleteRecipe(recipe.generatedId));
       } else {
         alert(response.data.error);
       }
@@ -112,41 +114,41 @@ const Home = () => {
 
   return (
     <div className="bg-radial">
-    <ChakraProvider>
-      <SearchBar
-        handleGenerateRecipe={handleGenerateRecipe}
-        isGenerating={isGenerating}
-      />
-      <Flex wrap="wrap" justify="center">
-        {recipeData.length === 0 && (
-          <Box className="dialog-container">
-            <Text className="dialog-text animated-text">
-              Let PlatePal help you get a recipe by entering your available
-              ingredients!
-            </Text>
-            <img src={landingImg} alt="plate pal" className="landing-image" />
-          </Box>
-        )}
-        {recipeData &&
-          recipeData.map((recipe, index) => (
-            <RecipeSnippet
-              key={index}
-              recipe={recipe}
-              onClick={() => handleCardClick(recipe)}
-              handleSave={(e) => handleRecipeSave(e, recipe)}
-              handleDislike={(e) => handleDislike(e, recipe)}
-              handleClose={handleModalClose}
-            />
-          ))}
-      </Flex>
-      {selectedFood && (
-        <RecipeDetail
-          selectFood={selectedFood}
-          isModalOpen={isModalOpen}
-          handleClose={handleModalClose}
+      <ChakraProvider>
+        <SearchBar
+          handleGenerateRecipe={handleGenerateRecipe}
+          isGenerating={isGenerating}
         />
-      )}
-    </ChakraProvider>
+        <Flex wrap="wrap" justify="center">
+          {recipeData.length === 0 && (
+            <Box className="dialog-container">
+              <Text className="dialog-text animated-text">
+                Let PlatePal help you get a recipe by entering your available
+                ingredients!
+              </Text>
+              <img src={landingImg} alt="plate pal" className="landing-image" />
+            </Box>
+          )}
+          {recipeData &&
+            recipeData.map((recipe, index) => (
+              <RecipeSnippet
+                key={index}
+                recipe={recipe}
+                onClick={() => handleCardClick(recipe)}
+                handleSave={(e) => handleRecipeSave(e, recipe)}
+                handleDislike={(e) => handleDislike(e, recipe)}
+                handleClose={handleModalClose}
+              />
+            ))}
+        </Flex>
+        {selectedFood && (
+          <RecipeDetail
+            selectFood={selectedFood}
+            isModalOpen={isModalOpen}
+            handleClose={handleModalClose}
+          />
+        )}
+      </ChakraProvider>
     </div>
   );
 };
