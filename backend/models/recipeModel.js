@@ -15,6 +15,10 @@ const recipeSchema = new Schema({
         type: Array,
         required: true
     },
+    estimatedTime: {
+        type: Number,
+        required: true
+    },
     image: {
         type: String,
         required: false
