@@ -207,7 +207,7 @@ const SignIn = (signInProps) => {
                                         id='agreeToTerms'
                                     />
                                     <label htmlFor='agreeToTerms' style={{marginLeft: '8px'}}>
-                                        I agree to the <Link href={'/terms-of-service'}>terms of service</Link> and <Link href={'/privacy-policy'}>privacy policy</Link>.
+                                        I agree to the <Link href={'/terms-of-service'} target={'_blank'}>terms of service</Link> and <Link href={'/privacy-policy'} target={'_blank'}>privacy policy</Link>.
                                     </label>
                                 </div>
                                 <DefaultButton
