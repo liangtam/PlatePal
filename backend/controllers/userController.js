@@ -159,8 +159,10 @@ const handleFavoriteRecipe = async (req, res) => {
     console.log(req.body);
 
     try {
-        const user = await User.findById(userId);
-        const recipe = await Recipe.findById(recipeId);
+        const [user, recipe] = await Promise.all([
+            User.findById(userId),
+            Recipe.findById(recipeId)
+        ]);
 
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
