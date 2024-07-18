@@ -152,7 +152,7 @@ const handleGetRecipesFromUser = async (req, res) => {
 /*
 gpt-4o 6/30 16:58 add an endpoint to api/users/ that favorites / unfavorites a recipe
  */
-const handleFavoriteRecipe = async (req, res) => {
+const handleFavoriteRecipe = async (req, res)=>  {
     const { userId, recipeId } = req.body;
     console.log(req.body);
 
@@ -182,7 +182,7 @@ const handleFavoriteRecipe = async (req, res) => {
     }
 };
 
-const handleUpdateUser = async (req, res) => {
+const handleUpdateUser = async (req, res)=> {
     const userId = req.params.id;
     let updatedData = req.body;
 
