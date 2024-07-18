@@ -29,7 +29,7 @@ const handleSignup = async (req, res) => {
             {expiresIn: '1h'}
         );
         await newUser.save();
-        return res.status(201).json({message: 'Signup successful.', token, user: { email: user.email, id: user._id }});
+        return res.status(201).json({message: 'Signup successful.', token, user: { email: newUser.email, id: newUser._id }});
     } catch (error) {
         return res.status(500).json({error: 'Internal Server Error'});
     }
