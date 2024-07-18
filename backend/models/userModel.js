@@ -35,5 +35,16 @@ const userSchema = new Schema({
     }
 });
 
+// Middleware for updating favorite count on user removal
+userSchema.pre('remove', async function (next) {
+    const user = this;
+
+    await Promise.all(user.favoriteRecipes.map(async (recipeId) => {
+        await Recipe.findByIdAndUpdate(recipeId, { $inc: { favoriteCount: -1 } });
+    }));
+
+    next();
+});
+
 const User = mongoose.model('User', userSchema);
 module.exports = User;
