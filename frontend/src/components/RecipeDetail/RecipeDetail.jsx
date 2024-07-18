@@ -1,11 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Text, Box, Image, Checkbox, Stack } from '@chakra-ui/react';
 import './RecipeDetail.css';
 import api from "../../api";
+import io from 'socket.io-client';
+
+const socket = io('http://localhost:3000'); // Adjust the URL as needed
 
 const RecipeDetail = ({ selectFood, isModalOpen, handleClose }) => {
     const ingredients = selectFood.ingredients;
     const instructions = selectFood.instructions;
+
+    const [favoritesCount, setFavoritesCount] = useState(selectFood.favoritedBy.length || 0);
+    const [isFavorite, setIsFavorite] = useState(selectFood.isFavorite);
+
+    useEffect(() => {
+        // Listen for favorite updates
+        socket.on('favoriteUpdate', (data) => {
+            if (data.recipeId === selectFood._id) {
+                setFavoritesCount(data.favoriteCount);
+            }
+        });
+
+        // Clean up on component unmount
+        return () => {
+            socket.off('favoriteUpdate');
+        };
+    }, [selectFood._id]);
 
     const handleFavorite = async () => {
         const authToken = localStorage.getItem('authToken');
@@ -18,7 +38,7 @@ const RecipeDetail = ({ selectFood, isModalOpen, handleClose }) => {
         }
 
         try {
-            const response = await api.post('/users/favorite', {
+            await api.post('/api/users/favorite', {
                 userId,
                 recipeId: selectFood._id
             }, {
@@ -27,7 +47,8 @@ const RecipeDetail = ({ selectFood, isModalOpen, handleClose }) => {
                 }
             });
 
-            console.log(response.data.favoriteRecipes);
+            // Toggle the favorite state locally
+            setIsFavorite(!isFavorite);
         } catch (error) {
             console.error('Error favoriting recipe:', error);
         }
@@ -65,11 +86,12 @@ const RecipeDetail = ({ selectFood, isModalOpen, handleClose }) => {
                     </ModalBody>
 
                     <ModalFooter>
+                        <Text mr={3}>Favorites: {favoritesCount}</Text>
                         <Button colorScheme="orange" mr={3} onClick={handleClose}>
                             Close
                         </Button>
                         <Button colorScheme="blue" onClick={handleFavorite}>
-                            {selectFood.isFavorite ? 'Unfavorite' : 'Favorite'}
+                            {isFavorite ? 'Unfavorite' : 'Favorite'}
                         </Button>
                     </ModalFooter>
                 </ModalContent>

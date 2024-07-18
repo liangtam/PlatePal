@@ -4,6 +4,8 @@ const {hash, compare} = require("bcrypt");
 const sendEmail = require("./emailService");
 const validator = require('validator');
 const crypto = require('crypto');
+const {io} = require("../server");
+const Recipe = require("../models/recipeModel");
 
 const handleSignup = async (req, res) => {
     const {email, password} = req.body;
@@ -164,6 +166,7 @@ const handleFavoriteRecipe = async (req, res)=>  {
         }
 
         const recipeIndex = user.favoriteRecipes.indexOf(recipeId);
+        let favoriteCount;
 
         if (recipeIndex === -1) {
             // Recipe is not in the favorites, add it
@@ -174,6 +177,11 @@ const handleFavoriteRecipe = async (req, res)=>  {
         }
 
         await user.save();
+
+        // Emit the updated favorite count
+        const recipe = await Recipe.findById(recipeId).populate('favoritedBy');
+        favoriteCount = recipe.favoritedBy.length;
+        io.emit('favoriteUpdate', { recipeId: recipeId, favoriteCount: favoriteCount });
 
         return res.status(200).json({ favoriteRecipes: user.favoriteRecipes });
     } catch (error) {
