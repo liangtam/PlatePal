@@ -154,34 +154,38 @@ const handleGetRecipesFromUser = async (req, res) => {
 /*
 gpt-4o 6/30 16:58 add an endpoint to api/users/ that favorites / unfavorites a recipe
  */
-const handleFavoriteRecipe = async (req, res)=>  {
+const handleFavoriteRecipe = async (req, res) => {
     const { userId, recipeId } = req.body;
     console.log(req.body);
 
     try {
         const user = await User.findById(userId);
+        const recipe = await Recipe.findById(recipeId);
 
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
 
+        if (!recipe) {
+            return res.status(404).json({ message: 'Recipe not found' });
+        }
+
         const recipeIndex = user.favoriteRecipes.indexOf(recipeId);
-        let favoriteCount;
 
         if (recipeIndex === -1) {
             // Recipe is not in the favorites, add it
             user.favoriteRecipes.push(recipeId);
+            recipe.favoriteCount += 1;
         } else {
             // Recipe is in the favorites, remove it
             user.favoriteRecipes.splice(recipeIndex, 1);
+            recipe.favoriteCount -= 1;
         }
 
-        await user.save();
+        await Promise.all([user.save(), recipe.save()]);
 
         // Emit the updated favorite count
-        const recipe = await Recipe.findById(recipeId).populate('favoritedBy');
-        favoriteCount = recipe.favoritedBy.length;
-        io.emit('favoriteUpdate', { recipeId: recipeId, favoriteCount: favoriteCount });
+        io.emit('favoriteUpdate', { recipeId: recipeId, favoriteCount: recipe.favoriteCount });
 
         return res.status(200).json({ favoriteRecipes: user.favoriteRecipes });
     } catch (error) {

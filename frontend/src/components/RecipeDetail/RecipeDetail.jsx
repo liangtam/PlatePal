@@ -10,7 +10,7 @@ const RecipeDetail = ({ selectFood, isModalOpen, handleClose }) => {
     const ingredients = selectFood.ingredients;
     const instructions = selectFood.instructions;
 
-    const [favoritesCount, setFavoritesCount] = useState(selectFood.favoritedBy.length || 0);
+    const [favoritesCount, setFavoritesCount] = useState(selectFood.favoriteCount || 0);
     const [isFavorite, setIsFavorite] = useState(selectFood.isFavorite);
 
     useEffect(() => {
