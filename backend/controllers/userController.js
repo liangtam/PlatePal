@@ -156,7 +156,7 @@ gpt-4o 6/30 16:58 add an endpoint to api/users/ that favorites / unfavorites a r
  */
 const handleFavoriteRecipe = async (req, res) => {
     const { userId, recipeId } = req.body;
-    console.log(req.body);
+    console.log("Handle favorite recipe:", req.body);
 
     try {
         const [user, recipe] = await Promise.all([

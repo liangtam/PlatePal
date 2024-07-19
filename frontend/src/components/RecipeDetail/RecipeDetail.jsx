@@ -39,7 +39,7 @@ const RecipeDetail = ({ selectFood, isModalOpen, handleClose }) => {
         try {
             await api.post('/users/favorite', {
                 userId,
-                recipeId: selectFood._id
+                recipeId: selectFood.generatedId
             }, {
                 headers: {
                     'auth-token': authToken

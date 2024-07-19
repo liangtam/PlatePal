@@ -83,7 +83,12 @@ const Home = () => {
       const response = await api.post("/recipes/", {
         ...recipe,
         userId: user.id,
-      });
+      },
+          {
+            headers: {
+              'auth-token': localStorage.getItem('authToken')
+            }
+          });
       if (response.status === 201) {
         dispatch(deleteRecipe(recipe.generatedId));
       } else {
