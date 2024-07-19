@@ -58,7 +58,7 @@ const RecipeDetail = ({ selectFood, isModalOpen, handleClose }) => {
             <Modal isOpen={isModalOpen} onClose={handleClose}>
                 <ModalOverlay />
                 <ModalContent className="modal-content">
-                    <ModalHeader className="modal-header">{selectFood.name}</ModalHeader>
+                    <ModalHeader className="modal-header bg-blue-400">{selectFood.name}</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
                         <Box>
@@ -89,8 +89,8 @@ const RecipeDetail = ({ selectFood, isModalOpen, handleClose }) => {
                         <Button colorScheme="orange" mr={3} onClick={handleClose}>
                             Close
                         </Button>
-                        <Button colorScheme="blue" onClick={handleFavorite}>
-                            {isFavorite ? 'Unfavorite' : 'Favorite'}
+                        <Button style={{color: 'white', backgroundColor: "rgb(86, 193, 255)"}} onClick={handleFavorite}>
+                            {selectFood.isFavorite ? 'Unfavorite' : 'Favorite'}
                         </Button>
                     </ModalFooter>
                 </ModalContent>

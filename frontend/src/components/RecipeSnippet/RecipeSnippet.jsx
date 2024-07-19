@@ -9,7 +9,7 @@ const RecipeSnippet = ({ recipe, onClick, handleSave, handleDislike }) => {
         <ChakraProvider>
         <Box className="card-container" onClick={() => onClick()}>
             <Card maxW='sm'>
-                <CardBody>
+                {recipe && <CardBody>
                     <Image
                         src={recipe.image}
                         className="card-image"
@@ -18,10 +18,10 @@ const RecipeSnippet = ({ recipe, onClick, handleSave, handleDislike }) => {
                     <Stack mt='6' spacing='3'>
                         <Heading size='md'>{recipe.name}</Heading>
                         <Text>
-                            PlaceHolder
+                            Estimated cooking time: {recipe.estimatedTime} mins
                         </Text>
                     </Stack>
-                </CardBody>
+                </CardBody>}
                 <Divider />
                 <CardFooter>
                     <Flex justify="flex-end" w="100%">

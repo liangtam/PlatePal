@@ -3,6 +3,7 @@ import {Home, LandingPage, UserProfile} from "./pages";
 import {useSelector} from "react-redux";
 import {Navbar} from "./components/";
 import {ShowSignInContextProvider} from "./components/context/ShowSignInContext";
+import {IngredientsContextProvider} from "./components/context/IngredientsContext";
 import TermsOfService from "./pages/legal/TermsOfService";
 import PrivacyPolicy from "./pages/legal/PrivacyPolicy";
 
@@ -26,7 +27,11 @@ const Root = () => {
                     }
                 />
                 <Route exact path="/users/:userId" element={<UserProfile/>}/>
-                <Route exact path="/home" element={<Home/>}></Route>
+                <Route exact path="/home" element={
+                        <IngredientsContextProvider>
+                            <Home/>
+                        </IngredientsContextProvider>
+                    }/>
                 <Route exact path="/terms-of-service" element={<TermsOfService/>}></Route>
                 <Route exact path="/privacy-policy" element={<PrivacyPolicy/>}></Route>
             </Routes>
