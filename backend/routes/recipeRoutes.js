@@ -1,10 +1,11 @@
 const express = require('express');
 const { handleGetRecipe, handleDeleteRecipe, handleUpdateRecipe, handleCreateRecipe } = require('../controllers/recipeController');
+const authMiddleware = require("../middleware/authMiddleware");
 const router = express.Router();
 
 router.get('/:id', handleGetRecipe);
 router.delete('/:id', handleDeleteRecipe);
 router.patch('/:id', handleUpdateRecipe);
-router.post('/', handleCreateRecipe);
+router.post('/', authMiddleware, handleCreateRecipe);
 
 module.exports = router;
