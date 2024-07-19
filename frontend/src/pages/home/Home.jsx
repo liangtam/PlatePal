@@ -6,7 +6,7 @@ import landingImg from "../../assets/455-landing-bg.png";
 import './Home.css';
 import {useDispatch, useSelector} from 'react-redux';
 import {deleteRecipe, setRecipes} from '../../redux/recipes/recipesSlice';
-import {addUserRecipe, setUserRecipes} from '../../redux/users/userSlice';
+import {setUserRecipes} from '../../redux/users/userSlice';
 import api from "../../api";
 
 const Home = () => {
@@ -69,7 +69,16 @@ const Home = () => {
     const handleRecipeSave = async (e, recipe) => {
         e.stopPropagation();
         try {
-            const response = await api.post('/recipes/', {...recipe, userId: user.id});
+            const authToken = localStorage.getItem('authToken');
+            console.log('Auth token:', authToken);
+            const response = await api.post('/recipes/',
+                {...recipe, userId: user.id},
+                {
+                    headers: {
+                        'auth-token': authToken
+                    }
+                }
+            );
             if (response.status === 201) {
                 alert('Successfully added');
             } else {
