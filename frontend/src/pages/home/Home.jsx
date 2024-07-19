@@ -18,9 +18,9 @@ const Home = () => {
         dummyRecipe4
     ];
 
-    const fetchUserRecipes = async (userId) => {
+    const fetchUserRecipes = async () => {
         try {
-            const response = await api.get(`/users/recipes/${userId}`);
+            const response = await api.get(`/users/recipes/${user.id}`);
             if (response.status >= 200 && response.status < 300) {
                 dispatch(setUserRecipes(response.data));
             } else {
@@ -85,7 +85,7 @@ const Home = () => {
             } else {
                 alert('Network error or server is not reachable.');
             }
-        } 
+        }
         dispatch(deleteRecipe(recipe._id))
     }
 
