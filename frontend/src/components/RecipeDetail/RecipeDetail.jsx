@@ -38,7 +38,7 @@ const RecipeDetail = ({ selectFood, isModalOpen, handleClose }) => {
         }
 
         try {
-            await api.post('/api/users/favorite', {
+            await api.post('/users/favorite', {
                 userId,
                 recipeId: selectFood._id
             }, {
