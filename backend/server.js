@@ -13,7 +13,12 @@ app.use(cors());
 app.use(express.json());
 
 const server = http.createServer(app);
-const io = socketIo(server);
+const io = socketIo(server, {
+    cors: {
+        origin: "http://localhost:3000",
+        methods: ["GET", "POST"]
+    }
+});
 
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {

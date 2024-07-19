@@ -4,8 +4,6 @@ import './RecipeDetail.css';
 import api from "../../api";
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:4000');
-
 const RecipeDetail = ({ selectFood, isModalOpen, handleClose }) => {
     const ingredients = selectFood.ingredients;
     const instructions = selectFood.instructions;
@@ -14,6 +12,7 @@ const RecipeDetail = ({ selectFood, isModalOpen, handleClose }) => {
     const [isFavorite, setIsFavorite] = useState(selectFood.isFavorite);
 
     useEffect(() => {
+        const socket = io('http://localhost:4000');
         // Listen for favorite updates
         socket.on('favoriteUpdate', (data) => {
             if (data.recipeId === selectFood._id) {
