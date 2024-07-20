@@ -4,7 +4,6 @@ const {hash, compare} = require("bcrypt");
 const sendEmail = require("./emailService");
 const validator = require('validator');
 const crypto = require('crypto');
-const {io} = require("../server");
 const Recipe = require("../models/recipeModel");
 
 const handleSignup = async (req, res) => {
@@ -187,6 +186,7 @@ const handleFavoriteRecipe = async (req, res) => {
         await Promise.all([user.save(), recipe.save()]);
 
         // Emit the updated favorite count
+        const io = req.io;
         io.emit('favoriteUpdate', { recipeId: recipeId, favoriteCount: recipe.favoriteCount });
 
         return res.status(200).json({ favoriteRecipes: user.favoriteRecipes });
