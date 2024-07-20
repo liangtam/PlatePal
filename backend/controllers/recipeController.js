@@ -1,18 +1,19 @@
 const Recipe = require("../models/recipeModel");
 const User = require("../models/userModel");
 
-const handleGetRecipe = (req, res) => {
-    try {
-        const { id } = req.params;
-        const recipe = Recipe.findById(id)
-        if (!recipe) {
-            return res.status(404).json({message: "Recipe not found"});
-        }
-        return res.status(200).json(recipe);
-    } catch (err) {
-        res.status(400).json({message: "Could not fetch recipe."});
+const handleGetRecipe = async (req, res) => {
+  try {
+    const {id} = req.params;
+    const recipe = await Recipe.findById(id);
+    if (!recipe) {
+      return res.status(404).json({message: "Recipe not found"});
     }
-}
+    return res.status(200).json(recipe);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({message: "Could not fetch recipe."});
+  }
+};
 
 const handleCreateRecipe = async (req, res) => {
     const {name, ingredients, instructions, image, userId } = req.body;
@@ -44,7 +45,7 @@ const handleDeleteRecipe = async (req, res) => {
         }
 
         const user = await User.findById(result.userId);
-        
+
         if (!user) {
             return res.status(404).json({error: "User not found."});
         }
