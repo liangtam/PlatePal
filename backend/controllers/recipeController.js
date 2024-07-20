@@ -16,23 +16,30 @@ const handleGetRecipe = async (req, res) => {
 };
 
 const handleCreateRecipe = async (req, res) => {
-    const {name, ingredients, instructions, image, userId } = req.body;
+    const { name, ingredients, instructions, userId } = req.body;
+
+    let imageBase64 = null;
+    if (req.file) {
+        const base64String = req.file.buffer.toString('base64');
+        imageBase64 = `data:${req.file.mimetype};base64,${base64String}`;
+    }
+
     try {
         const user = await User.findById(userId);
         if (!user) {
-            throw new Error("User not found.");
+            return res.status(404).json({message: "User not found"});
         }
-        const recipe = await Recipe.create({name, ingredients, instructions, image, userId});
+        const recipe = await Recipe.create({ name, ingredients, instructions, image: imageBase64, userId });
         if (!recipe) {
-            throw new Error("Could not create recipe");
+            return res.status(400).json({message: "Could not create recipe"});
         }
         user.recipes.push(recipe);
         await user.save();
         return res.status(201).json(recipe);
     } catch (err) {
-        return res.status(400).json({message: err.message})
+        return res.status(500).json({ message: "Internal error" });
     }
-}
+};
 
 const handleDeleteRecipe = async (req, res) => {
     try {

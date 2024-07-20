@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import {
     Button,
@@ -15,9 +15,11 @@ import {
     ModalOverlay,
     IconButton,
     HStack,
-    VStack, useDisclosure
+    VStack,
+    useDisclosure
 } from "@chakra-ui/react";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
+import { useDropzone } from 'react-dropzone';
 import api from "../../api";
 
 const CreateRecipe = ({ fetchingData, setFetchingData }) => {
@@ -25,22 +27,29 @@ const CreateRecipe = ({ fetchingData, setFetchingData }) => {
     const [name, setName] = useState("");
     const [ingredients, setIngredients] = useState([""]);
     const [instructions, setInstructions] = useState([""]);
-    const [image, setImage] = useState("");
-    const {userId} = useParams();
+    const [image, setImage] = useState(null);
+    const { userId } = useParams();
 
     const handleCreate = async () => {
         const filteredIngredients = ingredients.filter(item => item.trim() !== "");
         const filteredInstructions = instructions.filter(item => item.trim() !== "");
 
+        const formData = new FormData();
+        formData.append("name", name);
+        formData.append("ingredients", filteredIngredients);
+        formData.append("instructions", filteredInstructions);
+        if (image) {
+            formData.append("image", image);
+        }
+        formData.append("userId", userId);
+
         try {
-            const response = await api.post('/recipes/',
-                { name, ingredients: filteredIngredients, instructions: filteredInstructions, image, userId },
-                {
-                    headers: {
-                        'auth-token': localStorage.getItem('authToken')
-                    }
+            const response = await api.post('/recipes/', formData, {
+                headers: {
+                    'auth-token': localStorage.getItem('authToken'),
+                    'Content-Type': 'multipart/form-data'
                 }
-            );
+            });
             if (response.status === 201) {
                 alert('Successfully created');
                 setFetchingData(!fetchingData);
@@ -62,6 +71,7 @@ const CreateRecipe = ({ fetchingData, setFetchingData }) => {
         setName("");
         setIngredients([""]);
         setInstructions([""]);
+        setImage(null);
     };
 
     const handleInputChange = (index, value, setter, state) => {
@@ -81,93 +91,106 @@ const CreateRecipe = ({ fetchingData, setFetchingData }) => {
         }
     };
 
+    const onDrop = useCallback(acceptedFiles => {
+        if (acceptedFiles.length > 0) {
+            setImage(acceptedFiles[0]);
+        }
+    }, []);
+
+    const { getRootProps, getInputProps } = useDropzone({
+        onDrop,
+        accept: 'image/*',
+        multiple: false
+    });
+
     return (
-        <>
-            <ChakraProvider>
-                <Button onClick={onOpen} w="100%" p={3} my={5} border="1px solid grey" borderRadius="25px">
-                    Create Recipe
-                </Button>
+        <ChakraProvider>
+            <Button onClick={onOpen} w="100%" p={3} my={5} border="1px solid grey" borderRadius="25px">
+                Create Recipe
+            </Button>
 
-                <Modal isOpen={isOpen} onClose={onClose}>
-                    <ModalOverlay />
-                    <ModalContent className="modal-content">
-                        <ModalHeader className="modal-header">Create Recipe</ModalHeader>
-                        <ModalCloseButton />
-                        <ModalBody>
-                            <FormControl isRequired>
-                                <FormLabel>Recipe Name</FormLabel>
-                                <Input
-                                    placeholder="Recipe Name"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                />
-                            </FormControl>
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent className="modal-content">
+                    <ModalHeader className="modal-header">Create Recipe</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        <FormControl isRequired>
+                            <FormLabel>Recipe Name</FormLabel>
+                            <Input
+                                placeholder="Recipe Name"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                            />
+                        </FormControl>
 
-                            <FormControl mt={4} isRequired>
-                                <FormLabel>Ingredients</FormLabel>
-                                <VStack spacing={2}>
-                                    {ingredients.map((ingredient, index) => (
-                                        <HStack key={index} spacing={2} width="100%">
-                                            <Input
-                                                placeholder={`Ingredient ${index + 1}`}
-                                                value={ingredient}
-                                                onChange={(e) => handleInputChange(index, e.target.value, setIngredients, ingredients)}
-                                            />
-                                            <IconButton
-                                                icon={<MinusIcon />}
-                                                onClick={() => removeField(index, setIngredients, ingredients)}
-                                                isDisabled={ingredients.length === 1}
-                                                aria-label={"Remove Ingredient"}/>
-                                        </HStack>
-                                    ))}
-                                    <Button onClick={() => addField(setIngredients, ingredients)} leftIcon={<AddIcon />}>
-                                        Add Ingredient
-                                    </Button>
-                                </VStack>
-                            </FormControl>
+                        <FormControl mt={4} isRequired>
+                            <FormLabel>Ingredients</FormLabel>
+                            <VStack spacing={2}>
+                                {ingredients.map((ingredient, index) => (
+                                    <HStack key={index} spacing={2} width="100%">
+                                        <Input
+                                            placeholder={`Ingredient ${index + 1}`}
+                                            value={ingredient}
+                                            onChange={(e) => handleInputChange(index, e.target.value, setIngredients, ingredients)}
+                                        />
+                                        <IconButton
+                                            icon={<MinusIcon />}
+                                            onClick={() => removeField(index, setIngredients, ingredients)}
+                                            isDisabled={ingredients.length === 1}
+                                            aria-label={"Remove Ingredient"}/>
+                                    </HStack>
+                                ))}
+                                <Button onClick={() => addField(setIngredients, ingredients)} leftIcon={<AddIcon />}>
+                                    Add Ingredient
+                                </Button>
+                            </VStack>
+                        </FormControl>
 
-                            <FormControl mt={4} isRequired>
-                                <FormLabel>Instructions</FormLabel>
-                                <VStack spacing={2}>
-                                    {instructions.map((instruction, index) => (
-                                        <HStack key={index} spacing={2} width="100%">
-                                            <Input
-                                                placeholder={`Instruction ${index + 1}`}
-                                                value={instruction}
-                                                onChange={(e) => handleInputChange(index, e.target.value, setInstructions, instructions)}
-                                            />
-                                            <IconButton
-                                                icon={<MinusIcon />}
-                                                onClick={() => removeField(index, setInstructions, instructions)}
-                                                isDisabled={instructions.length === 1}
-                                                aria-label={'Remove Instruction'}/>
-                                        </HStack>
-                                    ))}
-                                    <Button onClick={() => addField(setInstructions, instructions)} leftIcon={<AddIcon />}>
-                                        Add Instruction
-                                    </Button>
-                                </VStack>
-                            </FormControl>
+                        <FormControl mt={4} isRequired>
+                            <FormLabel>Instructions</FormLabel>
+                            <VStack spacing={2}>
+                                {instructions.map((instruction, index) => (
+                                    <HStack key={index} spacing={2} width="100%">
+                                        <Input
+                                            placeholder={`Instruction ${index + 1}`}
+                                            value={instruction}
+                                            onChange={(e) => handleInputChange(index, e.target.value, setInstructions, instructions)}
+                                        />
+                                        <IconButton
+                                            icon={<MinusIcon />}
+                                            onClick={() => removeField(index, setInstructions, instructions)}
+                                            isDisabled={instructions.length === 1}
+                                            aria-label={'Remove Instruction'}/>
+                                    </HStack>
+                                ))}
+                                <Button onClick={() => addField(setInstructions, instructions)} leftIcon={<AddIcon />}>
+                                    Add Instruction
+                                </Button>
+                            </VStack>
+                        </FormControl>
 
-                            <FormControl mt={4}>
-                                <FormLabel>Image</FormLabel>
-                                <Input
-                                    placeholder="URL to the recipe image"
-                                    value={image}
-                                    onChange={(e) => setImage(e.target.value)}
-                                />
-                            </FormControl>
-                        </ModalBody>
+                        <FormControl mt={4}>
+                            <FormLabel>Image</FormLabel>
+                            <div {...getRootProps()} style={{ border: "1px dashed grey", padding: "20px", textAlign: "center" }}>
+                                <input {...getInputProps()} />
+                                {image ? (
+                                    <p>{image.name}</p>
+                                ) : (
+                                    <p>Drag & drop an image here, or click to select one</p>
+                                )}
+                            </div>
+                        </FormControl>
+                    </ModalBody>
 
-                        <ModalFooter>
-                            <Button colorScheme="blue" onClick={handleCreate}>
-                                Create
-                            </Button>
-                        </ModalFooter>
-                    </ModalContent>
-                </Modal>
-            </ChakraProvider>
-        </>
+                    <ModalFooter>
+                        <Button colorScheme="blue" onClick={handleCreate}>
+                            Create
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+        </ChakraProvider>
     );
 };
 
