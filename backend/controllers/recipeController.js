@@ -121,29 +121,29 @@ const handleGetRecipe = (req, res) => {
 };
 
 const handleCreateRecipe = async (req, res) => {
-  const { name, ingredients, instructions, estimatedTime, image, userId } = req.body;
-  try {
-    const user = await User.findById(userId);
-    if (!user) {
-      throw new Error("User not found.");
+    const { name, ingredients, instructions, userId } = req.body;
+
+    let imageBase64 = null;
+    if (req.file) {
+        const base64String = req.file.buffer.toString('base64');
+        imageBase64 = `data:${req.file.mimetype};base64,${base64String}`;
     }
-    const recipe = await Recipe.create({
-      name,
-      ingredients,
-      instructions,
-      estimatedTime,
-      image,
-      userId,
-    });
-    if (!recipe) {
-      throw new Error("Could not create recipe");
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({message: "User not found"});
+        }
+        const recipe = await Recipe.create({ name, ingredients, instructions, image: imageBase64, userId });
+        if (!recipe) {
+            return res.status(400).json({message: "Could not create recipe"});
+        }
+        user.recipes.push(recipe);
+        await user.save();
+        return res.status(201).json(recipe);
+    } catch (err) {
+        return res.status(500).json({ message: "Internal error" });
     }
-    user.recipes.push(recipe);
-    await user.save();
-    return res.status(201).json(recipe);
-  } catch (err) {
-    return res.status(400).json({ message: err.message });
-  }
 };
 
 const handleDeleteRecipe = async (req, res) => {
@@ -153,7 +153,13 @@ const handleDeleteRecipe = async (req, res) => {
     const result = await Recipe.findByIdAndDelete(id);
 
     if (!result) {
-      return res.status(404).json({ message: "Recipe not found" });
+        return res.status(404).json({ message: 'Recipe not found' });
+    }
+
+    const user = await User.findById(result.userId);
+
+    if (!user) {
+        return res.status(404).json({error: "User not found."});
     }
 
     const user = await User.findById(result.userId);

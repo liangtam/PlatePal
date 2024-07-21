@@ -27,7 +27,7 @@ const handleSignup = async (req, res) => {
         const token = sign(
             {email: email, id: newUser._id},
             process.env.JWT_SECRET,
-            {expiresIn: '1h'}
+            {}
         );
         await newUser.save();
         return res.status(201).json({message: 'Signup successful.', token, user: { email: newUser.email, id: newUser._id }});
@@ -78,7 +78,7 @@ const handleLogin = async (req, res) => {
         const token = sign(
             { email: email, id: user._id },
             process.env.JWT_SECRET,
-            rememberMe ? {} : { expiresIn: '1h' }
+            rememberMe ? {} : {}
         );
         return res.status(200).json({ message: 'Login successful.', token: token, user: { email: user.email, id: user._id } });
     } catch (error) {
