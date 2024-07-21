@@ -99,7 +99,7 @@ const handleGenerateRecipes = async (req, res) => {
             return recipe;
         }
     }))
-        
+
     console.log("Full recipes: ", fullRecipes);
     return res.status(200).json(fullRecipes);
   } catch (err) {
@@ -121,7 +121,7 @@ const handleGetRecipe = (req, res) => {
 };
 
 const handleCreateRecipe = async (req, res) => {
-    const { name, ingredients, instructions, userId } = req.body;
+    const { name, ingredients, instructions, estimatedTime, userId } = req.body;
 
     let imageBase64 = null;
     if (req.file) {
@@ -134,7 +134,7 @@ const handleCreateRecipe = async (req, res) => {
         if (!user) {
             return res.status(404).json({message: "User not found"});
         }
-        const recipe = await Recipe.create({ name, ingredients, instructions, image: imageBase64, userId });
+        const recipe = await Recipe.create({ name, ingredients, instructions, image: imageBase64, estimatedTime, userId });
         if (!recipe) {
             return res.status(400).json({message: "Could not create recipe"});
         }
@@ -142,6 +142,7 @@ const handleCreateRecipe = async (req, res) => {
         await user.save();
         return res.status(201).json(recipe);
     } catch (err) {
+        console.error(`Error on create recipe ${err}`);
         return res.status(500).json({ message: "Internal error" });
     }
 };
@@ -160,12 +161,6 @@ const handleDeleteRecipe = async (req, res) => {
 
     if (!user) {
         return res.status(404).json({error: "User not found."});
-    }
-
-    const user = await User.findById(result.userId);
-
-    if (!user) {
-      return res.status(404).json({ error: "User not found." });
     }
 
     user.recipes = user.recipes.filter(
