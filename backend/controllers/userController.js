@@ -4,6 +4,7 @@ const {hash, compare} = require("bcrypt");
 const sendEmail = require("./emailService");
 const validator = require('validator');
 const crypto = require('crypto');
+const Recipe = require("../models/recipeModel");
 
 const handleSignup = async (req, res) => {
     const {email, password} = req.body;
@@ -154,13 +155,20 @@ gpt-4o 6/30 16:58 add an endpoint to api/users/ that favorites / unfavorites a r
  */
 const handleFavoriteRecipe = async (req, res) => {
     const { userId, recipeId } = req.body;
-    console.log(req.body);
+    console.log("Handle favorite recipe:", req.body);
 
     try {
-        const user = await User.findById(userId);
+        const [user, recipe] = await Promise.all([
+            User.findById(userId),
+            Recipe.findById(recipeId)
+        ]);
 
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
+        }
+
+        if (!recipe) {
+            return res.status(404).json({ message: 'Recipe not found' });
         }
 
         const recipeIndex = user.favoriteRecipes.indexOf(recipeId);
@@ -168,12 +176,18 @@ const handleFavoriteRecipe = async (req, res) => {
         if (recipeIndex === -1) {
             // Recipe is not in the favorites, add it
             user.favoriteRecipes.push(recipeId);
+            recipe.favoriteCount += 1;
         } else {
             // Recipe is in the favorites, remove it
             user.favoriteRecipes.splice(recipeIndex, 1);
+            recipe.favoriteCount -= 1;
         }
 
-        await user.save();
+        await Promise.all([user.save(), recipe.save()]);
+
+        // Emit the updated favorite count
+        const io = req.io;
+        io.emit('favoriteUpdate', { recipeId: recipeId, favoriteCount: recipe.favoriteCount });
 
         return res.status(200).json({ favoriteRecipes: user.favoriteRecipes });
     } catch (error) {
@@ -182,7 +196,7 @@ const handleFavoriteRecipe = async (req, res) => {
     }
 };
 
-const handleUpdateUser = async (req, res) => {
+const handleUpdateUser = async (req, res)=> {
     const userId = req.params.id;
     let updatedData = req.body;
 

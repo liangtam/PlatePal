@@ -13,10 +13,13 @@ code {
 }
 
 :root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+
   --base-50: white;
   --base-1000: black;
 
   --yellow-400: #ffedad;
+  --orange-600: #ff7043;
   --turquoise-500: #0ebac5;
   --blue-400: rgb(86, 193, 255);
   --blue-500: rgb(35, 174, 255);
@@ -164,6 +167,14 @@ a {
   background-color: var(--blue-500);
 }
 
+.bg-orange-600 {
+  background-color: var(--orange-600);
+}
+
+.orange-600 {
+  color: var(--orange-600);
+}
+
 .yellow-400 {
   background-color: var(--yellow-400);
 }
@@ -174,6 +185,10 @@ a {
 
 .turquoise-500 {
   background-color: var(--turquoise-500);
+}
+
+.bg-radial {
+  background: radial-gradient(circle, rgba(255,237,173,1) 15%, rgba(255,203,139,1) 96%);
 }
 
 .pad-1 {

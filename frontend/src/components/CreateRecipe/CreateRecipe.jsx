@@ -28,6 +28,7 @@ const CreateRecipe = ({ fetchingData, setFetchingData }) => {
     const [ingredients, setIngredients] = useState([""]);
     const [instructions, setInstructions] = useState([""]);
     const [image, setImage] = useState(null);
+    const [estimatedTime, setEstimatedTime] = useState("");
     const { userId } = useParams();
 
     const handleCreate = async () => {
@@ -42,6 +43,7 @@ const CreateRecipe = ({ fetchingData, setFetchingData }) => {
             formData.append("image", image);
         }
         formData.append("userId", userId);
+        formData.append("estimatedTime", Number(estimatedTime));
 
         try {
             const response = await api.post('/recipes/', formData, {
@@ -72,6 +74,7 @@ const CreateRecipe = ({ fetchingData, setFetchingData }) => {
         setIngredients([""]);
         setInstructions([""]);
         setImage(null);
+        setEstimatedTime("");
     };
 
     const handleInputChange = (index, value, setter, state) => {
@@ -168,6 +171,16 @@ const CreateRecipe = ({ fetchingData, setFetchingData }) => {
                                     Add Instruction
                                 </Button>
                             </VStack>
+                        </FormControl>
+
+                        <FormControl mt={4} isRequired>
+                            <FormLabel>Estimated Time (minutes)</FormLabel>
+                            <Input
+                                type="number"
+                                placeholder="Estimated Time in minutes"
+                                value={estimatedTime}
+                                onChange={(e) => setEstimatedTime(e.target.value)}
+                            />
                         </FormControl>
 
                         <FormControl mt={4}>

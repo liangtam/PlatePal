@@ -10,7 +10,7 @@ export const recipesSlice = createSlice({
     },
     deleteRecipe: (state, action) => {
       const idToDelete = action.payload;
-      state.value = state.value.filter((recipe) => recipe._id !== idToDelete);
+      state.value = state.value.filter((recipe) => recipe.generatedId !== idToDelete);
     },
     updateRecipe: (state, action) => {
       let index = state.value.findIndex(
