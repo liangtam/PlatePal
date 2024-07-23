@@ -38,7 +38,7 @@ jobs:
 
   notify:
     runs-on: ubuntu-latest
-    needs: [test, deploy]
+    needs: [test]
 
     steps:
       - name: Send Discord notification
