@@ -54,7 +54,7 @@ const Navbar = () => {
     >
       <div
         className="flex-row gap-2 padL-5 align-items-center"
-        onClick={() => navigate("/home")}
+        onClick={user && user.id ? () => navigate("/home") : () => navigate("/")}
         style={{ cursor: "pointer" }}
       >
         <img className={styles.navbarLogo} src={blackLogo} alt="black-logo" />
@@ -77,41 +77,47 @@ const Navbar = () => {
         className="w-100 flex-row gap-6 align-items-center padR-5"
         style={{ justifyContent: "flex-end" }}
       >
-        <Link href="/home" className="font-size-4 base-1000">
-          Home
-        </Link>
-        {user ? (
-          <div className="dropdown-container" ref={dropdownRef}>
-            <DefaultButton
-              text={user.email}
-              className="radius-10 font-size-3"
-              onClick={() => setDropdownVisible(true)}
-            />
-            {dropdownVisible && (
-              <ContextualMenu
-                items={[
-                  {
-                    key: "userprofile",
-                    text: "Profile",
-                    onClick: () => navigate(`/users/${user.id}`),
-                  },
-                  {
-                    key: "logout",
-                    text: "Logout",
-                    onClick: handleLogoutClick,
-                  },
-                ]}
-                target={dropdownRef.current}
-                onDismiss={() => setDropdownVisible(false)}
+        {user && user.id ? (
+          <div
+            className="w-100 flex-row gap-6 align-items-center padR-5"
+            style={{ justifyContent: "flex-end" }}>
+            <Link href="/home" className="font-size-4 base-1000">
+              Home
+            </Link>
+            <div className="dropdown-container" ref={dropdownRef}>
+              <DefaultButton
+                text={user.email}
+                className="radius-10 font-size-3"
+                onClick={() => setDropdownVisible(true)}
               />
-            )}
+              {dropdownVisible && (
+                <ContextualMenu
+                  items={[
+                    {
+                      key: "userprofile",
+                      text: "Profile",
+                      onClick: () => navigate(`/users/${user.id}`),
+                    },
+                    {
+                      key: "logout",
+                      text: "Logout",
+                      onClick: handleLogoutClick,
+                    },
+                  ]}
+                  target={dropdownRef.current}
+                  onDismiss={() => setDropdownVisible(false)}
+                />
+              )}
+            </div>
           </div>
         ) : (
-          <DefaultButton
-            text="Sign In"
-            className="radius-10 font-size-3 bg-blue-500"
-            onClick={() => setShowSignIn(true)}
-          />
+          <div>
+            <DefaultButton
+              text="Sign In"
+              className="radius-10 font-size-3 bg-blue-500"
+              onClick={() => setShowSignIn(true)}
+            />
+          </div>
         )}
       </div>
       {showSignIn && (
