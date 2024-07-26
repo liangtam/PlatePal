@@ -1,0 +1,46 @@
+name: CI/CD Pipeline
+
+on:
+  pull_request:
+    branches:
+      - '*'
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20.15.1'
+
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm install
+        if: steps.cache.outputs.cache-hit != 'true'
+
+  notify:
+    runs-on: ubuntu-latest
+    needs: [test]
+
+    steps:
+      - name: Send Discord notification
+        run: |
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d "{\"content\": \"The build and deployment for the workflow run ${{ github.run_id }} has completed with status: ${{ job.status }}. Repository: ${{ github.repository }}, Commit: ${{ github.sha }}, Author: ${{ github.actor }}, Event: ${{ github.event_name }}, Branch: ${{ github.ref }}\"}" \
+               ${{ secrets.DISCORD_WEBHOOK_URL }}
