@@ -79,6 +79,10 @@ const Home = () => {
 
   const handleRecipeSave = async (e, recipe) => {
     e.stopPropagation();
+    if (!user) {
+      alert("Please log in");
+      return;
+    }
     try {
       const response = await api.post("/recipes/", {
         ...recipe,
@@ -114,7 +118,9 @@ const Home = () => {
   };
 
   useEffect(() => {
-    fetchUserRecipes();
+    if (user) {
+      fetchUserRecipes();
+    }
   }, []);
 
   return (

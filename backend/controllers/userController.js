@@ -219,11 +219,26 @@ const handleUpdateUser = async (req, res)=> {
     }
 };
 
+const handleGetFavoritesFromUser = async (req, res) => {
+    const {id} = req.params;
+    try {
+        const user = await User.findById(id).populate("favoriteRecipes");
+        if (!user) {
+            return res.status(404).json({ error: 'User not found.' });
+        }
+
+        return res.status(200).json(user.favoriteRecipes);
+    } catch (error) {
+        return res.status(500).json({error: 'Internal Server Error'});
+    }
+};
+
 module.exports = {
     handleSignup,
     handleLogin,
     handlePasswordReset,
     handleGetRecipesFromUser,
     handleFavoriteRecipe,
-    handleUpdateUser
+    handleUpdateUser,
+    handleGetFavoritesFromUser
 };

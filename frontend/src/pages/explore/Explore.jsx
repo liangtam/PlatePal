@@ -1,39 +1,28 @@
-import React, {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import api from "../../api";
 import './Explore.css';
-import {Box, Button, ChakraProvider, Flex, Text} from "@chakra-ui/react";
+import { ChakraProvider, Flex, Box, Text, Button, Image } from "@chakra-ui/react";
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:4000'); // Replace with your server URL
+const socket = io('http://localhost:4000');
 
 const Explore = () => {
     const [recipes, setRecipes] = useState([]);
+    const [favoriteRecipes, setFavoriteRecipes] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
     const user = useSelector((state) => state.user.value);
 
-    const fetchUserRecipes = async () => {
-        try {
-            const response = await api.get(`/recipes/all`);
-            if (response.status >= 200 && response.status < 300) {
-                setRecipes(response.data);
-            } else {
-                console.error("Request was not successful. Status code:", response.status);
-                setRecipes([]);
-            }
-        } catch (error) {
-            console.error("An error occurred:", error);
-            setRecipes([]);
-        }
-    };
-
     useEffect(() => {
-        fetchUserRecipes();
+        fetchAllRecipes();
+        fetchFavoriteRecipes();
 
-        // Listen for favorite updates
-        socket.on('favoriteUpdate', ({recipeId, favoriteCount}) => {
-            setRecipes(prevRecipes =>
-                prevRecipes.map(recipe =>
-                    recipe._id === recipeId ? {...recipe, favoriteCount} : recipe
+        socket.on('favoriteUpdate', ({ recipeId, favoriteCount }) => {
+            console.log(`Received update for recipe ${recipeId}: new count ${favoriteCount}`);
+            setRecipes((prevRecipes) =>
+                prevRecipes.map((recipe) =>
+                    recipe._id === recipeId ? { ...recipe, favoriteCount } : recipe
                 )
             );
         });
@@ -41,22 +30,64 @@ const Explore = () => {
         return () => {
             socket.off('favoriteUpdate');
         };
-    }, []);
+    }, [user?.id]);
+
+    const fetchAllRecipes = async () => {
+        try {
+            setIsLoading(true);
+            const response = await api.get('/recipes/all');
+            setRecipes(response.data);
+        } catch (error) {
+            console.error("Error fetching recipes:", error);
+            setError("Failed to fetch recipes. Please try again later.");
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const fetchFavoriteRecipes = async () => {
+        if (!user) {
+            return;
+        }
+        try {
+            const response = await api.get(`/users/favorites/${user.id}`,
+                {headers: {'auth-token': localStorage.getItem('authToken')}});
+            setFavoriteRecipes(response.data);
+        } catch (error) {
+            console.error("Error fetching favorite recipes:", error);
+        }
+    };
 
     const handleFavorite = async (recipeId) => {
         try {
-            await api.post('/users/favorite', {userId: user.id, recipeId},
-                {
-                    headers:
-                        {
-                            'auth-token': localStorage.getItem('authToken')
-                        }
-                });
-            // The server will emit the update, so we don't need to update the state here
+            // Optimistic update
+            if (favoriteRecipes.includes(recipeId)) {
+                setFavoriteRecipes(prev => prev.filter(id => id !== recipeId));
+                setRecipes(prev => prev.map(recipe =>
+                    recipe._id === recipeId ? { ...recipe, favoriteCount: recipe.favoriteCount - 1 } : recipe
+                ));
+            } else {
+                setFavoriteRecipes(prev => [...prev, recipeId]);
+                setRecipes(prev => prev.map(recipe =>
+                    recipe._id === recipeId ? { ...recipe, favoriteCount: recipe.favoriteCount + 1 } : recipe
+                ));
+            }
+
+            // API call
+            await api.post('/users/favorite', {userId: user.id, recipeId: recipeId},
+                {headers: {'auth-token': localStorage.getItem('authToken')}});
+
+            // The server will emit the update via socket.io, so we don't need to update the state here again
         } catch (error) {
             console.error("Error favoriting recipe:", error);
+            // Revert the optimistic update if the API call fails
+            fetchFavoriteRecipes();
+            fetchAllRecipes();
         }
     };
+
+    if (isLoading) return <div>Loading...</div>;
+    if (error) return <div>{error}</div>;
 
     return (
         <div className="bg-radial">
@@ -65,10 +96,21 @@ const Explore = () => {
                     {recipes.map((recipe) => (
                         <Box key={recipe._id} m={4} p={4} borderWidth={1} borderRadius="lg">
                             <Text fontSize="xl">{recipe.name}</Text>
+                            {recipe.image && (
+                                <Image
+                                    src={recipe.image}
+                                    alt={recipe.name}
+                                    borderRadius="lg"
+                                    mb={4}
+                                    objectFit="cover"
+                                    w="100%"
+                                    h="200px"
+                                />
+                            )}
                             <Text>Favorites: {recipe.favoriteCount}</Text>
-                            <Button onClick={() => handleFavorite(recipe._id)}>
-                                {'Favorite'}
-                            </Button>
+                            {user && <Button onClick={() => handleFavorite(recipe._id)}>
+                                {favoriteRecipes.includes(recipe._id) ? 'Unfavorite' : 'Favorite'}
+                            </Button>}
                         </Box>
                     ))}
                 </Flex>
