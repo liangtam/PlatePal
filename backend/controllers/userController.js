@@ -4,7 +4,7 @@ const {hash, compare} = require("bcrypt");
 const sendEmail = require("./emailService");
 const validator = require('validator');
 const crypto = require('crypto');
-const Recipe = require("../models/recipeModel");
+const Favorite = require('../models/favoriteSchema');
 
 const handleSignup = async (req, res) => {
     const {email, password} = req.body;
@@ -157,39 +157,27 @@ const handleFavoriteRecipe = async (req, res) => {
     const { userId, recipeId } = req.body;
 
     try {
-        const [user, recipe] = await Promise.all([
-            User.findById(userId),
-            Recipe.findById(recipeId)
-        ]);
+        const favorite = await Favorite.findOne({ userId, recipeId });
 
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        if (!recipe) {
-            return res.status(404).json({ message: 'Recipe not found' });
-        }
-
-        const recipeIndex = user.favoriteRecipes.indexOf(recipeId);
-
-        if (recipeIndex === -1) {
-            // Recipe is not in the favorites, add it
-            user.favoriteRecipes.push(recipeId);
-            recipe.favoriteCount += 1;
+        if (favorite) {
+            // If favorite exists, remove it
+            await Favorite.deleteOne({ _id: favorite._id });
         } else {
-            // Recipe is in the favorites, remove it
-            user.favoriteRecipes.splice(recipeIndex, 1);
-            recipe.favoriteCount -= 1;
+            // If favorite doesn't exist, create it
+            await Favorite.create({ userId, recipeId });
         }
 
-        await Promise.all([user.save(), recipe.save()]);
+        // Get the updated favorite count
+        const favoriteCount = await Favorite.countDocuments({ recipeId });
 
         // Emit the updated favorite count
         const io = req.io;
-        io.emit('favoriteUpdate', { recipeId: recipeId, favoriteCount: recipe.favoriteCount });
+        io.emit('favoriteUpdate', { recipeId, favoriteCount });
 
-        console.log("handle favorite recipe", req.body, recipe.favoriteCount);
-        return res.status(200).json({ favoriteRecipes: user.favoriteRecipes });
+        const userFavorites = await Favorite.find({ userId }).select('recipeId');
+        const favoriteRecipes = userFavorites.map(fav => fav.recipeId);
+
+        return res.status(200).json({ favoriteRecipes });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ message: 'Server error', error });
@@ -220,16 +208,21 @@ const handleUpdateUser = async (req, res)=> {
 };
 
 const handleGetFavoritesFromUser = async (req, res) => {
-    const {id} = req.params;
+    const { id } = req.params;
     try {
-        const user = await User.findById(id).populate("favoriteRecipes");
-        if (!user) {
-            return res.status(404).json({ error: 'User not found.' });
+        // Find all favorites for the user
+        const favorites = await Favorite.find({ userId: id }).select('recipeId');
+
+        if (!favorites) {
+            return res.status(404).json({ error: 'No favorites found for this user.' });
         }
 
-        return res.status(200).json(user.favoriteRecipes);
+        const favoriteRecipeIds = favorites.map((favorite) => favorite.recipeId);
+
+        return res.status(200).json(favoriteRecipeIds);
     } catch (error) {
-        return res.status(500).json({error: 'Internal Server Error'});
+        console.error('Error fetching user favorites:', error);
+        return res.status(500).json({ error: 'Internal Server Error' });
     }
 };
 

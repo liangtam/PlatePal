@@ -17,7 +17,9 @@ const Explore = () => {
 
     useEffect(() => {
         fetchAllRecipes();
-        fetchFavoriteRecipes();
+        if (user) {
+            fetchFavoriteRecipes();
+        }
 
         socket.on('favoriteUpdate', ({ recipeId, favoriteCount }) => {
             console.log(`Received update for recipe ${recipeId}: new count ${favoriteCount}`);
@@ -31,7 +33,7 @@ const Explore = () => {
         return () => {
             socket.off('favoriteUpdate');
         };
-    }, [user?.id]);
+    }, [user]);
 
     const fetchAllRecipes = async () => {
         try {

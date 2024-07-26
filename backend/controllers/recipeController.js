@@ -195,38 +195,33 @@ const handleUpdateRecipe = async (req, res) => {
   }
 };
 
+// claud 3.5 sonnet 16:32 7/26/2024 get the correct favorite count on load
 const handleGetAllRecipes = async (req, res) => {
     try {
         const recipes = await Recipe.aggregate([
             {
                 $lookup: {
-                    from: 'users',
-                    localField: 'userId',
-                    foreignField: '_id',
-                    as: 'user'
+                    from: 'favorites',
+                    localField: '_id',
+                    foreignField: 'recipeId',
+                    as: 'favorites'
                 }
             },
             {
-                $unwind: '$user'
+                $addFields: {
+                    favoriteCount: { $size: "$favorites" }
+                }
             },
             {
                 $project: {
-                    name: 1,
-                    ingredients: 1,
-                    instructions: 1,
-                    estimatedTime: 1,
-                    image: 1,
-                    favoriteCount: 1,
-                    createdAt: 1,
-                    updatedAt: 1,
-                    user: '$user.email'
+                    favorites: 0 // Remove the favorites array from the output
                 }
             }
         ]);
-        res.status(200).json(recipes);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'An error occurred while fetching recipes' });
+        res.json(recipes);
+    } catch (error) {
+        console.error('Error fetching recipes:', error);
+        res.status(500).json({ message: 'Error fetching recipes', error: error.message });
     }
 };
 
