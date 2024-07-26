@@ -13,6 +13,7 @@ const Explore = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const user = useSelector((state) => state.user.value);
+    const [processingFavorites, setProcessingFavorites] = useState({});
 
     useEffect(() => {
         fetchAllRecipes();
@@ -59,7 +60,11 @@ const Explore = () => {
     };
 
     const handleFavorite = async (recipeId) => {
+        if (processingFavorites[recipeId]) {
+            return; // prevent spam clicking
+        }
         try {
+            setProcessingFavorites(prev => ({ ...prev, [recipeId]: true }));
             // Optimistic update
             if (favoriteRecipes.includes(recipeId)) {
                 setFavoriteRecipes(prev => prev.filter(id => id !== recipeId));
@@ -83,6 +88,8 @@ const Explore = () => {
             // Revert the optimistic update if the API call fails
             fetchFavoriteRecipes();
             fetchAllRecipes();
+        } finally {
+            setProcessingFavorites(prev => ({ ...prev, [recipeId]: false }));
         }
     };
 
