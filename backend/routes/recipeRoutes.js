@@ -1,6 +1,8 @@
 const express = require('express');
 const authMiddleware = require("../middleware/authMiddleware");
-const { handleGenerateRecipes, handleGetRecipe, handleDeleteRecipe, handleUpdateRecipe, handleCreateRecipe } = require('../controllers/recipeController');
+const { handleGenerateRecipes, handleGetRecipe, handleDeleteRecipe, handleUpdateRecipe, handleCreateRecipe,
+    handleGetAllRecipes
+} = require('../controllers/recipeController');
 const router = express.Router();
 
 const multer = require("multer");
@@ -12,5 +14,6 @@ router.get('/:id', handleGetRecipe);
 router.delete('/:id', handleDeleteRecipe);
 router.patch('/:id', handleUpdateRecipe);
 router.post('/', authMiddleware, upload.single('image'), handleCreateRecipe);
+router.get('/all', handleGetAllRecipes);
 
 module.exports = router;

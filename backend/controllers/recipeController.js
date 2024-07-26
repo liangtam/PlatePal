@@ -195,10 +195,47 @@ const handleUpdateRecipe = async (req, res) => {
   }
 };
 
+const handleGetAllRecipes = async (req, res) => {
+    try {
+        const recipes = await Recipe.aggregate([
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'userId',
+                    foreignField: '_id',
+                    as: 'user'
+                }
+            },
+            {
+                $unwind: '$user'
+            },
+            {
+                $project: {
+                    name: 1,
+                    ingredients: 1,
+                    instructions: 1,
+                    estimatedTime: 1,
+                    image: 1,
+                    favoriteCount: 1,
+                    createdAt: 1,
+                    updatedAt: 1,
+                    user: '$user.email'
+                }
+            }
+        ]);
+
+        res.status(200).json(recipes);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'An error occurred while fetching recipes' });
+    }
+};
+
 module.exports = {
   handleGenerateRecipes,
   handleGetRecipe,
   handleCreateRecipe,
   handleDeleteRecipe,
   handleUpdateRecipe,
+    handleGetAllRecipes
 };
