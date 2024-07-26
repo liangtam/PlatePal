@@ -119,7 +119,7 @@ const Home = () => {
 
   useEffect(() => {
     if (user) {
-      fetchUserRecipes();
+      fetchUserRecipes(user.id);
     }
   }, []);
 
