@@ -9,11 +9,11 @@ const multer = require("multer");
 
 const upload = multer({ storage: multer.memoryStorage() });
 
+router.get('/all', handleGetAllRecipes);
 router.get("/generate", handleGenerateRecipes)
 router.get('/:id', handleGetRecipe);
 router.delete('/:id', handleDeleteRecipe);
 router.patch('/:id', handleUpdateRecipe);
 router.post('/', authMiddleware, upload.single('image'), handleCreateRecipe);
-router.get('/all', handleGetAllRecipes);
 
 module.exports = router;

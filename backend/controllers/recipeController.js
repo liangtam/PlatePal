@@ -223,7 +223,6 @@ const handleGetAllRecipes = async (req, res) => {
                 }
             }
         ]);
-
         res.status(200).json(recipes);
     } catch (err) {
         console.error(err);
