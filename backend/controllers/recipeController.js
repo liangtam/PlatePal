@@ -140,6 +140,10 @@ const handleCreateRecipe = async (req, res) => {
         }
         user.recipes.push(recipe);
         await user.save();
+
+        const io = req.io;
+        io.emit('newRecipe', {newRecipe: recipe});
+
         return res.status(201).json(recipe);
     } catch (err) {
         console.error(`Error on create recipe ${err}`);
@@ -195,10 +199,41 @@ const handleUpdateRecipe = async (req, res) => {
   }
 };
 
+// claud 3.5 sonnet 16:32 7/26/2024 get the correct favorite count on load
+const handleGetAllRecipes = async (req, res) => {
+    try {
+        const recipes = await Recipe.aggregate([
+            {
+                $lookup: {
+                    from: 'favorites',
+                    localField: '_id',
+                    foreignField: 'recipeId',
+                    as: 'favorites'
+                }
+            },
+            {
+                $addFields: {
+                    favoriteCount: { $size: "$favorites" }
+                }
+            },
+            {
+                $project: {
+                    favorites: 0 // Remove the favorites array from the output
+                }
+            }
+        ]);
+        res.json(recipes);
+    } catch (error) {
+        console.error('Error fetching recipes:', error);
+        res.status(500).json({ message: 'Error fetching recipes', error: error.message });
+    }
+};
+
 module.exports = {
   handleGenerateRecipes,
   handleGetRecipe,
   handleCreateRecipe,
   handleDeleteRecipe,
   handleUpdateRecipe,
+    handleGetAllRecipes
 };
