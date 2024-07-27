@@ -78,18 +78,20 @@ const Navbar = () => {
         style={{ justifyContent: "flex-end" }}
       >
         {user && user.id ? (
-                  <div
+          <div
             className="w-100 flex-row gap-6 align-items-center padR-5"
             style={{ justifyContent: "flex-end" }}>
+            <Link href="/explore" className="font-size-4 base-1000">
+              Explore
+            </Link>
             <Link href="/home" className="font-size-4 base-1000">
               Home
             </Link>
-          <div className="dropdown-container" ref={dropdownRef}>
-            <DefaultButton
-              text={user.email}
-              className="radius-10 font-size-3"
-              onClick={() => setDropdownVisible(true)}
-            />
+            <div className="dropdown-container" ref={dropdownRef}>
+              <DefaultButton
+                text={user.email}
+                className="radius-10 font-size-3"
+                onClick={() => setDropdownVisible(true)}
               />
               {dropdownVisible && (
                 <ContextualMenu
