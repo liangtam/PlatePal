@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const { handleSignup, handleLogin, handlePasswordReset, handleGetRecipesFromUser, handleFavoriteRecipe, handleUpdateUser,
-    handleGetFavoritesFromUser
+    handleGetFavoritesFromUser, handleGetUser
 } = require('../controllers/userController');
 const authMiddleware = require("../middleware/authMiddleware");
 
@@ -13,5 +13,6 @@ router.get('/recipes/:id', handleGetRecipesFromUser);
 router.get('/favorites/:id', authMiddleware, handleGetFavoritesFromUser);
 router.post('/favorite', authMiddleware, handleFavoriteRecipe);
 router.put('/users/:id', handleUpdateUser);
+router.get('/users/:id', handleGetUser);
 
 module.exports = router;
