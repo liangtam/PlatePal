@@ -42,7 +42,7 @@ const ExploreBox = ({ recipe, user, onClick, handleLike }) => {
 
                                 <Box>
                                     
-                                    <Heading size='sm'>{recipe.user}</Heading>
+                                    <Heading className={`${styles.Heading}`} size='sm'>{(recipe.userEmail)?.split('@')[0]}</Heading>
                     
                                 </Box>
                             </Flex>
@@ -51,7 +51,7 @@ const ExploreBox = ({ recipe, user, onClick, handleLike }) => {
                     <CardBody>
                         <Heading size='sm'>{recipe.name}</Heading>
                         <Text>
-                            {/* {recipe.estimatedTime} */}
+                            Estimated time: {recipe.estimatedTime}
                         </Text>
                     </CardBody>
                     <Image

@@ -24,7 +24,7 @@ const Explore = () => {
     //const dispatch = useDispatch();
     //const recipes = foodData;
     const [fetchingData, setFetchingData] = useState(false);
-    const [recipes, setRecipes] = useState(foodData);
+    const [recipes, setRecipes] = useState();
     const [showCardDetail, setShowCardDetail] = useState(false);
 
     const [selectedFood, setSelectedFood] = useState(null);
@@ -58,7 +58,7 @@ const Explore = () => {
 
     const fetchUserRecipes = async () => {
         try {
-          const response = await api.get('recipes/all');
+          const response = await api.get('recipes/public');
           if (response.status >= 200 && response.status < 300) {
             console.log('Request was successful:', response.data);
             setRecipes(response.data);

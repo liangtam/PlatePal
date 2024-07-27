@@ -10,22 +10,23 @@ const ExploreCardDetail = ({ selectFood, isModalOpen, handleClose }) => {
     const instructions = selectFood.instructions;
 
     const [favoritesCount, setFavoritesCount] = useState(selectFood.favoriteCount || 0);
-  //  const [isFavorite, setIsFavorite] = useState(selectFood.isFavorite);
+   const [isFavorite, setIsFavorite] = useState(false);
 
-    // useEffect(() => {
-    //     const socket = io('http://localhost:4000');
-    //     // Listen for favorite updates
-    //     socket.on('favoriteUpdate', (data) => {
-    //         if (data.recipeId === selectFood._id) {
-    //             setFavoritesCount(data.favoriteCount);
-    //         }
-    //     });
+    useEffect(() => {
+        const socket = io('http://localhost:4000');
+        // Listen for favorite updates
+        socket.on('favoriteUpdate', (data) => {
+            if (data.recipeId === selectFood._id) {
+                setFavoritesCount(data.favoriteCount);
+                setIsFavorite(!isFavorite);
+            }
+        });
 
-    //     // Clean up on component unmount
-    //     return () => {
-    //         socket.off('favoriteUpdate');
-    //     };
-    // }, [selectFood._id]);
+        // Clean up on component unmount
+        return () => {
+            socket.off('favoriteUpdate');
+        };
+    }, [selectFood._id]);
 
     const handleFavorite = async () => {
         const authToken = localStorage.getItem('authToken');
@@ -40,7 +41,7 @@ const ExploreCardDetail = ({ selectFood, isModalOpen, handleClose }) => {
         try {
             await api.post('/users/favorite', {
                 userId,
-                recipeId: selectFood.generatedId
+                recipeId: selectFood._id
             }, {
                 headers: {
                     'auth-token': authToken
@@ -48,7 +49,7 @@ const ExploreCardDetail = ({ selectFood, isModalOpen, handleClose }) => {
             });
 
             // Toggle the favorite state locally
-       //     setIsFavorite(!isFavorite);
+        //  setIsFavorite(!isFavorite);
         } catch (error) {
             console.error('Error favoriting recipe:', error);
         }
@@ -61,7 +62,7 @@ const ExploreCardDetail = ({ selectFood, isModalOpen, handleClose }) => {
                 <ModalContent className="modal-content">
                     <ModalHeader className="modal-header bg-blue-400">
                     <Heading size='sm'>{ selectFood.name}</Heading>
-                    <Text>shared by: Test user</Text>
+                    <Text>{"shared from:" + selectFood.userEmail}</Text>
 
                     </ModalHeader>
                     <ModalCloseButton />
@@ -91,14 +92,11 @@ const ExploreCardDetail = ({ selectFood, isModalOpen, handleClose }) => {
 
                     <ModalFooter>
                         <Text mr={3}>Favorites: {favoritesCount}</Text>
-                        <Button flex='1' variant='ghost' leftIcon={<BiLike />}>
-                            Like
-                        </Button>
                         <Button colorScheme="orange" mr={3} onClick={handleClose}>
                             Close
                         </Button>
-                        <Button style={{color: 'white', backgroundColor: "rgb(86, 193, 255)"}} onClick={handleFavorite}>
-                            {selectFood.isFavorite ? 'Unfavorite' : 'Favorite'}
+                        <Button leftIcon={<BiLike />} style={{color: 'white', backgroundColor: "rgb(86, 193, 255)"}} onClick={handleFavorite}>
+                            {isFavorite ? 'Unfavorite' : 'Favorite'}
                         </Button>
                     </ModalFooter>
                 </ModalContent>

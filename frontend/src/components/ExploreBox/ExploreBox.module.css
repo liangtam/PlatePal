@@ -18,6 +18,9 @@
     overflow: hidden;
     background-color: white;
 }
+.Heading {
+    padding: 0;
+}
 .image {
     border-radius: 10px;
     width: 250px;
