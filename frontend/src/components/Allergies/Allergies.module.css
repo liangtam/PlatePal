@@ -1,0 +1,19 @@
+.container {
+    background-color: white;
+    border-radius: 10px;
+    padding: var(--spacing-3);
+    height: auto;
+    width: 100%;
+    max-height: 320px;
+}
+
+.btn {
+    transition: background-color 0.3s ease;
+}
+.btn:disabled {
+    display: none;
+}
+
+.btn:hover {
+    background-color: rgb(255, 207, 152);
+}
