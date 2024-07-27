@@ -184,10 +184,10 @@ const handleDeleteRecipe = async (req, res) => {
 const handleUpdateRecipe = async (req, res) => {
   try {
     const { id } = req.params;
-
-    const updatedRecipe = await Recipe.findOneAndUpdate(id, req.body, {
+    const updatedRecipe = await Recipe.findOneAndUpdate({_id: id}, req.body, {
       new: true,
       runValidators: true,
+      upsert: true
     });
 
     if (!updatedRecipe) {
@@ -217,6 +217,23 @@ const handleGetAllRecipes = async (req, res) => {
                 }
             },
             {
+              $lookup: {
+                  from: 'users',
+                  localField: 'userId',
+                  foreignField: '_id',
+                  as: 'userDetails'
+              }
+          },
+          {
+            $unwind: '$userDetails'
+        },
+        {
+            $addFields: {
+                userEmail: '$userDetails.email'
+            }
+        },
+
+            {
                 $project: {
                     favorites: 0 // Remove the favorites array from the output
                 }
@@ -229,11 +246,61 @@ const handleGetAllRecipes = async (req, res) => {
     }
 };
 
+
+const handleGetRecipesToPublic = async (req, res) => {
+  try {
+      const recipes = await Recipe.aggregate([
+          {
+              $match: { shareToPublic: true }
+          },
+          {
+              $lookup: {
+                  from: 'favorites',
+                  localField: '_id',
+                  foreignField: 'recipeId',
+                  as: 'favorites'
+              }
+          },
+          {
+              $addFields: {
+                  favoriteCount: { $size: "$favorites" }
+              }
+          },
+          {
+              $lookup: {
+                  from: 'users',
+                  localField: 'userId',
+                  foreignField: '_id',
+                  as: 'userDetails'
+              }
+          },
+          {
+              $unwind: '$userDetails'
+          },
+          {
+              $addFields: {
+                  userEmail: '$userDetails.email'
+              }
+          },
+          {
+              $project: {
+                  favorites: 0 // Remove the favorites array from the output
+              }
+          }
+      ]);
+      res.json(recipes);
+  } catch (error) {
+      console.error('Error fetching recipes:', error);
+      res.status(500).json({ message: 'Error fetching recipes', error: error.message });
+  }
+};
+
 module.exports = {
   handleGenerateRecipes,
   handleGetRecipe,
   handleCreateRecipe,
   handleDeleteRecipe,
   handleUpdateRecipe,
-  handleGetAllRecipes
+  handleGetAllRecipes,
+  handleGetRecipesToPublic
 };
