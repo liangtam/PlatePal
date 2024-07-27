@@ -8,6 +8,7 @@ const Favorite = require('../models/favoriteSchema');
 const mongoose = require('mongoose');
 
 const handleGetUser = async (req, res) => {
+    console.log("heree")
     const {id} = req.params;
     if (!mongoose.isValidObjectId(id)) {
         return res.status(400).json({error: 'Bad request. Invalid id.'});

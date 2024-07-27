@@ -12,7 +12,7 @@ router.post('/passwordReset', handlePasswordReset);
 router.get('/recipes/:id', handleGetRecipesFromUser);
 router.get('/favorites/:id', authMiddleware, handleGetFavoritesFromUser);
 router.post('/favorite', authMiddleware, handleFavoriteRecipe);
-router.put('/users/:id', handleUpdateUser);
-router.get('/users/:id', handleGetUser);
+router.patch('/:id', handleUpdateUser);
+router.get('/:id', handleGetUser);
 
 module.exports = router;
