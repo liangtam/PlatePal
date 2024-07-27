@@ -26,7 +26,13 @@ const recipeSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
+    },
+    shareToPublic: {
+        type: Boolean,
+        required: true,
+        default: false
     }
+    
 }, {timestamps: true});
 
 const Recipe = mongoose.model('Recipe', recipeSchema);

@@ -52,6 +52,17 @@
     transition: background-color 0.3s ease;
 }
 
+
+.shareBtn {
+    color: white;
+    background-color: rgb(56, 146, 216);
+    border: none;
+    border-radius: 5px;
+    padding: var(--spacing-2);
+    background-color: var(--blue-400);
+    transition: background-color 0.3s ease;
+}
+
 .editBtn:hover {
     background-color: var(--blue-500);
     cursor: pointer;
