@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Modal, ModalOverlay, Heading, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Text, Box, Image, Checkbox, Stack } from '@chakra-ui/react';
 import '../RecipeDetail/RecipeDetail.css';
+import { BiLike, BiShare } from "react-icons/bi";
 import api from "../../api";
 import io from 'socket.io-client';
 
@@ -90,6 +91,9 @@ const ExploreCardDetail = ({ selectFood, isModalOpen, handleClose }) => {
 
                     <ModalFooter>
                         <Text mr={3}>Favorites: {favoritesCount}</Text>
+                        <Button flex='1' variant='ghost' leftIcon={<BiLike />}>
+                            Like
+                        </Button>
                         <Button colorScheme="orange" mr={3} onClick={handleClose}>
                             Close
                         </Button>

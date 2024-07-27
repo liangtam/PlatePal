@@ -235,5 +235,5 @@ module.exports = {
   handleCreateRecipe,
   handleDeleteRecipe,
   handleUpdateRecipe,
-    handleGetAllRecipes
+  handleGetAllRecipes
 };

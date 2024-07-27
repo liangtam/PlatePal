@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Box, ChakraProvider, Flex, Text, Button, Home, CardFooter, CardBody, IconButton, Avatar, Heading, Card, CardHeader, Image } from "@chakra-ui/react";
+import { Box, ChakraProvider, Heading, Flex, Text, Button, Home, CardFooter, CardBody, IconButton, Avatar, Card, CardHeader, Image } from "@chakra-ui/react";
 import { BiLike, BiShare} from "react-icons/bi";
 
 import { RecipeDetail, RecipeSnippet, SearchBar, ExploreBox, ExploreCardDetail } from "../../components";
@@ -16,14 +16,17 @@ import { setUserRecipes } from "../../redux/users/userSlice";
 import api from "../../api";
 import './Explore.css';
 import { IngredientsContext } from "../../components/context/IngredientsContext";
+import whiteLogo from "../../assets/455-platepal-logo-white.png";
 
 const Explore = () => {
     // test food data
     const foodData = [dummyRecipe1, dummyRecipe2, dummyRecipe3, dummyRecipe4];
     //const dispatch = useDispatch();
-    const recipes = foodData;
-    //const [recipes, setRecipes] = useState(foodData);
+    //const recipes = foodData;
+    const [fetchingData, setFetchingData] = useState(false);
+    const [recipes, setRecipes] = useState(foodData);
     const [showCardDetail, setShowCardDetail] = useState(false);
+
     const [selectedFood, setSelectedFood] = useState(null);
     const user = {name: "TestUser"};
     //const [user, setUser] = useState({name: "TestUser"});
@@ -53,6 +56,27 @@ const Explore = () => {
     //     }
     //   };
 
+    const fetchUserRecipes = async () => {
+        try {
+          const response = await api.get('recipes/all');
+          if (response.status >= 200 && response.status < 300) {
+            console.log('Request was successful:', response.data);
+            setRecipes(response.data);
+          } else {
+              alert("An error occurred")
+          }
+        } catch (err) {
+          alert("Could not load user recipes.")
+        }
+      }
+
+
+      useEffect(() => {
+        fetchUserRecipes();
+      }, [fetchingData]);
+
+
+
     console.log(recipes);
     console.log(selectedFood);
 
@@ -60,13 +84,22 @@ const Explore = () => {
     return (
         <div className="bg-radial">
             <ChakraProvider>
+            
+               
+                <Heading>
+                    <Box>
+                    <Image className="image" src={whiteLogo}></Image>
+                <Text color="white">Exploring Other users' Recipes...</Text>
+                </Box>
+                </Heading>
+                
             <div className="cards">
             { recipes && recipes.map((recipe, index) => (
                // console.log(recipe);
                 <ExploreBox
                 key={index}
                 recipe={recipe}
-                user={user}
+                user={recipe}
                 onClick={() => handleCardClick(recipe)}
                 //onClick=
                // handleLike={}

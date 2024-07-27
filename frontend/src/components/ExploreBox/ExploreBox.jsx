@@ -42,7 +42,7 @@ const ExploreBox = ({ recipe, user, onClick, handleLike }) => {
 
                                 <Box>
                                     
-                                    <Heading size='sm'>{user.name}</Heading>
+                                    <Heading size='sm'>{recipe.user}</Heading>
                     
                                 </Box>
                             </Flex>

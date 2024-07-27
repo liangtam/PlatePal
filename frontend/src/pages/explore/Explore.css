@@ -5,5 +5,14 @@
     position: relative;
     flex-direction: row;
     flex-wrap: wrap;
-    height: 800px;
+    min-height: 800px;
+    padding: 32px;
+
+}
+
+.image{
+    width:100px;
+    height: 100px;
+   margin: auto;
+
 }
