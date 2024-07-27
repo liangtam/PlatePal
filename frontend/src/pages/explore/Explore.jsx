@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Box, ChakraProvider, Flex, Text, Button, Home, CardFooter, CardBody, IconButton, Avatar, Heading, Card, CardHeader, Image } from "@chakra-ui/react";
 import { BiLike, BiShare} from "react-icons/bi";
 
-import { RecipeDetail, RecipeSnippet, SearchBar, ExploreBox } from "../../components";
+import { RecipeDetail, RecipeSnippet, SearchBar, ExploreBox, ExploreCardDetail } from "../../components";
 import {
   dummyRecipe1,
   dummyRecipe2,
@@ -23,8 +23,15 @@ const Explore = () => {
     //const dispatch = useDispatch();
     const recipes = foodData;
     //const [recipes, setRecipes] = useState(foodData);
+    const [showCardDetail, setShowCardDetail] = useState(false);
+    const [selectedFood, setSelectedFood] = useState(null);
     const user = {name: "TestUser"};
     //const [user, setUser] = useState({name: "TestUser"});
+
+    const handleCardClick = (food) => {
+        setSelectedFood(food);
+        setShowCardDetail(true);
+      };
 
 
     //TODO: call api calls to get recipes
@@ -47,16 +54,20 @@ const Explore = () => {
     //   };
 
     console.log(recipes);
+    console.log(selectedFood);
 
 
     return (
         <div className="bg-radial">
+            <ChakraProvider>
+            <div className="cards">
             { recipes && recipes.map((recipe, index) => (
                // console.log(recipe);
                 <ExploreBox
                 key={index}
                 recipe={recipe}
                 user={user}
+                onClick={() => handleCardClick(recipe)}
                 //onClick=
                // handleLike={}
                 >
@@ -65,6 +76,11 @@ const Explore = () => {
             ))
 
             }
+            </div>
+            {showCardDetail && (
+                <ExploreCardDetail selectFood={selectedFood} isModalOpen={showCardDetail} handleClose={()=>setShowCardDetail(false)}></ExploreCardDetail>
+            )}
+            </ChakraProvider>
          
         </div>
     );

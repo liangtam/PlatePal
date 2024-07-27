@@ -1,12 +1,25 @@
 
 .ExploreCard {
-    width: 300px;
-    height: 500px;
+    /* width: 400px !important;
+    height: 500px; */
     padding: 8px;
-    display: flex;
-    flex-direction: column;
     border-radius: 10px;
     padding: var(--spacing-4);
-    transition: transform 0.3s ease;
     justify-content: space-between;
+
+    width: 300px;
+    height: 500px;
+    margin: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: white;
+}
+.image {
+    border-radius: 10px;
+    width: 250px;
+    height: 250px;
 }
