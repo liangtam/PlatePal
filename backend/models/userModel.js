@@ -12,6 +12,14 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    allergies: {
+        type: Array,
+        required: true
+    },
+    dislikedRecipes: {
+        type: Array,
+        required: true
+    },
     recipes: {
         type: [Schema.Types.ObjectId],
         ref: 'Recipe',

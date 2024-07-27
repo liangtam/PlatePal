@@ -8,7 +8,7 @@
 }
 
 .dialog-text {
-    background-color: #ed996b;
+    background-color: #ff9d68;
     /* border: 2px solid #e0e0e0; Light border */
     border-radius: 10px; /* Rounded corners */
     padding: 20px;
@@ -33,6 +33,10 @@
     margin-top: 40px;
 }
 
+.warningInfo {
+    color: white;
+    background-color: #ff9d68;
+}
 @keyframes jump {
     0%, 20%, 50%, 80%, 100% {
         transform: translateY(0);

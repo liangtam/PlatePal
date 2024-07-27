@@ -29,12 +29,12 @@ const UserProfile = () => {
   }, [fetchingData]);
 
   return (
-      <div className={`${styles.container} flex-col align-items-center padT-5 h-100`}>
+      <div className={`${styles.container} flex-col align-items-center padT-5 h-100 bg-radial`}>
         <div className="flex-row gap-6 h-100" style={{ width: "80%" }}>
           {user && user.recipes && <UserInfo user={user} fetchingData={fetchingData} setFetchingData={setFetchingData} recipes={user.recipes} favouriteRecipes={[]}/>}
           <div style={{overflow: 'auto', maxHeight: 'fit-content', height: '100%'}}>
-          <div className="flex-col gap-3 align-items-start padL-5" style={{borderLeft: '1px solid rgb(214, 214, 214)'}}>
-            <h1 className="font-size-7"> Saved recipes </h1>
+          <div className="flex-col gap-3 align-items-start padL-5" style={{borderLeft: '1px solid white'}}>
+            <h1 className="font-size-7 font-weight-700" style={{color: "#b86c1c"}}> Saved recipes </h1>
           <div
             className={`${styles.recipes} flex-row gap-5 align-items-center padY-5`}
           >

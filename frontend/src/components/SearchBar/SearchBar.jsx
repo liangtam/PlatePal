@@ -56,7 +56,7 @@ function SearchBar({handleGenerateRecipe, isGenerating}) {
                                 onClick={handleGenerateRecipe}
                                 className="generate-button"
                             >
-                                Getting Your Recipes
+                                Get Your Recipes
                             </Button>
                         )}
                     </Box>

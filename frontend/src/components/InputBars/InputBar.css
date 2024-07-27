@@ -1,0 +1,82 @@
+body {
+    background-color: #f5f5f5;
+    /* Light grey background for a clean look */
+}
+
+.search-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.search-bar input {
+    width: 100%;
+    max-width: 600px;
+    padding: 10px 20px;
+    border: 2px solid #e0e0e0; /* Light border */
+    border-radius: 25px; /* Rounded corners for a friendly look */
+    font-size: 16px; /* Readable font size */
+    outline: none;
+    transition: all 0.3s ease;
+    background: white;
+    background-color: white; /* Smooth transition for focus state */
+}
+
+.search-bar input:focus {
+    border-color: #ff7043; /* Bright orange color for focus state */
+    box-shadow: 0 0 10px rgba(255, 112, 67, 0.2); /* Subtle shadow */
+}
+
+.addButton {
+    color: white !important;
+    background-color: #ff9d68 !important;
+}
+.addButton:hover {
+    background-color: #eb854e !important;
+}
+
+.allergies {
+    height: 100%;
+    overflow-y: auto;
+    flex-wrap: wrap;
+}
+.inputBar {
+    display: flex;
+}
+.inputBar input {
+    border-radius: 20px;
+}
+
+.tag-container {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.tag {
+    display: flex;
+    align-items: center;
+    background-color: #ff7043 ;
+    color: white ;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 14px;
+    transition: background-color 0.3s ease !important;
+}
+
+.tag:hover {
+    background-color: #ff5722;
+}
+
+.tag-close-button {
+    margin-left: 10px;
+    cursor: pointer;
+    color: black;
+}
+
+.tag-close-button:hover {
+    color: #ffccbc;
+}
