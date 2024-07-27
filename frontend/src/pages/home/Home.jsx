@@ -37,7 +37,7 @@ const Home = () => {
       if (response.status >= 200 && response.status < 300) {
         dispatch(setUserRecipes(response.data.recipes));
         setAllergies(response.data.allergies || []);
-        setDislikedRecipes(response.data.recipes || []);
+        setDislikedRecipes(response.data.dislikedRecipes || []);
       } else {
         console.error(
           "Request was not successful. Status code:",
@@ -109,7 +109,7 @@ const Home = () => {
 
       const response = await api.post("/recipes/", formData, {
         headers: {
-          "Authorization": `Bearer ${localStorage.getItem("authToken")}`,
+          "auth-token": localStorage.getItem("authToken"),
           "Content-Type": "multipart/form-data",
         },
       });
@@ -146,7 +146,7 @@ const Home = () => {
         { allergies },
         {
           headers: {
-            "Authorization": `Bearer ${localStorage.getItem("authToken")}`,
+            "auth-token": localStorage.getItem("authToken"),
             "Content-Type": "application/json",
           },
         }
