@@ -66,6 +66,8 @@ const Home = () => {
       const response = await api.get("/recipes/generate", {
         params: {
           ingredients: ingredients,
+          allergies: allergies,
+          dislikedRecipes: dislikedRecipes
         },
       });
       if (response.status >= 200 && response.status < 300) {

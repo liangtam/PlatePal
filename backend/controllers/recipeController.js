@@ -5,8 +5,11 @@ require("dotenv").config();
 const { v4: uuidv4 } = require('uuid');
 
 const handleGenerateRecipes = async (req, res) => {
-  console.log("Trying to generate recipes with groq", req.query.ingredients);
+  console.log("Trying to generate recipes with groq", req.query);
   let givenIngredients = req.query.ingredients;
+  let allergies = req.query.allergies;
+  let dislikedRecipes = req.query.dislikedRecipes;
+
   if (!Array.isArray(givenIngredients)) {
     givenIngredients = [givenIngredients];
   }
@@ -47,11 +50,26 @@ const handleGenerateRecipes = async (req, res) => {
     };
 
     const recipeSchema = JSON.stringify(schema, null, 4);
+
+    let message = `You are a recipe database that outputs at most 8 different recipes that include all ${givenIngredients} in JSON.`;
+
+    if (allergies && allergies.length > 0) {
+      message += `But, the recipes must NEVER have ingredients that contain any of ${allergies}.`;
+    }
+
+    if (dislikedRecipes && dislikedRecipes.length > 0) {
+      message += `The recipes cannot be any of ${dislikedRecipes}.`;
+    }
+
+
+    message += `\nThe JSON object must use the schema: ${recipeSchema}.`
+
+    console.log(message)
     const chatCompletion = await groq.chat.completions.create({
       messages: [
         {
           role: "system",
-          content: `You are a recipe database that outputs at most 8 different recipes that include all ${givenIngredients} in JSON.\n'The JSON object must use the schema: ${recipeSchema}`,
+          content: message,
         },
 
         {
@@ -60,17 +78,14 @@ const handleGenerateRecipes = async (req, res) => {
         },
       ],
       model: "llama3-8b-8192",
-      temperature: 0.6,
+      temperature: 0.7,
       stream: false,
       response_format: { type: "json_object" },
     });
 
+
     const json = await JSON.parse(chatCompletion.choices[0].message.content);
     const recipes = json.recipes;
-    // console.log(
-    //   "Generated recipes: ",
-    //   recipes
-    // );
 
     if (!recipes) {
       return res.status(400).json({ error: "Could not generate recipes." });

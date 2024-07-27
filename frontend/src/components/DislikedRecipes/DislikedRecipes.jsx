@@ -48,7 +48,7 @@ const DislikedRecipes = ({ handleSave }) => {
           </div>
         )}
         <Flex justify="flex-end" className="marT-3">
-          <button onClick={handleSave} disabled={dislikedRecipes.length === 0} className={`${styles.btn} padY-2 padX-3 radius-5 yellow-400 font-weight-500`}>Save</button>
+          <button onClick={handleSave} className={`${styles.btn} padY-2 padX-3 radius-5 yellow-400 font-weight-500`}>Save</button>
         </Flex>
       </Flex>
     </ChakraProvider>
