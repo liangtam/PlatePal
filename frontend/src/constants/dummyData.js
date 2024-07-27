@@ -11,6 +11,7 @@ export const dummyRecipe1 = {
     "mozzarella cheese",
     "tomato sauce",
   ],
+  userId: "testUser1",
   instructions: ["put pizza in the oven", "Baking for 40 mins"],
 };
 
