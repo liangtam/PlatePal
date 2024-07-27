@@ -29,9 +29,14 @@ const Explore = () => {
                 )
             );
         });
+        socket.on('newRecipe', ({newRecipe}) => {
+            console.log('Received new recipe:', newRecipe);
+            setRecipes((prevRecipes) => [newRecipe, ...prevRecipes]);
+        });
 
         return () => {
-            socket.off('favoriteUpdate');
+            socket.off('favoriteUpdate')
+            socket.off('newRecipe');
         };
     }, [user]);
 
@@ -95,8 +100,12 @@ const Explore = () => {
         }
     };
 
-    if (isLoading) return <div>Loading...</div>;
-    if (error) return <div>{error}</div>;
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+    if (error) {
+        return <div>{error}</div>;
+    }
 
     return (
         <div className="bg-radial">

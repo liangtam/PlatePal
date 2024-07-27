@@ -140,6 +140,10 @@ const handleCreateRecipe = async (req, res) => {
         }
         user.recipes.push(recipe);
         await user.save();
+
+        const io = req.io;
+        io.emit('newRecipe', {newRecipe: recipe});
+
         return res.status(201).json(recipe);
     } catch (err) {
         console.error(`Error on create recipe ${err}`);
