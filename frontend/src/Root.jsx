@@ -1,5 +1,5 @@
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import {Home, LandingPage, UserProfile} from "./pages";
+import {Home, LandingPage, UserProfile, Explore} from "./pages";
 import {useSelector} from "react-redux";
 import {Navbar} from "./components/";
 import {ShowSignInContextProvider} from "./components/context/ShowSignInContext";
@@ -27,6 +27,11 @@ const Root = () => {
                     }
                 />
                 <Route exact path="/users/:userId" element={<UserProfile/>}/>
+                <Route exact path="/explore" element={
+                        <IngredientsContextProvider>
+                            <Explore/>
+                        </IngredientsContextProvider>
+                    }/>
                 <Route exact path="/home" element={
                         <IngredientsContextProvider>
                             <Home/>

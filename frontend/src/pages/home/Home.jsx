@@ -79,16 +79,34 @@ const Home = () => {
 
   const handleRecipeSave = async (e, recipe) => {
     e.stopPropagation();
+    if (!user) {
+      alert("Please log in");
+      return;
+    }
     try {
-      const response = await api.post("/recipes/", {
-        ...recipe,
-        userId: user.id,
-      },
-          {
-            headers: {
-              'auth-token': localStorage.getItem('authToken')
-            }
-          });
+      const formData = new FormData();
+
+      // Append all recipe data
+      Object.keys(recipe).forEach(key => {
+        if (key !== 'image') {
+          formData.append(key, recipe[key]);
+        }
+      });
+
+      formData.append('userId', user.id);
+
+      // Fetch the image and append it to formData
+      const imageResponse = await fetch(recipe.image);
+      const imageBlob = await imageResponse.blob();
+      formData.append('image', imageBlob, 'recipe_image.jpg');
+
+      const response = await api.post("/recipes/", formData, {
+        headers: {
+          'auth-token': localStorage.getItem('authToken'),
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
       if (response.status === 201) {
         dispatch(deleteRecipe(recipe.generatedId));
       } else {
@@ -114,7 +132,9 @@ const Home = () => {
   };
 
   useEffect(() => {
-    fetchUserRecipes();
+    if (user) {
+      fetchUserRecipes(user.id);
+    }
   }, []);
 
   return (

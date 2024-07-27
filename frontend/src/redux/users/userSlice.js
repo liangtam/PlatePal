@@ -1,8 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const getUser = () => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    return {...user, recipes: []} || { id: "", email: "", recipes: [] };
+    try {
+        const userString = localStorage.getItem('user');
+        if (!userString) {
+            return null;
+        }
+        const user = JSON.parse(userString);
+        return { ...user, recipes: Array.isArray(user.recipes) ? user.recipes : [] };
+    } catch (error) {
+        console.error('Error parsing user data:', error);
+        return null;
+    }
 };
 
 export const userSlice = createSlice({
