@@ -225,6 +225,10 @@ const Home = () => {
             )}
           </Flex>
           <Flex direction="column" style={{ width: "30%" }} gap={3} className="padT-4">
+            <div className="warningInfo radius-5 pad-3">
+              Recipes that contain the following allergies or is any one of the disliked recipes will not show up.
+              <b> Warning: Please still double check the ingredients in case of AI error.</b>
+            </div>
             {allergies && <Allergies handleSave={handleSaveAllergies}/>}
             {dislikedRecipes && <DislikedRecipes handleSave={handleSaveDislikedRecipes}/>}
           </Flex>

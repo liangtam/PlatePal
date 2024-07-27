@@ -33,6 +33,10 @@
     margin-top: 40px;
 }
 
+.warningInfo {
+    color: white;
+    background-color: #ed996b;
+}
 @keyframes jump {
     0%, 20%, 50%, 80%, 100% {
         transform: translateY(0);

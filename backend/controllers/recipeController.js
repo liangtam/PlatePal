@@ -10,9 +10,7 @@ const handleGenerateRecipes = async (req, res) => {
   let allergies = req.query.allergies;
   let dislikedRecipes = req.query.dislikedRecipes;
 
-  if (!Array.isArray(givenIngredients)) {
-    givenIngredients = [givenIngredients];
-  }
+
   try {
     const groq = new Groq({ apiKey: `${process.env.GROQ_API_KEY}` });
 
@@ -51,7 +49,13 @@ const handleGenerateRecipes = async (req, res) => {
 
     const recipeSchema = JSON.stringify(schema, null, 4);
 
-    let message = `You are a recipe database that outputs at most 8 different recipes that include all ${givenIngredients} in JSON.`;
+    let message = `You are a recipe database that outputs at most 8 different recipes `;
+    if (givenIngredients && givenIngredients.length > 0) {
+      message += `that include all ${givenIngredients} `;
+    } else {
+      message += `that are healthy.`;
+    }
+    message += "in JSON.";
 
     if (allergies && allergies.length > 0) {
       message += `But, the recipes must NEVER have ingredients that contain any of ${allergies}.`;
@@ -115,7 +119,7 @@ const handleGenerateRecipes = async (req, res) => {
         }
     }))
 
-    console.log("Full recipes: ", fullRecipes);
+    // console.log("Full recipes: ", fullRecipes);
     return res.status(200).json(fullRecipes);
   } catch (err) {
     res.status(500).json({ error: "Could not generate recipes." });
