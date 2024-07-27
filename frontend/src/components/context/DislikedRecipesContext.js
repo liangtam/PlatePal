@@ -1,12 +1,12 @@
-import { Children, createContext, useState } from "react";
+import { createContext, useState } from "react";
 
 export const DislikedRecipesContext = createContext();
 
 export const DislikedRecipesContextProvider = ({children}) => {
-    const [allergies, setAllergies] = useState([]);
+    const [dislikedRecipes, setDislikedRecipes] = useState([]);
 
     return (
-        <DislikedRecipesContext.Provider value={{allergies, setAllergies}}>
+        <DislikedRecipesContext.Provider value={{dislikedRecipes, setDislikedRecipes}}>
             {children}
         </DislikedRecipesContext.Provider>
     );
