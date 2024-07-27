@@ -28,11 +28,12 @@ body {
     box-shadow: 0 0 10px rgba(255, 112, 67, 0.2); /* Subtle shadow */
 }
 
-.generate-button {
-    background-color: #ff7043 !important;
+.addButton {
+    color: white !important;
+    background-color: #ff9d68 !important;
 }
-.generate-button:hover {
-    background-color: #ff5722 !important;
+.addButton:hover {
+    background-color: #eb854e !important;
 }
 
 .allergies {

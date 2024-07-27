@@ -42,9 +42,8 @@ function AllergiesInputBar({handleGenerateRecipe, isGenerating}) {
                     />
 
                             <Button
-                                colorScheme="blue"
                                 onClick={handleAddAllergy}
-                                className="generate-button"
+                                className="addButton"
                             >
                                 +
                             </Button>
