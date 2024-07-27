@@ -1,0 +1,36 @@
+.container {
+    background-color: white;
+    border-radius: 10px;
+    padding: var(--spacing-3);
+    height: auto;
+    max-height: 400px;
+}
+
+.dislikedRecipe {
+    border: 1px solid black;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    padding: var(--spacing-2);
+    text-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+.dislikedRecipe:hover {
+    background-color: aliceblue;
+}
+
+.closeButton:hover {
+    color: red
+}
+
+.btn {
+    transition: background-color 0.3s ease;
+}
+.btn:disabled {
+    display: none;
+}
+
+.btn:hover {
+    background-color: rgb(255, 207, 152);
+}

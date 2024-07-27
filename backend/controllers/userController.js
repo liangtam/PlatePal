@@ -5,6 +5,24 @@ const sendEmail = require("./emailService");
 const validator = require('validator');
 const crypto = require('crypto');
 const Favorite = require('../models/favoriteSchema');
+const mongoose = require('mongoose');
+
+const handleGetUser = async (req, res) => {
+    console.log("heree")
+    const {id} = req.params;
+    if (!mongoose.isValidObjectId(id)) {
+        return res.status(400).json({error: 'Bad request. Invalid id.'});
+    }
+    try {
+        const user = await User.findById(id);
+        if (!user) {
+            return res.status(404).json({error: 'User cannot be found.'})
+        }
+        return res.status(200).json(user);
+    } catch (err) {
+        return res.status(500).json({error: "Internal server error."});
+    }
+}
 
 const handleSignup = async (req, res) => {
     const {email, password} = req.body;
@@ -233,5 +251,6 @@ module.exports = {
     handleGetRecipesFromUser,
     handleFavoriteRecipe,
     handleUpdateUser,
-    handleGetFavoritesFromUser
+    handleGetFavoritesFromUser,
+    handleGetUser
 };
