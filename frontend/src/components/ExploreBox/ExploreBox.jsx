@@ -1,6 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Box, ChakraProvider, Flex, Text, Button, Home, CardFooter, CardBody, IconButton, Avatar, Heading, Card, Divider, ButtonGroup, CardHeader, Image, Stack, } from "@chakra-ui/react";
+import { Box, ChakraProvider, Flex, Text, Button, Home, Icon, CardFooter, CardBody, IconButton, Avatar, Heading, Card, Divider, ButtonGroup, CardHeader, Image, Stack, } from "@chakra-ui/react";
 import { BiLike, BiShare } from "react-icons/bi";
+import userAvatar from "../../assets/455-user-avatar.png";
+import heart from "../../assets/heart.png";
+
 import styles from "./ExploreBox.module.css";
 
 const ExploreBox = ({ recipe, user, onClick, handleLike }) => {
@@ -28,16 +31,19 @@ const ExploreBox = ({ recipe, user, onClick, handleLike }) => {
 
 
     return (
-        <div className={`${styles.ExploreCard}`}>
+        <div >
             <ChakraProvider>
-                {recipe && <Card maxW='sm' >
+                {recipe && <Card onClick={()=>onClick()} maxW='sm' className={`${styles.ExploreCard}`}>
                     <CardHeader>
                         <Flex spacing='4'>
                             <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
+                            <Avatar size='sm' src={userAvatar}></Avatar>
 
 
                                 <Box>
+                                    
                                     <Heading size='sm'>{user.name}</Heading>
+                    
                                 </Box>
                             </Flex>
                         </Flex>
@@ -49,6 +55,7 @@ const ExploreBox = ({ recipe, user, onClick, handleLike }) => {
                         </Text>
                     </CardBody>
                     <Image
+                        className={`${styles.image}`}
                         objectFit='cover'
                         src={recipe.image}
                     />
