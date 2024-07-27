@@ -1,9 +1,8 @@
 # Group Moai🗿 - PlatePal
 
-## Describe your topic/interest in about 150-200 words
+## Project Description
 
-PlatePal is an app that helps users create and find recipes based on ingredients they have on hand. PlatePal is for all the university students, aspiring home chefs, “girl dinner” girlies, and just about anyone out there who wants to cook but only has 5 ingredients in their pantry at a time. Based on the ingredients that users input, PlatePal will use AI to generate recipes that can be made using those ingredients. Our app will store data on users and recipes so that users can log in to their accounts and favourite recipes to revisit anytime. Depending on development constraints, we plan to implement either a feature for AI-generated images of dishes or a feature for users to upload their own recipe photos.
-
+Discover easy cooking with PlatePal, an all-in-one recipe app for aspiring home chefs, foodies, and anyone who wants to cook but only has 5 ingredients in their fridge at a time. Simply input your ingredients and let AI do the rest by generating personalized, allergy-friendly recipes. Don’t like a certain recipe? Downvote it. Love a recipe? Save it! Never run out of inspiration again with our community explore page, where you can see your foodie friends’ favourite recipes and share yours too.
 
 ## Project Task Requirements
 
