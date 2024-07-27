@@ -135,14 +135,14 @@ const ProfileRecipeSnippet = ({ fetchingData, setFetchingData, recipe }) => {
                     )}
                     <div className={`${styles.ingredients}`}>
                         <b className="padB-2">Ingredients</b>
-                        {recipe &&
+                        {recipe && recipe.ingredients && Array.isArray(recipe.ingredients) &&
                             recipe.ingredients.map((ingredient, index) => (
                                 <div key={index}>{ingredient}</div>
                             ))}
                     </div>
                     <div className={`${styles.ingredients}`}>
                         <b className="padB-2">Instructions</b>
-                        {recipe &&
+                        {recipe && recipe.instructions && Array.isArray(recipe.instructions) &&
                             recipe.instructions.map((instruction, index) => (
                                 <div key={index}>{instruction}</div>
                             ))}
