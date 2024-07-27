@@ -1,3 +1,4 @@
+![example workflow](https://github.com/ubc-cpsc455-2024S/project-23_moai/actions/workflows/ci.yml/badge.svg)
 # Group Moai🗿 - PlatePal
 
 ## Project Description
