@@ -4,10 +4,12 @@ import api from "../../api";
 import defaultRecipeImage from "../../assets/455-platepal-logo-color.png";
 import { deleteUserRecipe } from "../../redux/users/userSlice";
 import { useDispatch } from "react-redux";
+import EditRecipeModal from "../EditRecipeModal/EditRecipeModal";
 
 const ProfileRecipeSnippet = ({ fetchingData, setFetchingData, recipe }) => {
     const dispatch = useDispatch();
     const [isRecipeShared, setIsRecipeShare] = useState(recipe.shareToPublic ?? false);
+    const [isEditModelShow, setIsEditModelShow] = useState(false);
 
     const setFallback = (e) => {
         e.target.src = defaultRecipeImage;
@@ -39,51 +41,14 @@ const ProfileRecipeSnippet = ({ fetchingData, setFetchingData, recipe }) => {
         }
     };
 
-  //   const handleCreate = async () => {
-  //     const filteredIngredients = ingredients.filter(item => item.trim() !== "");
-  //     const filteredInstructions = instructions.filter(item => item.trim() !== "");
+    const handleModalClose = () => {
+        setIsEditModelShow(false);
+    }
 
-  //     const formData = new FormData();
-  //     formData.append("name", name);
-  //     formData.append("ingredients", filteredIngredients);
-  //     formData.append("instructions", filteredInstructions);
-  //     if (image) {
-  //         formData.append("image", image);
-  //     }
-  //     formData.append("userId", userId);
-  //     formData.append("estimatedTime", Number(estimatedTime));
+    const handleEdit = () => {
+      setIsEditModelShow(true);
 
-  //     try {
-  //         const response = await api.post('/recipes/', formData, {
-  //             headers: {
-  //                 'auth-token': localStorage.getItem('authToken'),
-  //                 'Content-Type': 'multipart/form-data'
-  //             }
-  //         });
-  //         if (response.status === 201) {
-  //             alert('Successfully created');
-  //             setFetchingData(!fetchingData);
-  //             onClose();
-  //         } else {
-  //             alert(response.data.error);
-  //         }
-  //     } catch (error) {
-  //         if (error.response) {
-  //             if (error.response.status >= 400 && error.response.status < 500) {
-  //                 alert(error.response.data.error || 'An error occurred.');
-  //             } else {
-  //                 alert('Internal Server Error');
-  //             }
-  //         } else {
-  //             alert('Network error or server is not reachable.');
-  //         }
-  //     }
-  //     setName("");
-  //     setIngredients([""]);
-  //     setInstructions([""]);
-  //     setImage(null);
-  //     setEstimatedTime("");
-  // };
+    }
 
     const handleShare = async () => {
       
@@ -136,14 +101,14 @@ const ProfileRecipeSnippet = ({ fetchingData, setFetchingData, recipe }) => {
                     <div className={`${styles.ingredients}`}>
                         <b className="padB-2">Ingredients</b>
                         {recipe &&
-                            recipe.ingredients.map((ingredient, index) => (
+                            recipe.ingredients.slice(0, 2).map((ingredient, index) => (
                                 <div key={index}>{ingredient}</div>
                             ))}
                     </div>
                     <div className={`${styles.ingredients}`}>
                         <b className="padB-2">Instructions</b>
                         {recipe &&
-                            recipe.instructions.map((instruction, index) => (
+                            recipe.instructions.slice(0, 2).map((instruction, index) => (
                                 <div key={index}>{instruction}</div>
                             ))}
                     </div>
@@ -153,9 +118,9 @@ const ProfileRecipeSnippet = ({ fetchingData, setFetchingData, recipe }) => {
                 <div className="h-1 bg-base-1000 marY-3 w-100"></div>
 
                 <div className="flex-row w-100 gap-2" style={{ justifyContent: 'flex-end' }}>
-                    {/* <button className={styles.editBtn} disabled>
+                    <button className={styles.editBtn} onClick={handleEdit}>
             Edit
-          </button> */}
+          </button>
                    <button className={styles.shareBtn} onClick={handleShare}>
                         {isRecipeShared ? "Private" : "Share"}
                     </button>
@@ -164,6 +129,9 @@ const ProfileRecipeSnippet = ({ fetchingData, setFetchingData, recipe }) => {
                     </button>
                 </div>
             </div>
+            {isEditModelShow && 
+            <EditRecipeModal recipe={recipe} isModalShow={isEditModelShow} setIsModalShow={setIsEditModelShow} setFetchingData={setFetchingData} fetchingData={fetchingData}/>
+            }
         </div>
     );
 };

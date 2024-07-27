@@ -7,3 +7,4 @@ export { default as Navbar } from "./Navbar/Navbar";
 export {default as UserInfo} from "./UserInfo/UserInfo";
 export {default as ExploreBox} from "./ExploreBox/ExploreBox";
 export {default as ExploreCardDetail} from "./ExploreDetail/ExploreCardDetail";
+export {default as EditRecipeModal} from "./EditRecipeModal/EditRecipeModal";

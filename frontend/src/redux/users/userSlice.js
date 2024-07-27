@@ -45,13 +45,24 @@ export const userSlice = createSlice({
             const idToDelete = action.payload;
             state.value.recipes = state.value.recipes.filter((recipe) => recipe._id !== idToDelete);
         },
+    
         updateUserRecipes: (state, action) => {
             let index = state.value.recipes.findIndex((recipe) => recipe._id === action.payload._id)
             state.value.recipes[index] = action.payload;
+        },
+
+        updateUserRecipe: (state, action) => {
+            const updatedRecipe = action.payload;
+            if (!state.value || !state.value.recipes) {
+                return;
+            }
+            const index = state.value.recipes.findIndex((recipe) => recipe._id === updatedRecipe._id);
+            state.value.recipes[index] = updatedRecipe;
+
         }
     }
 });
 
-export const { login, logout, deleteUserRecipe, addUserRecipe, setUserRecipes, updateUserRecipes } = userSlice.actions;
+export const { login, logout, deleteUserRecipe, addUserRecipe, setUserRecipes, updateUserRecipes, updateUserRecipe } = userSlice.actions;
 
 export default userSlice.reducer;
