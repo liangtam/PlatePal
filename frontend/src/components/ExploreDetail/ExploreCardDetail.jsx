@@ -13,9 +13,12 @@ const ExploreCardDetail = ({ selectFood, isModalOpen, handleClose }) => {
    const [isFavorite, setIsFavorite] = useState(false);
 
     useEffect(() => {
-        const socket = io(process.env.REACT_APP_BACKEND_URL,  {
+        const socket = io(process.env.REACT_APP_BACKEND_URL, {
+            transports: ['websocket', 'polling'],
             secure: true,
-            rejectUnauthorized: false
+            rejectUnauthorized: false,
+            reconnection: true,
+            reconnectionAttempts: 5
         });
         // Listen for favorite updates
         socket.on('favoriteUpdate', (data) => {
