@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: `https://project-23-moai-qux1.onrender.com/api`,
+    baseURL: `${process.env.REACT_APP_BACKEND_URL}/api`,
 });
 
 export default api;
