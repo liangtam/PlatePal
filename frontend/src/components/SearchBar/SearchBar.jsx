@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { ChakraProvider, Box, Input, Tag, TagLabel, TagCloseButton, Wrap, WrapItem, InputGroup, Button, InputLeftElement } from '@chakra-ui/react';
+import { ChakraProvider, Box, Input, Tag, TagLabel, TagCloseButton, Wrap, WrapItem, InputGroup, Button } from '@chakra-ui/react';
 import loadingCook from '../../assets/loadingCook.gif'
 import './SearchBar.css';
 import { IngredientsContext } from '../context/IngredientsContext';

@@ -1,13 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, ChakraProvider, Heading, Text, Image } from "@chakra-ui/react";
 
 import { ExploreBox, ExploreCardDetail } from "../../components";
-import {
-  dummyRecipe1,
-  dummyRecipe2,
-  dummyRecipe3,
-  dummyRecipe4,
-} from "../../constants/dummyData";
 import api from "../../api";
 import './Explore.css';
 import whiteLogo from "../../assets/455-platepal-logo-white.png";
