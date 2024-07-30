@@ -1,15 +1,12 @@
 import React, { useContext, useState } from 'react';
 import { ChakraProvider, Box, Input, Tag, TagLabel, TagCloseButton, Wrap, WrapItem, InputGroup, Button, InputLeftElement } from '@chakra-ui/react';
-import { SearchIcon } from '@chakra-ui/icons';
 import loadingCook from '../../assets/loadingCook.gif'
 import './SearchBar.css';
 import { IngredientsContext } from '../context/IngredientsContext';
 
 function SearchBar({handleGenerateRecipe, isGenerating}) {
     const [inputValue, setInputValue] = useState('');
-    // const [ingredients, setIngredients] = useState([]);
     const {ingredients, setIngredients} = useContext(IngredientsContext);
-    //const [isGenerating, setIsGenerating] = useState(false);
 
     const handleInputChange = (event) => {
         setInputValue(event.target.value);
@@ -25,16 +22,6 @@ function SearchBar({handleGenerateRecipe, isGenerating}) {
     const handleTagClose = (ingredientToRemove) => {
         setIngredients(ingredients.filter(ingredient => ingredient !== ingredientToRemove));
     };
-
-    // const handleGenerateRecipe = () => {
-    //     setIsGenerating(true);
-    //     // Simulate an API call
-    //     setTimeout(() => {
-    //         setIsGenerating(false);
-    //        // alert('Recipe generated!');
-           
-    //     }, 5000);
-    // };
 
     return (
         <ChakraProvider>

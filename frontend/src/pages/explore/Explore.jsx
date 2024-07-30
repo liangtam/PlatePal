@@ -1,35 +1,24 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Box, ChakraProvider, Heading, Flex, Text, Button, Home, CardFooter, CardBody, IconButton, Avatar, Card, CardHeader, Image } from "@chakra-ui/react";
-import { BiLike, BiShare} from "react-icons/bi";
+import { Box, ChakraProvider, Heading, Text, Image } from "@chakra-ui/react";
 
-import { RecipeDetail, RecipeSnippet, SearchBar, ExploreBox, ExploreCardDetail } from "../../components";
+import { ExploreBox, ExploreCardDetail } from "../../components";
 import {
   dummyRecipe1,
   dummyRecipe2,
   dummyRecipe3,
   dummyRecipe4,
 } from "../../constants/dummyData";
-import landingImg from "../../assets/455-landing-bg.png";
-import { useDispatch, useSelector } from "react-redux";
-import { deleteRecipe, setRecipes } from "../../redux/recipes/recipesSlice";
-import { setUserRecipes } from "../../redux/users/userSlice";
 import api from "../../api";
 import './Explore.css';
-import { IngredientsContext } from "../../components/context/IngredientsContext";
 import whiteLogo from "../../assets/455-platepal-logo-white.png";
 
 const Explore = () => {
     // test food data
-    const foodData = [dummyRecipe1, dummyRecipe2, dummyRecipe3, dummyRecipe4];
-    //const dispatch = useDispatch();
-    //const recipes = foodData;
     const [fetchingData, setFetchingData] = useState(false);
     const [recipes, setRecipes] = useState();
     const [showCardDetail, setShowCardDetail] = useState(false);
 
     const [selectedFood, setSelectedFood] = useState(null);
-    const user = {name: "TestUser"};
-    //const [user, setUser] = useState({name: "TestUser"});
 
     const handleCardClick = (food) => {
         setSelectedFood(food);
@@ -84,15 +73,15 @@ const Explore = () => {
     return (
         <div className="bg-radial">
             <ChakraProvider>
-            
-               
+
+
                 <Heading>
                     <Box>
                     <Image className="image" src={whiteLogo}></Image>
                 <Text color="white">Exploring Other users' Recipes...</Text>
                 </Box>
                 </Heading>
-                
+
             <div className="cards">
             { recipes && recipes.map((recipe, index) => (
                // console.log(recipe);
@@ -114,7 +103,7 @@ const Explore = () => {
                 <ExploreCardDetail selectFood={selectedFood} isModalOpen={showCardDetail} handleClose={()=>setShowCardDetail(false)}></ExploreCardDetail>
             )}
             </ChakraProvider>
-         
+
         </div>
     );
 };

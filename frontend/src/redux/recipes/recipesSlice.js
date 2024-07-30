@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { dummyRecipe1, dummyRecipe2 } from "../../constants/dummyData";
 
 export const recipesSlice = createSlice({
   name: "recipes",
