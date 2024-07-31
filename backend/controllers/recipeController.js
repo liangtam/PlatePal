@@ -213,9 +213,11 @@ const handleUpdateRecipe = async (req, res) => {
       return res.status(404).json({ message: "Recipe not found" });
     }
 
-    const io = req.io;
-    io.emit('newRecipe', { newRecipe: updatedRecipe });
-    console.log('updated recipe');
+    if (req.body.shareToPublic) {
+        const io = req.io;
+        io.emit('newRecipe', { newRecipe: updatedRecipe });
+    }
+
     return res.status(200).json(updatedRecipe);
   } catch (err) {
       console.error(`Error on update recipe ${err}`);

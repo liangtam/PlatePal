@@ -5,6 +5,7 @@ import api from "../../api";
 import './Explore.css';
 import whiteLogo from "../../assets/455-platepal-logo-white.png";
 import io from 'socket.io-client';
+import { motion, AnimatePresence } from "framer-motion";
 
 const Explore = () => {
     const [fetchingData, setFetchingData] = useState(false);
@@ -67,17 +68,30 @@ const Explore = () => {
                     </Box>
                 </Heading>
 
-                <div className="cards">
-                    {recipes && recipes.map((recipe, index) => (
-                        <ExploreBox
-                            key={index}
-                            recipe={recipe}
-                            user={recipe}
-                            onClick={() => handleCardClick(recipe)}
-                        >
-                        </ExploreBox>
-                    ))}
-                </div>
+                <motion.div layout className="cards">
+                    <AnimatePresence>
+                        {recipes && recipes.map((recipe, index) => (
+                            <motion.div
+                                key={recipe._id}
+                                layout
+                                initial={{ opacity: 0, y: 50 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, scale: 0.5 }}
+                                transition={{
+                                    opacity: { duration: 0.2 },
+                                    layout: { duration: 0.3 },
+                                    y: { type: "spring", stiffness: 300, damping: 30 }
+                                }}
+                            >
+                                <ExploreBox
+                                    recipe={recipe}
+                                    user={recipe}
+                                    onClick={() => handleCardClick(recipe)}
+                                />
+                            </motion.div>
+                        ))}
+                    </AnimatePresence>
+                </motion.div>
                 {showCardDetail && (
                     <ExploreCardDetail selectFood={selectedFood} isModalOpen={showCardDetail} handleClose={()=>setShowCardDetail(false)}></ExploreCardDetail>
                 )}
