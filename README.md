@@ -8,22 +8,22 @@ Discover easy cooking with PlatePal, an all-in-one recipe app for aspiring home 
 ## Project Task Requirements
 
 Minimal Requirements
- User login feature with username and password
-:white_check_mark: Inputting the ingredients via search and select
-:white_check_mark: Button to generate recipe
-:white_check_mark: Viewing the actual recipe instructions
+- User login feature with username and password :white_check_mark:
+- Inputting the ingredients via search and select :white_check_mark:
+- Button to generate recipe :white_check_mark:
+- Viewing the actual recipe instructions :white_check_mark:
 
 Standard Requirements
-:white_check_mark: Have the AI generate the recipe based on the inputted ingredients
-:white_check_mark: Favouriting recipes and viewing the saved recipes
-:white_check_mark: Modifying saved recipes such as editing the ingredient list or changing an instruction
+- Have the AI generate the recipe based on the inputted ingredients :white_check_mark:
+- Favouriting recipes and viewing the saved recipes :white_check_mark:
+- Modifying saved recipes such as editing the ingredient list or changing an instruction :white_check_mark:
 - Sorting and filtering functionality for generated recipes 
-:white_check_mark: Upvoting/downvoting a recipe? 
-:white_check_mark: Regular image upload for recipe (if AI doesn’t work out)
+- Upvoting/downvoting a recipe? :white_check_mark:
+- Regular image upload for recipe (if AI doesn’t work out) :white_check_mark:
 
-Stretch Requirements (plan to complete at least 1!)
+Stretch Requirements
 - (AI-generated) images of what the dish looks like
-:white_check_mark: Create a “Pinterest”-like dashboard for sharing among users
+- Create a “Pinterest”-like dashboard for sharing among users :white_check_mark:
 
 
 ## Task Breakdown
