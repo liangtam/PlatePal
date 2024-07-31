@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from "react-redux";
 import { Button, Modal, ModalOverlay, Heading, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Text, Box, Image, Checkbox, Stack, Flex } from '@chakra-ui/react';
+import { BiLike } from "react-icons/bi";
+import { AnimatePresence, motion } from 'framer-motion';
 import '../RecipeDetail/RecipeDetail.css';
-import { BiLike, BiShare } from "react-icons/bi";
 import api from "../../api";
 import io from 'socket.io-client';
 
@@ -11,6 +12,7 @@ const ExploreCardDetail = ({ selectFood, isModalOpen, handleClose }) => {
     const instructions = selectFood.instructions;
 
     const [favoritesCount, setFavoritesCount] = useState(selectFood.favoriteCount || 0);
+    const [previousFavoritesCount, setPreviousFavoritesCount] = useState(selectFood.favoriteCount || 0);
     const [favoriteRecipes, setFavoriteRecipes] = useState([]);
     const [processingFavorite, setProcessingFavorite] = useState(false);
     const user = useSelector((state) => state.user.value);
@@ -26,6 +28,7 @@ const ExploreCardDetail = ({ selectFood, isModalOpen, handleClose }) => {
 
         socket.on('favoriteUpdate', (data) => {
             if (data.recipeId === selectFood._id) {
+                setPreviousFavoritesCount(favoritesCount);
                 setFavoritesCount(data.favoriteCount);
             }
         });
@@ -43,7 +46,7 @@ const ExploreCardDetail = ({ selectFood, isModalOpen, handleClose }) => {
         if (!user) return;
         try {
             const response = await api.get(`/users/favorites/${user.id}`,
-                {headers: {'auth-token': localStorage.getItem('authToken')}});
+                { headers: { 'auth-token': localStorage.getItem('authToken') } });
             setFavoriteRecipes(response.data);
         } catch (error) {
             console.error("Error fetching favorite recipes:", error);
@@ -58,6 +61,7 @@ const ExploreCardDetail = ({ selectFood, isModalOpen, handleClose }) => {
 
         try {
             // Optimistic update
+            setPreviousFavoritesCount(favoritesCount);
             if (isFavorite) {
                 setFavoriteRecipes(prev => prev.filter(id => id !== selectFood._id));
                 setFavoritesCount(prev => prev - 1);
@@ -88,6 +92,7 @@ const ExploreCardDetail = ({ selectFood, isModalOpen, handleClose }) => {
     };
 
     const isFavorite = favoriteRecipes.includes(selectFood._id);
+    const direction = favoritesCount > previousFavoritesCount ? -10 : 10;
 
     return (
         <div>
@@ -126,7 +131,20 @@ const ExploreCardDetail = ({ selectFood, isModalOpen, handleClose }) => {
                     <ModalFooter>
                         <Flex align="center" mr={3}>
                             <Text mr={2}>Favorites:</Text>
-                            {favoritesCount}
+                            <Box width="20px" height="24px" overflow="hidden" position="relative">
+                                <AnimatePresence initial={false}>
+                                    <motion.div
+                                        key={favoritesCount}
+                                        initial={{ opacity: 0, y: direction }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: direction }}
+                                        transition={{ duration: 0.3 }}
+                                        style={{ position: 'absolute', width: '100%' }}
+                                    >
+                                        {favoritesCount}
+                                    </motion.div>
+                                </AnimatePresence>
+                            </Box>
                         </Flex>
                         <Button colorScheme="orange" mr={3} onClick={handleClose}>
                             Close
@@ -134,11 +152,15 @@ const ExploreCardDetail = ({ selectFood, isModalOpen, handleClose }) => {
                         {user && (
                             <Button
                                 leftIcon={<BiLike />}
-                                style={{color: 'white', backgroundColor: "rgb(86, 193, 255)"}}
+                                style={{ color: 'white', backgroundColor: "rgb(86, 193, 255)", width: '110px' }}
                                 onClick={handleFavorite}
                                 isDisabled={processingFavorite}
                             >
-                                {isFavorite ? 'Unfavorite' : 'Favorite'}
+                                {isFavorite ? (
+                                    <span style={{ visibility: isFavorite ? 'visible' : 'hidden' }}>Unfavorite</span>
+                                ) : (
+                                    <span style={{ visibility: isFavorite ? 'hidden' : 'visible' }}>Favorite</span>
+                                )}
                             </Button>
                         )}
                     </ModalFooter>
