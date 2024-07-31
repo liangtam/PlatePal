@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Modal, ModalOverlay, Heading, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Text, Box, Image, Checkbox, Stack } from '@chakra-ui/react';
+import { useSelector } from "react-redux";
+import { Button, Modal, ModalOverlay, Heading, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Text, Box, Image, Checkbox, Stack, Flex } from '@chakra-ui/react';
+import { BiLike } from "react-icons/bi";
+import { AnimatePresence, motion } from 'framer-motion';
 import '../RecipeDetail/RecipeDetail.css';
-import { BiLike, BiShare } from "react-icons/bi";
 import api from "../../api";
 import io from 'socket.io-client';
 
@@ -10,7 +12,10 @@ const ExploreCardDetail = ({ selectFood, isModalOpen, handleClose }) => {
     const instructions = selectFood.instructions;
 
     const [favoritesCount, setFavoritesCount] = useState(selectFood.favoriteCount || 0);
-   const [isFavorite, setIsFavorite] = useState(false);
+    const [previousFavoritesCount, setPreviousFavoritesCount] = useState(selectFood.favoriteCount || 0);
+    const [favoriteRecipes, setFavoriteRecipes] = useState([]);
+    const [processingFavorite, setProcessingFavorite] = useState(false);
+    const user = useSelector((state) => state.user.value);
 
     useEffect(() => {
         const socket = io(process.env.REACT_APP_BACKEND_URL, {
@@ -20,46 +25,74 @@ const ExploreCardDetail = ({ selectFood, isModalOpen, handleClose }) => {
             reconnection: true,
             reconnectionAttempts: 5
         });
-        // Listen for favorite updates
+
         socket.on('favoriteUpdate', (data) => {
             if (data.recipeId === selectFood._id) {
+                setPreviousFavoritesCount(favoritesCount);
                 setFavoritesCount(data.favoriteCount);
-                setIsFavorite(!isFavorite);
             }
         });
 
-        // Clean up on component unmount
+        if (user) {
+            fetchFavoriteRecipes();
+        }
+
         return () => {
             socket.off('favoriteUpdate');
         };
-    }, [selectFood._id]);
+    }, [selectFood._id, user]);
+
+    const fetchFavoriteRecipes = async () => {
+        if (!user) return;
+        try {
+            const response = await api.get(`/users/favorites/${user.id}`,
+                { headers: { 'auth-token': localStorage.getItem('authToken') } });
+            setFavoriteRecipes(response.data);
+        } catch (error) {
+            console.error("Error fetching favorite recipes:", error);
+        }
+    };
 
     const handleFavorite = async () => {
-        const authToken = localStorage.getItem('authToken');
-        const user = JSON.parse(localStorage.getItem('user'));
-        const userId = user ? user.id : null;
+        if (processingFavorite || !user) return;
 
-        if (!userId) {
-            console.error('User not found in localStorage');
-            return;
-        }
+        setProcessingFavorite(true);
+        const isFavorite = favoriteRecipes.includes(selectFood._id);
 
         try {
+            // Optimistic update
+            setPreviousFavoritesCount(favoritesCount);
+            if (isFavorite) {
+                setFavoriteRecipes(prev => prev.filter(id => id !== selectFood._id));
+                setFavoritesCount(prev => prev - 1);
+            } else {
+                setFavoriteRecipes(prev => [...prev, selectFood._id]);
+                setFavoritesCount(prev => prev + 1);
+            }
+
+            // API call
             await api.post('/users/favorite', {
-                userId,
+                userId: user.id,
                 recipeId: selectFood._id
             }, {
                 headers: {
-                    'auth-token': authToken
+                    'auth-token': localStorage.getItem('authToken')
                 }
             });
 
-            // Toggle the favorite state locally
-        //  setIsFavorite(!isFavorite);
+            // The server will emit the update via socket.io, so we don't need to update the state here again
         } catch (error) {
             console.error('Error favoriting recipe:', error);
+            // Revert the optimistic update if the API call fails
+            fetchFavoriteRecipes();
+            setFavoritesCount(selectFood.favoriteCount);
+        } finally {
+            setProcessingFavorite(false);
         }
     };
+
+    const isFavorite = favoriteRecipes.includes(selectFood._id);
+    const direction = favoritesCount > previousFavoritesCount ? -10 : 10;
 
     return (
         <div>
@@ -67,9 +100,8 @@ const ExploreCardDetail = ({ selectFood, isModalOpen, handleClose }) => {
                 <ModalOverlay />
                 <ModalContent className="modal-content">
                     <ModalHeader className="modal-header bg-blue-400">
-                    <Heading size='sm'>{ selectFood.name}</Heading>
-                    <Text>{"shared from:" + selectFood.userEmail}</Text>
-
+                        <Heading size='sm'>{selectFood.name}</Heading>
+                        <Text>{"shared from:" + selectFood.userEmail}</Text>
                     </ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
@@ -97,13 +129,40 @@ const ExploreCardDetail = ({ selectFood, isModalOpen, handleClose }) => {
                     </ModalBody>
 
                     <ModalFooter>
-                        <Text mr={3}>Favorites: {favoritesCount}</Text>
+                        <Flex align="center" mr={3}>
+                            <Text mr={2}>Favorites:</Text>
+                            <Box width="20px" height="24px" overflow="hidden" position="relative">
+                                <AnimatePresence initial={false}>
+                                    <motion.div
+                                        key={favoritesCount}
+                                        initial={{ opacity: 0, y: direction }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: direction }}
+                                        transition={{ duration: 0.3 }}
+                                        style={{ position: 'absolute', width: '100%' }}
+                                    >
+                                        {favoritesCount}
+                                    </motion.div>
+                                </AnimatePresence>
+                            </Box>
+                        </Flex>
                         <Button colorScheme="orange" mr={3} onClick={handleClose}>
                             Close
                         </Button>
-                        <Button leftIcon={<BiLike />} style={{color: 'white', backgroundColor: "rgb(86, 193, 255)"}} onClick={handleFavorite}>
-                            {isFavorite ? 'Unfavorite' : 'Favorite'}
-                        </Button>
+                        {user && (
+                            <Button
+                                leftIcon={<BiLike />}
+                                style={{ color: 'white', backgroundColor: "rgb(86, 193, 255)", width: '110px' }}
+                                onClick={handleFavorite}
+                                isDisabled={processingFavorite}
+                            >
+                                {isFavorite ? (
+                                    <span style={{ visibility: isFavorite ? 'visible' : 'hidden' }}>Unfavorite</span>
+                                ) : (
+                                    <span style={{ visibility: isFavorite ? 'hidden' : 'visible' }}>Favorite</span>
+                                )}
+                            </Button>
+                        )}
                     </ModalFooter>
                 </ModalContent>
             </Modal>
