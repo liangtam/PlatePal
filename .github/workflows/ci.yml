@@ -1,5 +1,4 @@
 name: CI/CD Pipeline
-
 on:
   pull_request:
     branches:
@@ -7,20 +6,16 @@ on:
   push:
     branches:
       - main
-
 jobs:
   test:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '20.15.1'
-
       - name: Cache node_modules
         uses: actions/cache@v3
         with:
@@ -28,33 +23,32 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-
       - name: Install dependencies
         run: npm install
         if: steps.cache.outputs.cache-hit != 'true'
-
   deploy:
     runs-on: ubuntu-latest
     needs: [test]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-
     steps:
       - name: Deploy Backend to Render
         run: |
           curl -X POST https://api.render.com/deploy/srv-cqiin4ij1k6c739fla40?key=tFADm61Ytm4
-
       - name: Deploy Frontend to Render
         run: |
           curl -X POST https://api.render.com/deploy/srv-cqiil50gph6c738q6vbg?key=90Fol7_z-Wc
-
   notify:
     runs-on: ubuntu-latest
     needs: [test, deploy]
-
     steps:
       - name: Send Discord notification
         run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            CONTENT="@everyone New Pull Request: ${{ github.event.pull_request.html_url }}\nThe build for the workflow run ${{ github.run_id }} has completed with status: ${{ job.status }}. Repository: ${{ github.repository }}, Commit: ${{ github.sha }}, Author: ${{ github.actor }}, Event: ${{ github.event_name }}, Branch: ${{ github.ref }}"
+          else
+            CONTENT="The build and deployment for the workflow run ${{ github.run_id }} has completed with status: ${{ job.status }}. Repository: ${{ github.repository }}, Commit: ${{ github.sha }}, Author: ${{ github.actor }}, Event: ${{ github.event_name }}, Branch: ${{ github.ref }}"
+          fi
           curl -H "Content-Type: application/json" \
                -X POST \
-               -d "{\"content\": \"The build and deployment for the workflow run ${{ github.run_id }} has completed with status: ${{ job.status }}. Repository: ${{ github.repository }}, Commit: ${{ github.sha }}, Author: ${{ github.actor }}, Event: ${{ github.event_name }}, Branch: ${{ github.ref }}\"}" \
+               -d "{\"content\": \"$CONTENT\"}" \
                ${{ secrets.DISCORD_WEBHOOK_URL }}
