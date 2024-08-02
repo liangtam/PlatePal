@@ -7,7 +7,7 @@ import '../RecipeDetail/RecipeDetail.css';
 import api from "../../api";
 import io from 'socket.io-client';
 
-const ExploreCardDetail = ({ selectFood, isModalOpen, handleClose }) => {
+const ExploreCardDetail = ({ selectFood, isModalOpen, handleClose, shouldFavorite }) => {
     const ingredients = selectFood.ingredients;
     const instructions = selectFood.instructions;
 
@@ -90,6 +90,12 @@ const ExploreCardDetail = ({ selectFood, isModalOpen, handleClose }) => {
             setProcessingFavorite(false);
         }
     };
+
+    useEffect(() => {
+        if (shouldFavorite && !isFavorite) {
+            handleFavorite();
+        }
+    }, [shouldFavorite]);
 
     const isFavorite = favoriteRecipes.includes(selectFood._id);
     const direction = favoritesCount > previousFavoritesCount ? -10 : 10;

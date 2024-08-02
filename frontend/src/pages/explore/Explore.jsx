@@ -12,10 +12,12 @@ const Explore = () => {
     const [recipes, setRecipes] = useState([]);
     const [showCardDetail, setShowCardDetail] = useState(false);
     const [selectedFood, setSelectedFood] = useState(null);
+    const [shouldFavorite, setShouldFavorite] = useState(false);
 
-    const handleCardClick = (food) => {
+    const handleCardClick = (food, favorite = false) => {
         setSelectedFood(food);
         setShowCardDetail(true);
+        setShouldFavorite(favorite);
     };
 
     const fetchUserRecipes = async () => {
@@ -43,34 +45,47 @@ const Explore = () => {
             reconnectionAttempts: 5
         });
 
-        // Set up socket listener for new recipes
         socket.on('newRecipe', ({newRecipe}) => {
             console.log('Received new recipe:', newRecipe);
             setRecipes((prevRecipes) => [newRecipe, ...prevRecipes]);
         });
 
-        // Clean up socket listener on component unmount
+        socket.on('favoriteUpdate', ({ recipeId, favoriteCount }) => {
+            console.log(`Received update for recipe ${recipeId}: new count ${favoriteCount}`);
+            setRecipes((prevRecipes) =>
+                prevRecipes.map((recipe) =>
+                    recipe._id === recipeId ? { ...recipe, favoriteCount } : recipe
+                )
+            );
+        });
+
         return () => {
             socket.off('newRecipe');
+            socket.off('favoriteUpdate');
         };
     }, [fetchingData]);
 
-    console.log(recipes);
-    console.log(selectedFood);
+    const handleFavoriteUpdate = (recipeId, newCount) => {
+        setRecipes((prevRecipes) =>
+            prevRecipes.map((recipe) =>
+                recipe._id === recipeId ? { ...recipe, favoriteCount: newCount } : recipe
+            )
+        );
+    };
 
     return (
         <div className="bg-radial">
             <ChakraProvider>
                 <Heading>
                     <Box>
-                        <Image className="image" src={whiteLogo}></Image>
+                        <Image className="image" src={whiteLogo} alt="PlatePal Logo" />
                         <Text color="white">Exploring Other users' Recipes...</Text>
                     </Box>
                 </Heading>
 
                 <motion.div layout className="cards">
                     <AnimatePresence>
-                        {recipes && recipes.map((recipe, index) => (
+                        {recipes && recipes.map((recipe) => (
                             <motion.div
                                 key={recipe._id}
                                 layout
@@ -85,15 +100,25 @@ const Explore = () => {
                             >
                                 <ExploreBox
                                     recipe={recipe}
-                                    user={recipe}
                                     onClick={() => handleCardClick(recipe)}
+                                    onLike={() => handleCardClick(recipe, true)}
+                                    favoriteCount={recipe.favoriteCount}
                                 />
                             </motion.div>
                         ))}
                     </AnimatePresence>
                 </motion.div>
                 {showCardDetail && (
-                    <ExploreCardDetail selectFood={selectedFood} isModalOpen={showCardDetail} handleClose={()=>setShowCardDetail(false)}></ExploreCardDetail>
+                    <ExploreCardDetail
+                        selectFood={selectedFood}
+                        isModalOpen={showCardDetail}
+                        handleClose={() => {
+                            setShowCardDetail(false);
+                            setShouldFavorite(false);
+                        }}
+                        onFavoriteUpdate={(newCount) => handleFavoriteUpdate(selectedFood._id, newCount)}
+                        shouldFavorite={shouldFavorite}
+                    />
                 )}
             </ChakraProvider>
         </div>
