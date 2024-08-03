@@ -126,10 +126,10 @@ const handleGenerateRecipes = async (req, res) => {
   }
 };
 
-const handleGetRecipe = (req, res) => {
+const handleGetRecipe = async (req, res) => {
   try {
     const { id } = req.params;
-    const recipe = Recipe.findById(id);
+    const recipe = await Recipe.findById(id);
     if (!recipe) {
       return res.status(404).json({ message: "Recipe not found" });
     }
