@@ -8,6 +8,7 @@ import './SignIn.css';
 import api from "../../api.js";
 import {useDispatch} from "react-redux";
 import {login} from "../../redux/users/userSlice.js";
+import { useNavigate } from 'react-router-dom';
 
 const Window = {
     Login: 'LOGIN',
@@ -17,6 +18,7 @@ const Window = {
 
 const SignIn = (signInProps) => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -37,6 +39,7 @@ const SignIn = (signInProps) => {
                 localStorage.setItem('authToken', response.data.token);
                 dispatch(login(response.data.user));
                 signInProps.onClose();
+                navigate('/home');
             } else {
                 alert(response.data.error);
             }
@@ -68,6 +71,7 @@ const SignIn = (signInProps) => {
                 localStorage.setItem('authToken', response.data.token);
                 dispatch(login(response.data.user));
                 signInProps.onClose();
+                navigate('/home');
             } else {
                 alert(response.data.error);
             }
