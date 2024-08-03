@@ -171,58 +171,64 @@ const handleCreateRecipe = async (req, res) => {
 };
 
 const handleDeleteRecipe = async (req, res) => {
-  try {
-    const { id } = req.params;
+    try {
+        const { id } = req.params;
 
-    const result = await Recipe.findByIdAndDelete(id);
+        const result = await Recipe.findByIdAndDelete(id);
 
-    if (!result) {
-        return res.status(404).json({ message: 'Recipe not found' });
+        if (!result) {
+            return res.status(404).json({ message: 'Recipe not found' });
+        }
+
+        const user = await User.findById(result.userId);
+
+        if (!user) {
+            return res.status(404).json({error: "User not found."});
+        }
+
+        user.recipes = user.recipes.filter(
+            (recipeId) => recipeId.toString() !== id
+        );
+        await user.save();
+
+        const io = req.io;
+        io.emit('recipeRemoved', { recipeId: id });
+
+        return res.status(200).json({ message: "Successfully deleted recipe!" });
+    } catch (error) {
+        console.error(error);
+        return res
+            .status(500)
+            .json({ message: "Server error", error: error.message });
     }
-
-    const user = await User.findById(result.userId);
-
-    if (!user) {
-        return res.status(404).json({error: "User not found."});
-    }
-
-    user.recipes = user.recipes.filter(
-      (recipeId) => recipeId.toString() !== id
-    );
-    await user.save();
-
-    return res.status(200).json({ message: "Successfully deleted recipe!" });
-  } catch (error) {
-    console.error(error);
-    return res
-      .status(500)
-      .json({ message: "Server error", error: error.message });
-  }
 };
 
 const handleUpdateRecipe = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const updatedRecipe = await Recipe.findOneAndUpdate({_id: id}, req.body, {
-      new: true,
-      runValidators: true,
-      upsert: true
-    });
+    try {
+        const { id } = req.params;
+        const updatedRecipe = await Recipe.findOneAndUpdate({_id: id}, req.body, {
+            new: true,
+            runValidators: true,
+            upsert: true
+        });
 
-    if (!updatedRecipe) {
-      return res.status(404).json({ message: "Recipe not found" });
-    }
+        if (!updatedRecipe) {
+            return res.status(404).json({ message: "Recipe not found" });
+        }
 
-    if (req.body.shareToPublic) {
         const io = req.io;
-        io.emit('newRecipe', { newRecipe: updatedRecipe });
-    }
 
-    return res.status(200).json(updatedRecipe);
-  } catch (err) {
-      console.error(`Error on update recipe ${err}`);
-    return res.status(400).json({ message: err.message });
-  }
+        if (req.body.shareToPublic) {
+            io.emit('newRecipe', { newRecipe: updatedRecipe });
+        } else if (req.body.shareToPublic === false) {
+            io.emit('recipeRemoved', { recipeId: id });
+        }
+
+        return res.status(200).json(updatedRecipe);
+    } catch (err) {
+        console.error(`Error on update recipe ${err}`);
+        return res.status(400).json({ message: err.message });
+    }
 };
 
 // claud 3.5 sonnet 16:32 7/26/2024 get the correct favorite count on load

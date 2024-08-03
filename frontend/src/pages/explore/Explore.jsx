@@ -59,6 +59,14 @@ const Explore = () => {
             );
         });
 
+        socket.on('recipeRemoved', ({ recipeId }) => {
+            console.log(`Recipe removed: ${recipeId}`);
+            setRecipes((prevRecipes) => prevRecipes.filter(recipe => recipe._id !== recipeId));
+            if (selectedFood && selectedFood._id === recipeId) {
+                setShowCardDetail(false);
+            }
+        });
+
         return () => {
             socket.off('newRecipe');
             socket.off('favoriteUpdate');
