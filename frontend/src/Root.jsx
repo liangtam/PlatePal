@@ -67,7 +67,8 @@ const Root = () => {
 
 const ConditionalNavbar = () => {
   const location = useLocation();
-  const showNavbar = ["/explore", "/home", "/users/:userId"].includes(location.pathname);
+  // const showNavbar = ["/explore", "/home", "/users/:userId"].includes(location.pathname);
+  const showNavbar = ["/explore", "/home"].some(path => location.pathname.startsWith(path)) || location.pathname.startsWith("/users/");
 
   return showNavbar ? <Navbar /> : null;
 };
