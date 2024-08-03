@@ -106,11 +106,9 @@ const Home = () => {
       const imageResponse = await fetch(recipe.image);
       const imageBlob = await imageResponse.blob();
       formData.append("image", imageBlob, "recipe_image.jpg");
-
       const response = await api.post("/recipes/", formData, {
         headers: {
           "auth-token": localStorage.getItem("authToken"),
-          "Content-Type": "multipart/form-data",
         },
       });
 
