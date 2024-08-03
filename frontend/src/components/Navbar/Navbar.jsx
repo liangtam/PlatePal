@@ -6,6 +6,9 @@ import SignIn from "../SignIn/SignIn";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/users/userSlice";
 import blackLogo from "../../assets/455-platepal-logo-black.png";
+import exploreIcon from "../../assets/explore_flaticon.png";
+import homeIcon from "../../assets/home_flaticon.png";
+import avatar from "../../assets/455-user-avatar.png";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
@@ -30,7 +33,7 @@ const Navbar = () => {
   const handleLogoutClick = (e) => {
     dispatch(logout());
     navigate("/");
-  }
+  };
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -54,7 +57,9 @@ const Navbar = () => {
     >
       <div
         className="flex-row gap-2 padL-5 align-items-center"
-        onClick={user && user.id ? () => navigate("/home") : () => navigate("/")}
+        onClick={
+          user && user.id ? () => navigate("/home") : () => navigate("/")
+        }
         style={{ cursor: "pointer" }}
       >
         <img className={styles.navbarLogo} src={blackLogo} alt="black-logo" />
@@ -79,20 +84,34 @@ const Navbar = () => {
       >
         {user && user.id ? (
           <div
-            className="w-100 flex-row gap-6 align-items-center padR-5"
-            style={{ justifyContent: "flex-end" }}>
-            <Link href="/explore" className="font-size-4 base-1000">
+            className="w-100 flex-row gap-7 align-items-center padR-5"
+            style={{ justifyContent: "flex-end" }}
+          >
+            <Link
+              href="/explore"
+              className="font-size-4 base-1000 flex-row gap-2 align-items-center"
+            >
+              <img
+                src={exploreIcon}
+                style={{ width: "100%", height: "20px" }}
+              />
               Explore
             </Link>
-            <Link href="/home" className="font-size-4 base-1000">
+            <Link
+              href="/home"
+              className="font-size-4 base-1000 flex-row gap-2 align-items-center"
+            >
+              <img src={homeIcon} style={{ width: "100%", height: "20px" }} />
               Home
             </Link>
             <div className="dropdown-container" ref={dropdownRef}>
-              <DefaultButton
-                text={user.email}
-                className="radius-10 font-size-3"
+              <button
+                className={styles.btn}
                 onClick={() => setDropdownVisible(true)}
-              />
+              >
+                <img src={avatar} style={{ width: "100%", height: "25px" }} />
+                {user.email}
+              </button>
               {dropdownVisible && (
                 <ContextualMenu
                   items={[

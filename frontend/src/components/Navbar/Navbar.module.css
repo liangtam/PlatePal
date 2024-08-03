@@ -41,3 +41,22 @@ div.dropdown.show {
 .link:hover {
     background-color: #f0f0f0;
 }
+
+.btn {
+    border-radius: 10px;
+    font-size: var(--font-size-3);
+    border: 1px solid black;
+    padding-left: var(--spacing-3);
+    padding-right: var(--spacing-3);
+    padding-top: var(--spacing-1);
+    padding-bottom: var(--spacing-1);
+    background-color: white;
+    transition: background-color 0.3s ease;
+    display: flex;
+    gap: var(--spacing-2);
+    align-items: center;
+}
+
+.btn:hover {
+    background-color: rgb(245, 245, 245);
+}
