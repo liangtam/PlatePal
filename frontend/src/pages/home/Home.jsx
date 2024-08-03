@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { Box, ChakraProvider, Flex, Text } from "@chakra-ui/react";
 import {
   DislikedRecipes,
@@ -27,9 +27,11 @@ const Home = () => {
   const { ingredients } = useContext(IngredientsContext);
   const [isGenerating, setIsGenerating] = useState(false);
   const { allergies, setAllergies } = useContext(AllergiesContext);
+  const [ defaultIngredients, setDefaultIngredients ] = useState([]);
   const { dislikedRecipes, setDislikedRecipes } = useContext(
     DislikedRecipesContext
   );
+
 
   const fetchUser = async (userId) => {
     try {
@@ -38,6 +40,8 @@ const Home = () => {
         dispatch(setUserRecipes(response.data.recipes));
         setAllergies(response.data.allergies || []);
         setDislikedRecipes(response.data.dislikedRecipes || []);
+        setDefaultIngredients(response.data.defaultIngredients || []);
+        return response;
       } else {
         console.error(
           "Request was not successful. Status code:",
@@ -62,10 +66,11 @@ const Home = () => {
 
   const handleGenerateRecipe = async () => {
     setIsGenerating(true);
+    const ingredientList = ingredients.concat(defaultIngredients);
     try {
       const response = await api.get("/recipes/generate", {
         params: {
-          ingredients: ingredients,
+          ingredients: ingredientList,
           allergies: allergies,
           dislikedRecipes: dislikedRecipes
         },
@@ -96,10 +101,9 @@ const Home = () => {
       // Append all recipe data
       Object.keys(recipe).forEach((key) => {
         if (key !== "image") {
-          formData.append(key, recipe[key]);
+         formData.append(key, recipe[key]);
         }
       });
-
       formData.append("userId", user.id);
 
       // Fetch the image and append it to formData
