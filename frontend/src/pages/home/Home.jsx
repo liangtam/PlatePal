@@ -17,6 +17,9 @@ import {
 } from "../../components";
 import homeImg from "../../assets/455-home.png";
 import landingImg from "../../assets/455-landing-bg.png";
+import vegIcon from "../../assets/vegan_flaticon.png";
+import lactoseFreeIcon from "../../assets/lactose-free_flaticon.png";
+import spicyIcon from "../../assets/chili-pepper_flaticon.png";
 import "./Home.css";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteRecipe, setRecipes } from "../../redux/recipes/recipesSlice";
@@ -44,8 +47,8 @@ const Home = () => {
   const [preferences, setPreferences] = useState({
     vegetarian: false,
     lactoseFree: false,
-    spicy: false
-  })
+    spicy: false,
+  });
 
   const fetchUser = async (userId) => {
     try {
@@ -305,9 +308,21 @@ const Home = () => {
               )}
             </Flex>
             <div className="home-options">
-              <div className="option">Vegetarian</div>
-              <div className="option">Lactose-free</div>
-              <div className="option">Spicy</div>
+              <div className="option">
+                <img src={vegIcon} style={{ width: "100%", height: "40px" }} />
+                Vegetarian
+              </div>
+              <div className="option">
+                <img
+                  src={lactoseFreeIcon}
+                  style={{ width: "auto", height: "30px" }}
+                />
+                Lactose-free
+              </div>
+              <div className="option">
+                <img src={spicyIcon} style={{ width: "100%", height: "40px" }} />
+                Spicy
+              </div>
             </div>
           </Flex>
           <Flex direction="column" style={{ width: "30%" }} gap={4}>
