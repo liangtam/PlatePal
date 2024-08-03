@@ -71,6 +71,7 @@ const SignIn = (signInProps) => {
                 localStorage.setItem('authToken', response.data.token);
                 dispatch(login(response.data.user));
                 signInProps.onClose();
+                navigate('/home');
             } else {
                 alert(response.data.error);
             }
