@@ -1,13 +1,20 @@
 .container {
     background-color: white;
-    border-radius: 10px;
-    padding: var(--spacing-3);
+    border-radius: 20px;
     height: auto;
     width: 100%;
     max-height: 320px;
 }
 
+.title {
+    background: var(--yellow-500);
+    width: 100%;
+    padding: var(--spacing-3);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
 .btn {
+    background-color:var(--base-100);
     transition: background-color 0.3s ease;
 }
 .btn:disabled {
@@ -15,5 +22,5 @@
 }
 
 .btn:hover {
-    background-color: rgb(255, 207, 152);
+    background-color: rgb(255, 187, 110);
 }

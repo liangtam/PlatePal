@@ -19,9 +19,9 @@ function SearchBar({handleGenerateRecipe, isGenerating}) {
         }
     };
 
-    const handleTagClose = (ingredientToRemove) => {
-        setIngredients(ingredients.filter(ingredient => ingredient !== ingredientToRemove));
-    };
+    // const handleTagClose = (ingredientToRemove) => {
+    //     setIngredients(ingredients.filter(ingredient => ingredient !== ingredientToRemove));
+    // };
 
     return (
         <ChakraProvider>
@@ -42,29 +42,13 @@ function SearchBar({handleGenerateRecipe, isGenerating}) {
                                 colorScheme="orange"
                                 onClick={handleGenerateRecipe}
                                 className="generate-button"
+                                isDisabled={!ingredients || ingredients.length === 0}
                             >
                                 Get Your Recipes
                             </Button>
                         )}
                     </Box>
                 </InputGroup>
-                <Wrap mt={4} className="tag-container">
-                    {ingredients.map((ingredient, index) => (
-                        <WrapItem key={index}>
-                            <Tag
-                                size="lg"
-                                borderRadius="full"
-                                className="tag"
-                            >
-                                <TagLabel>{ingredient}</TagLabel>
-                                <TagCloseButton
-                                    onClick={() => handleTagClose(ingredient)}
-                                    className="tag-close-button"
-                                />
-                            </Tag>
-                        </WrapItem>
-                    ))}
-                </Wrap>
             </Box>
         </ChakraProvider>
     );

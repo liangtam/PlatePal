@@ -1,6 +1,6 @@
 .navbar {
     position: sticky;
-    background-color: #f3f2f1;
+    background-color: var(--base-100);
     width: 100vw;
     height: 10vh;
 }

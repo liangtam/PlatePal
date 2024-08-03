@@ -1,14 +1,21 @@
 .container {
     background-color: white;
-    border-radius: 10px;
-    padding: var(--spacing-3);
+    border-radius: 20px;
     height: auto;
     max-height: 400px;
 }
 
+.title {
+    background: var(--yellow-500);
+    width: 100%;
+    padding: var(--spacing-3);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
 .dislikedRecipe {
-    border: 1px solid black;
-    border-radius: 10px;
+    border: 1px solid rgb(190, 190, 190);
+    border-radius: 20px;
     display: flex;
     justify-content: space-between;
     padding: var(--spacing-2);
@@ -25,6 +32,7 @@
 }
 
 .btn {
+    background-color:var(--base-100);
     transition: background-color 0.3s ease;
 }
 .btn:disabled {

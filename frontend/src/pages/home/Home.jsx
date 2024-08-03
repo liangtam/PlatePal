@@ -1,11 +1,21 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Box, ChakraProvider, Flex, Text } from "@chakra-ui/react";
+import {
+  Box,
+  ChakraProvider,
+  Flex,
+  Wrap,
+  WrapItem,
+  Tag,
+  TagLabel,
+  TagCloseButton,
+} from "@chakra-ui/react";
 import {
   DislikedRecipes,
   RecipeDetail,
   RecipeSnippet,
   SearchBar,
 } from "../../components";
+import homeImg from "../../assets/455-home.png";
 import landingImg from "../../assets/455-landing-bg.png";
 import "./Home.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,12 +34,18 @@ const Home = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedFood, setSelectedFood] = useState(null);
-  const { ingredients } = useContext(IngredientsContext);
+  const { ingredients, setIngredients } = useContext(IngredientsContext);
   const [isGenerating, setIsGenerating] = useState(false);
   const { allergies, setAllergies } = useContext(AllergiesContext);
   const { dislikedRecipes, setDislikedRecipes } = useContext(
     DislikedRecipesContext
   );
+
+  const [preferences, setPreferences] = useState({
+    vegetarian: false,
+    lactoseFree: false,
+    spicy: false
+  })
 
   const fetchUser = async (userId) => {
     try {
@@ -67,7 +83,7 @@ const Home = () => {
         params: {
           ingredients: ingredients,
           allergies: allergies,
-          dislikedRecipes: dislikedRecipes
+          dislikedRecipes: dislikedRecipes,
         },
       });
       if (response.status >= 200 && response.status < 300) {
@@ -156,7 +172,6 @@ const Home = () => {
     }
   };
 
-  
   const handleSaveDislikedRecipes = async (e) => {
     try {
       const response = await api.patch(
@@ -169,10 +184,16 @@ const Home = () => {
           },
         }
       );
-      console.log(response.data)
+      console.log(response.data);
     } catch (err) {
       alert("Error occurred updating disliked recipes: ", err.message);
     }
+  };
+
+  const handleTagClose = (ingredientToRemove) => {
+    setIngredients(
+      ingredients.filter((ingredient) => ingredient !== ingredientToRemove)
+    );
   };
 
   useEffect(() => {
@@ -182,55 +203,126 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="bg-radial flex-col align-items-center">
+    <div
+      className="flex-col align-items-center bg-base-100 padT-4"
+      style={{ height: "100vh" }}
+    >
       <ChakraProvider>
-        <Flex style={{ width: "85%" }} className="pad-3">
-          <Flex direction="column" className="w-100">
-            <SearchBar
-              handleGenerateRecipe={handleGenerateRecipe}
-              isGenerating={isGenerating}
-            />
-            <Flex wrap="wrap" justify="center">
-              {recipeData.length === 0 && (
-                <Box className="dialog-container">
-                  <Text className="dialog-text animated-text">
-                    Let PlatePal help you get a recipe by entering your
-                    available ingredients!
-                  </Text>
-                  <img
-                    src={landingImg}
-                    alt="plate pal"
-                    className="landing-image"
-                  />
-                </Box>
-              )}
-              {recipeData &&
-                recipeData.map((recipe, index) => (
-                  <RecipeSnippet
-                    key={index}
-                    recipe={recipe}
-                    onClick={() => handleCardClick(recipe)}
-                    handleSave={(e) => handleRecipeSave(e, recipe)}
-                    handleDislike={(e) => handleDislike(e, recipe)}
-                    handleClose={handleModalClose}
-                  />
-                ))}
-            </Flex>
-            {selectedFood && (
-              <RecipeDetail
-                selectFood={selectedFood}
-                isModalOpen={isModalOpen}
-                handleClose={handleModalClose}
+        <Flex style={{ width: "85%" }} className="home-container">
+          <Flex direction="column" gap={10}>
+            <Flex
+              direction="column"
+              className="generate-container bg-radial soft-light-shadow"
+              justify={"flex-end"}
+            >
+              <SearchBar
+                handleGenerateRecipe={handleGenerateRecipe}
+                isGenerating={isGenerating}
               />
-            )}
-          </Flex>
-          <Flex direction="column" style={{ width: "30%" }} gap={3} className="padT-4">
-            <div className="warningInfo radius-5 pad-3">
-              Recipes that contain the following allergies or is any one of the disliked recipes will not show up.
-              <b> Warning: Please still double check the ingredients in case of AI error.</b>
+              {recipeData && recipeData.length > 0 && (
+                <Wrap mt={4} className="tag-container">
+                  {ingredients.map((ingredient, index) => (
+                    <WrapItem key={index}>
+                      <Tag size="lg" borderRadius="full" className="tag">
+                        <TagLabel>{ingredient}</TagLabel>
+                        <TagCloseButton
+                          onClick={() => handleTagClose(ingredient)}
+                          className="tag-close-button"
+                        />
+                      </Tag>
+                    </WrapItem>
+                  ))}
+                </Wrap>
+              )}
+              <Flex wrap="wrap" justify="center">
+                {recipeData.length === 0 && (
+                  <Box className="dialog-container">
+                    {!ingredients || ingredients.length === 0 ? (
+                      <img
+                        src={landingImg}
+                        alt="plate pal"
+                        className="landing-image"
+                      />
+                    ) : (
+                      <img
+                        src={homeImg}
+                        alt="plate pal"
+                        className="landing-image"
+                      />
+                    )}
+                    {!ingredients || ingredients.length === 0 ? (
+                      <div className="dialog-text animated-text ">
+                        Let PlatePal help you get a recipe by entering your
+                        available ingredients!
+                      </div>
+                    ) : (
+                      <div className="dialog-text">
+                        <b>
+                          You've entered {ingredients.length} ingredient
+                          {ingredients.length > 1 ? "s" : ""}:
+                        </b>
+                        <Wrap mt={4} className="tag-container">
+                          {ingredients.map((ingredient, index) => (
+                            <WrapItem key={index}>
+                              <Tag
+                                size="lg"
+                                borderRadius="full"
+                                className="tag"
+                              >
+                                <TagLabel>{ingredient}</TagLabel>
+                                <TagCloseButton
+                                  onClick={() => handleTagClose(ingredient)}
+                                  className="tag-close-button"
+                                />
+                              </Tag>
+                            </WrapItem>
+                          ))}
+                        </Wrap>
+                      </div>
+                    )}
+                  </Box>
+                )}
+              </Flex>
+              <Wrap justify={"center"}>
+                {recipeData &&
+                  recipeData.map((recipe, index) => (
+                    <RecipeSnippet
+                      key={index}
+                      recipe={recipe}
+                      onClick={() => handleCardClick(recipe)}
+                      handleSave={(e) => handleRecipeSave(e, recipe)}
+                      handleDislike={(e) => handleDislike(e, recipe)}
+                      handleClose={handleModalClose}
+                    />
+                  ))}
+              </Wrap>
+              {selectedFood && (
+                <RecipeDetail
+                  selectFood={selectedFood}
+                  isModalOpen={isModalOpen}
+                  handleClose={handleModalClose}
+                />
+              )}
+            </Flex>
+            <div className="home-options">
+              <div className="option">Vegetarian</div>
+              <div className="option">Lactose-free</div>
+              <div className="option">Spicy</div>
             </div>
-            {allergies && <Allergies handleSave={handleSaveAllergies}/>}
-            {dislikedRecipes && <DislikedRecipes handleSave={handleSaveDislikedRecipes}/>}
+          </Flex>
+          <Flex direction="column" style={{ width: "30%" }} gap={4}>
+            <div className="warningInfo pad-3 soft-light-shadow">
+              Recipes that contain the following allergies or is any one of the
+              disliked recipes will not show up. {`\n`}
+              <b>
+                Warning: Please still double check the ingredients in case of AI
+                error.
+              </b>
+            </div>
+            {allergies && <Allergies handleSave={handleSaveAllergies} />}
+            {dislikedRecipes && (
+              <DislikedRecipes handleSave={handleSaveDislikedRecipes} />
+            )}
           </Flex>
         </Flex>
       </ChakraProvider>

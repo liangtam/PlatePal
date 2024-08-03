@@ -39,6 +39,7 @@ function AllergiesInputBar({handleGenerateRecipe, isGenerating}) {
                         onChange={handleInputChange}
                         onKeyDown={handleKeyDown}
                         className="search-input"
+                        style={{background: 'white'}}
                     />
 
                             <Button
@@ -50,11 +51,11 @@ function AllergiesInputBar({handleGenerateRecipe, isGenerating}) {
                        
                 </InputGroup>
                     <div className='flex-row allergies gap-2'>
-                    {allergies.map((allergy, index) => (
+                    {allergies && allergies.length > 0 && allergies.map((allergy, index) => (
                         <WrapItem key={index} >
                             <Tag
                                 size="lg"
-                                className="tag"
+                                className="allergyTag"
                             >
                                 <TagLabel>{allergy}</TagLabel>
                                 <TagCloseButton
@@ -64,6 +65,9 @@ function AllergiesInputBar({handleGenerateRecipe, isGenerating}) {
                             </Tag>
                         </WrapItem>
                     ))}
+                    {!allergies || allergies.length === 0 && (
+                        <div className='w-100'>You have no allergies.</div>
+                    )}
                     </div>
             </Box>
         </ChakraProvider>
