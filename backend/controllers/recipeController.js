@@ -51,7 +51,7 @@ const handleGenerateRecipes = async (req, res) => {
 
     let message = `You are a recipe database that outputs at most 8 different recipes `;
     if (givenIngredients && givenIngredients.length > 0) {
-      message += `that include all ${givenIngredients} `;
+      message += `that only include all ${givenIngredients} `;
     } else {
       message += `that are healthy.`;
     }
