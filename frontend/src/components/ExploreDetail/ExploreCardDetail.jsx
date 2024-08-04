@@ -82,13 +82,13 @@ const ExploreCardDetail = ({ selectFood, isModalOpen, handleClose, shouldFavorit
                 }
             });
             // The server will emit the update via socket.io, so we don't need to update the state here again
+            await onFavoriteToggle();
         } catch (error) {
             console.error('Error favoriting recipe:', error);
             // Revert the optimistic update if the API call fails
             fetchFavoriteRecipes();
             setFavoritesCount(selectFood.favoriteCount);
         } finally {
-            await onFavoriteToggle();
             setProcessingFavorite(false);
         }
     };
