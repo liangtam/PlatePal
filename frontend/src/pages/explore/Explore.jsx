@@ -6,6 +6,7 @@ import './Explore.css';
 import whiteLogo from "../../assets/455-platepal-logo-white.png";
 import io from 'socket.io-client';
 import { motion, AnimatePresence } from "framer-motion";
+import {useSelector} from "react-redux";
 
 const Explore = () => {
     const [fetchingData, setFetchingData] = useState(false);
@@ -13,6 +14,8 @@ const Explore = () => {
     const [showCardDetail, setShowCardDetail] = useState(false);
     const [selectedFood, setSelectedFood] = useState(null);
     const [shouldFavorite, setShouldFavorite] = useState(false);
+    const [favoriteRecipes, setFavoriteRecipes] = useState([]);
+    const user = useSelector((state) => state.user.value);
 
     const handleCardClick = (food, favorite = false) => {
         setSelectedFood(food);
@@ -34,8 +37,22 @@ const Explore = () => {
         }
     }
 
+    const fetchFavoriteRecipes = async () => {
+        if (!user) {
+            return;
+        }
+        try {
+            const response = await api.get(`/users/favorites/${user.id}`,
+                { headers: { 'auth-token': localStorage.getItem('authToken') } });
+            setFavoriteRecipes(response.data);
+        } catch (error) {
+            console.error("Error fetching favorite recipes:", error);
+        }
+    };
+
     useEffect(() => {
         fetchUserRecipes();
+        fetchFavoriteRecipes();
 
         const socket = io(process.env.REACT_APP_BACKEND_URL, {
             transports: ['websocket', 'polling'],
@@ -110,6 +127,7 @@ const Explore = () => {
                                     recipe={recipe}
                                     onClick={() => handleCardClick(recipe)}
                                     onLike={() => handleCardClick(recipe, true)}
+                                    isFavorite={favoriteRecipes.includes(recipe._id)}
                                     favoriteCount={recipe.favoriteCount}
                                 />
                             </motion.div>
@@ -126,6 +144,7 @@ const Explore = () => {
                         }}
                         onFavoriteUpdate={(newCount) => handleFavoriteUpdate(selectedFood._id, newCount)}
                         shouldFavorite={shouldFavorite}
+                        onFavoriteToggle={fetchFavoriteRecipes}
                     />
                 )}
             </ChakraProvider>

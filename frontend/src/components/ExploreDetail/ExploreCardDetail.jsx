@@ -7,7 +7,7 @@ import '../RecipeDetail/RecipeDetail.css';
 import api from "../../api";
 import io from 'socket.io-client';
 
-const ExploreCardDetail = ({ selectFood, isModalOpen, handleClose, shouldFavorite }) => {
+const ExploreCardDetail = ({ selectFood, isModalOpen, handleClose, shouldFavorite, onFavoriteToggle }) => {
     const ingredients = selectFood.ingredients;
     const instructions = selectFood.instructions;
 
@@ -43,7 +43,9 @@ const ExploreCardDetail = ({ selectFood, isModalOpen, handleClose, shouldFavorit
     }, [selectFood._id, user]);
 
     const fetchFavoriteRecipes = async () => {
-        if (!user) return;
+        if (!user) {
+            return;
+        }
         try {
             const response = await api.get(`/users/favorites/${user.id}`,
                 { headers: { 'auth-token': localStorage.getItem('authToken') } });
@@ -63,11 +65,11 @@ const ExploreCardDetail = ({ selectFood, isModalOpen, handleClose, shouldFavorit
             // Optimistic update
             setPreviousFavoritesCount(favoritesCount);
             if (isFavorite) {
-                setFavoriteRecipes(prev => prev.filter(id => id !== selectFood._id));
-                setFavoritesCount(prev => prev - 1);
+                setFavoriteRecipes((prev) => prev.filter((id) => id !== selectFood._id));
+                setFavoritesCount((prev) => prev - 1);
             } else {
-                setFavoriteRecipes(prev => [...prev, selectFood._id]);
-                setFavoritesCount(prev => prev + 1);
+                setFavoriteRecipes((prev) => [...prev, selectFood._id]);
+                setFavoritesCount((prev) => prev + 1);
             }
 
             // API call
@@ -79,7 +81,6 @@ const ExploreCardDetail = ({ selectFood, isModalOpen, handleClose, shouldFavorit
                     'auth-token': localStorage.getItem('authToken')
                 }
             });
-
             // The server will emit the update via socket.io, so we don't need to update the state here again
         } catch (error) {
             console.error('Error favoriting recipe:', error);
@@ -87,6 +88,7 @@ const ExploreCardDetail = ({ selectFood, isModalOpen, handleClose, shouldFavorit
             fetchFavoriteRecipes();
             setFavoritesCount(selectFood.favoriteCount);
         } finally {
+            onFavoriteToggle();
             setProcessingFavorite(false);
         }
     };
