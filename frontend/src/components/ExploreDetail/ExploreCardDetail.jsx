@@ -88,7 +88,7 @@ const ExploreCardDetail = ({ selectFood, isModalOpen, handleClose, shouldFavorit
             fetchFavoriteRecipes();
             setFavoritesCount(selectFood.favoriteCount);
         } finally {
-            onFavoriteToggle();
+            await onFavoriteToggle();
             setProcessingFavorite(false);
         }
     };
