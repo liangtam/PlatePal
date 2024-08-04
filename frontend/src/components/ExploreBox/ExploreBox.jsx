@@ -5,7 +5,7 @@ import userAvatar from "../../assets/455-user-avatar.png";
 
 import styles from "./ExploreBox.module.css";
 
-const ExploreBox = ({ recipe, onClick, onLike }) => {
+const ExploreBox = ({ recipe, onClick, onLike, isFavorite }) => {
     return (
         <Card
             onClick={() => onClick()}
@@ -54,7 +54,7 @@ const ExploreBox = ({ recipe, onClick, onLike }) => {
                         onLike();
                     }}
                 >
-                    Like {recipe.favoriteCount || 0}
+                    {isFavorite ? 'Unlike' : 'Like'} {recipe.favoriteCount || 0}
                 </Button>
             </CardFooter>
         </Card>
