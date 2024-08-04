@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
-import { ChakraProvider, Box, Input, Tag, TagLabel, TagCloseButton, Wrap, WrapItem, InputGroup, Button, InputLeftElement } from '@chakra-ui/react';
-import loadingCook from '../../assets/loadingCook.gif'
-import './InputBar.css';
+import { ChakraProvider, Box, Input, Tag, TagLabel, TagCloseButton, Wrap, WrapItem, InputGroup, Button, InputLeftElement, IconButton } from '@chakra-ui/react';
+import styles from './InputBar.module.css';
+import { AddIcon } from '@chakra-ui/icons';
 import { AllergiesContext } from '../context/AllergiesContext';
 
 function AllergiesInputBar({handleGenerateRecipe, isGenerating}) {
@@ -32,22 +32,17 @@ function AllergiesInputBar({handleGenerateRecipe, isGenerating}) {
     return (
         <ChakraProvider>
             <Box className="w-100">
-                <InputGroup className="inputBar marY-3 gap-2">
+                <InputGroup className={`${styles.inputBar} marY-3 gap-2`}>
                     <Input
                         placeholder="Add allergy"
                         value={inputValue}
                         onChange={handleInputChange}
                         onKeyDown={handleKeyDown}
-                        className="search-input"
+                        className={styles.searchInput}
                         style={{background: 'white'}}
                     />
 
-                            <Button
-                                onClick={handleAddAllergy}
-                                className="addButton"
-                            >
-                                +
-                            </Button>
+                    <IconButton icon={<AddIcon/>} onClick={handleAddAllergy} className={styles.addButton}/>
                        
                 </InputGroup>
                     <div className='flex-row allergies gap-2'>
@@ -60,7 +55,7 @@ function AllergiesInputBar({handleGenerateRecipe, isGenerating}) {
                                 <TagLabel>{allergy}</TagLabel>
                                 <TagCloseButton
                                     onClick={() => handleTagClose(allergy)}
-                                    className="tag-close-button"
+                                    className={styles.tagCloseButtonn}
                                 />
                             </Tag>
                         </WrapItem>

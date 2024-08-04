@@ -1,12 +1,8 @@
 import { ChakraProvider, Box, Flex, Button } from "@chakra-ui/react";
 import styles from "./Allergies.module.css";
-import { useContext } from "react";
-import { AllergiesContext } from "../context/AllergiesContext";
 import AllergiesInputBar from "../InputBars/AllergiesInputBar";
 
 const Allergies = ({ handleSave }) => {
-  const { allergies, setAllergies } = useContext(AllergiesContext);
-
   return (
     <ChakraProvider>
       <Flex

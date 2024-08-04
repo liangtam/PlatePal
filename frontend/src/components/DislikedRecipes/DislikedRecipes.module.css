@@ -2,11 +2,13 @@
     background-color: white;
     border-radius: 20px;
     height: auto;
-    max-height: 400px;
+    width: 100%;
+    max-height: 320px;
+    border: 1px solid var(--orange-300);
 }
 
 .title {
-    background: var(--yellow-500);
+    border-bottom: 1px solid var(--orange-300);
     width: 100%;
     padding: var(--spacing-3);
     border-top-left-radius: 20px;

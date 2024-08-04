@@ -44,12 +44,6 @@ const Home = () => {
     DislikedRecipesContext
   );
 
-  const [preferences, setPreferences] = useState({
-    vegetarian: false,
-    lactoseFree: false,
-    spicy: false,
-  });
-
   const fetchUser = async (userId) => {
     try {
       const response = await api.get(`/users/${userId}`);
@@ -307,6 +301,7 @@ const Home = () => {
                 />
               )}
             </Flex>
+            <h1 className="font-size-5">Preferences</h1>
             <div className="home-options">
               <div className="option">
                 <img src={vegIcon} style={{ width: "100%", height: "40px" }} />
