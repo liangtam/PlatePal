@@ -144,6 +144,7 @@ const Explore = () => {
                         }}
                         onFavoriteUpdate={(newCount) => handleFavoriteUpdate(selectedFood._id, newCount)}
                         shouldFavorite={shouldFavorite}
+                        onFavoriteToggle={fetchFavoriteRecipes}
                     />
                 )}
             </ChakraProvider>

@@ -53,6 +53,7 @@ const ExploreBox = ({ recipe, onClick, onLike, isFavorite }) => {
                         e.stopPropagation();
                         onLike();
                     }}
+                    style={{width: '110px'}}
                 >
                     {isFavorite ? 'Unlike' : 'Like'} {recipe.favoriteCount || 0}
                 </Button>
