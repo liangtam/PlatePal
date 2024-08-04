@@ -10,6 +10,7 @@ import {
 import styles from "./DislikedRecipes.module.css";
 import { useContext } from "react";
 import { DislikedRecipesContext } from "../context/DislikedRecipesContext";
+import DislikedRecipesInputBar from "../InputBars/DislikedRecipesInputBar";
 
 const DislikedRecipes = ({ handleSave }) => {
   const { dislikedRecipes, setDislikedRecipes } = useContext(
@@ -30,31 +31,44 @@ const DislikedRecipes = ({ handleSave }) => {
         className={`${styles.container} justify-content-between align-items-between soft-light-shadow`}
         direction="column"
       >
-        <b className={styles.title}>Disliked Recipes</b>
-        <div className="flex-col pad-3">
-          {!dislikedRecipes || dislikedRecipes.length === 0 ? (
-            <div>No disliked recipes. You can dislike generated recipes via the "I don't like it" button.</div>
-          ): (
-            <div className="flex-col gap-2">
-            {dislikedRecipes.map((recipeName) => {
-              return (
-                <Tag className={styles.dislikedRecipe} style={{background: "white"}}>
-                  <TagLabel>{recipeName}</TagLabel>
-                  <TagCloseButton
-                    onClick={() => handleRemoveRecipe(recipeName)}
-                    className={styles.closeButton}
-                  />
-                </Tag>
-              );
-            })}
-          </div>
-          )}
-        
-        <Flex justify="flex-end" className="marT-3">
-          <button onClick={handleSave} className={`${styles.btn} padY-2 padX-3 radius-5 yellow-400 font-weight-500`}>Save</button>
-        </Flex>
+        <div className={styles.title}>
+          <b>Disliked Recipes</b>
         </div>
-        
+        <div className="flex-col pad-3">
+          <DislikedRecipesInputBar />
+          {!dislikedRecipes || dislikedRecipes.length === 0 ? (
+            <div>
+              No disliked recipes. You can dislike generated recipes via the "I
+              don't like it" button.
+            </div>
+          ) : (
+            <div className="flex-col gap-2">
+              {dislikedRecipes.map((recipeName) => {
+                return (
+                  <Tag
+                    className={styles.dislikedRecipe}
+                    style={{ background: "white" }}
+                  >
+                    <TagLabel>{recipeName}</TagLabel>
+                    <TagCloseButton
+                      onClick={() => handleRemoveRecipe(recipeName)}
+                      className={styles.closeButton}
+                    />
+                  </Tag>
+                );
+              })}
+            </div>
+          )}
+
+          <Flex justify="flex-end" className="marT-3">
+            <button
+              onClick={handleSave}
+              className={`${styles.btn} padY-2 padX-3 radius-5 yellow-400 font-weight-500`}
+            >
+              Save
+            </button>
+          </Flex>
+        </div>
       </Flex>
     </ChakraProvider>
   );

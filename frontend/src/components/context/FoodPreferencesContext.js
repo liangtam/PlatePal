@@ -1,12 +1,13 @@
-import { createContext } from "react";
+import { createContext, useState } from "react";
 
 export const FoodPreferencesContext = createContext();
 
 export const FoodPreferencesContextProvider = ({ children }) => {
   const [preferences, setPreferences] = useState({
-    vegetarian: false,
-    lactoseFree: false,
-    spicy: false,
+    isVegan: false,
+    isLactoseFree: false,
+    isNotSpicy: false,
+    maxTime: 1
   });
 
   return (

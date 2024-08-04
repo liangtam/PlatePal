@@ -8,6 +8,7 @@ import TermsOfService from "./pages/legal/TermsOfService";
 import PrivacyPolicy from "./pages/legal/PrivacyPolicy";
 import { DislikedRecipesContextProvider } from "./components/context/DislikedRecipesContext";
 import { AllergiesContextProvider } from "./components/context/AllergiesContext";
+import { FoodPreferencesContextProvider } from "./components/context/FoodPreferencesContext";
 
 const Root = () => {
   const user = useSelector((state) => state.user.value);
@@ -42,13 +43,15 @@ const Root = () => {
           exact
           path="/home"
           element={
-            <AllergiesContextProvider>
-              <DislikedRecipesContextProvider>
-                <IngredientsContextProvider>
-                  <Home />
-                </IngredientsContextProvider>
-              </DislikedRecipesContextProvider>
-            </AllergiesContextProvider>
+            <FoodPreferencesContextProvider>
+              <AllergiesContextProvider>
+                <DislikedRecipesContextProvider>
+                  <IngredientsContextProvider>
+                    <Home />
+                  </IngredientsContextProvider>
+                </DislikedRecipesContextProvider>
+              </AllergiesContextProvider>
+            </FoodPreferencesContextProvider>
           }
         />
         <Route

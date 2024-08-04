@@ -1,0 +1,17 @@
+.text {
+  background: rgb(255, 214, 132);
+  background: linear-gradient(
+    -59deg,
+    rgba(255, 214, 132, 1) 16%,
+    rgba(255, 170, 79, 1) 100%
+  );
+  border-radius: 25px;
+  color: white;
+  padding-top: var(--spacing-1);
+  padding-bottom: var(--spacing-1);
+  padding-left: var(--spacing-3);
+  padding-right: var(--spacing-3);
+  width: fit-content;
+}
+
+
