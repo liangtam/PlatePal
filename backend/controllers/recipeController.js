@@ -51,7 +51,7 @@ const handleGenerateRecipes = async (req, res) => {
 
     let message = `You are a recipe database that outputs at most 8 different recipes `;
     if (givenIngredients && givenIngredients.length > 0) {
-      message += `that include all ${givenIngredients} `;
+      message += `that only include all ${givenIngredients} `;
     } else {
       message += `that are healthy.`;
     }
@@ -153,7 +153,9 @@ const handleCreateRecipe = async (req, res) => {
         if (!user) {
             return res.status(404).json({message: "User not found"});
         }
-        const recipe = await Recipe.create({ name, ingredients, instructions, image: imageBase64, estimatedTime, userId });
+       const ingredientList = ingredients.split(',').map(item => item.trim());
+       const instructionList = instructions.split(',').map(item => item.trim());
+        const recipe = await Recipe.create({ name, ingredients: ingredientList, instructions: instructionList, image: imageBase64, estimatedTime, userId });
         if (!recipe) {
             return res.status(400).json({message: "Could not create recipe"});
         }
