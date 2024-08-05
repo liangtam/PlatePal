@@ -51,6 +51,7 @@ const EditRecipeModal = ({ recipe, isModalShow, setIsModalShow, fetchingData, se
             ingredients: filteredIngredients,
             instructions: filteredInstructions,
             userId: userId,
+            image: image,
             estimatedTime: Number(estimatedTime)
 
         }
@@ -191,11 +192,17 @@ const EditRecipeModal = ({ recipe, isModalShow, setIsModalShow, fetchingData, se
                             <FormLabel>Image</FormLabel>
                             <div {...getRootProps()} style={{ border: "1px dashed grey", padding: "20px", textAlign: "center" }}>
                                 <input {...getInputProps()} />
-                                {image ? (
-                                    <p>{image}</p>
-                                ) : (
-                                    <p>Drag & drop an image here, or click to select one</p>
-                                )}
+                                {image ? 
+                                <>
+                                <img src={image}></img>
+                                <p>Update your image by clicking and uploading it</p>
+                                </>
+                                : 
+                                (
+                                    <p>Update your image by clicking and uploading it</p>
+                                )
+                                }
+                              
                             </div>
                         </FormControl>
                     </ModalBody>

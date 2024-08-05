@@ -106,7 +106,7 @@
 
     .landingPage {
         flex-direction: row;
-        height: 90vh;
+        height: 100vh;
     }
     .landingPage h1 {
         font-size: 80px;

@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { Home, LandingPage, UserProfile, Explore } from "./pages";
 import { useSelector } from "react-redux";
 import { Navbar } from "./components/";
@@ -12,13 +12,56 @@ import { FoodPreferencesContextProvider } from "./components/context/FoodPrefere
 
 const Root = () => {
   const user = useSelector((state) => state.user.value);
+  // const location = useLocation();
+
+  // const showNavbar = ["/explore", "/home", "/users/:userId"].includes(location.pathname);
 
   return (
     <BrowserRouter>
       <ShowSignInContextProvider>
-        <Navbar />
-      </ShowSignInContextProvider>
+        <ConditionalNavbar />
 
+        <Routes>
+          <Route
+            exact
+            path="/"
+            element={
+              <ShowSignInContextProvider>
+                <LandingPage />
+              </ShowSignInContextProvider>
+            }
+          />
+          <Route exact path="/users/:userId" element={<UserProfile />} />
+          <Route
+            exact
+            path="/explore"
+            element={
+              <IngredientsContextProvider>
+                <Explore />
+              </IngredientsContextProvider>
+            }
+          />
+          <Route
+            exact
+            path="/home"
+            element={
+              <AllergiesContextProvider>
+                <DislikedRecipesContextProvider>
+                  <IngredientsContextProvider>
+                    <Home />
+                  </IngredientsContextProvider>
+                </DislikedRecipesContextProvider>
+              </AllergiesContextProvider>
+            }
+          />
+          <Route
+            exact
+            path="/terms-of-service"
+            element={<TermsOfService />}
+          ></Route>
+          <Route exact path="/privacy-policy" element={<PrivacyPolicy />}></Route>
+        </Routes>
+      </ShowSignInContextProvider>
       <Routes>
         <Route
           exact
@@ -63,6 +106,14 @@ const Root = () => {
       </Routes>
     </BrowserRouter>
   );
+};
+
+const ConditionalNavbar = () => {
+  const location = useLocation();
+  // const showNavbar = ["/explore", "/home", "/users/:userId"].includes(location.pathname);
+  const showNavbar = ["/explore", "/home"].some(path => location.pathname.startsWith(path)) || location.pathname.startsWith("/users/");
+
+  return showNavbar ? <Navbar /> : null;
 };
 
 export default Root;

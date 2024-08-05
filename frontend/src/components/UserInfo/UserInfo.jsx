@@ -1,6 +1,7 @@
 import styles from "./UserInfo.module.css";
 import userAvatar from "../../assets/455-user-avatar.png";
 import CreateRecipe from "../CreateRecipe/CreateRecipe";
+import AddDefaultIngredient from "../AddDefaultIngredient/AddDefaultIngredient";
 
 const UserInfo = ({ fetchingData, setFetchingData, user, recipes, favouriteRecipes }) => {
   return (
@@ -18,6 +19,7 @@ const UserInfo = ({ fetchingData, setFetchingData, user, recipes, favouriteRecip
       <p>Bro's cooking today!</p>
       </div>
       <CreateRecipe fetchingData = {fetchingData} setFetchingData = {setFetchingData} ></CreateRecipe>
+      <AddDefaultIngredient fetchingData = {fetchingData} setFetchingData = {setFetchingData} user={user}  ></AddDefaultIngredient>
     </div>
   );
 };

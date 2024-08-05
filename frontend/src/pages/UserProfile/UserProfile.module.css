@@ -13,4 +13,5 @@
 body {
     /* background: radial-gradient(circle, rgba(255,237,173,1) 15%, rgba(255,203,139,1) 96%); */
     background: white;
+    height: 100vh;
 }

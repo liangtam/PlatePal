@@ -24,6 +24,10 @@ const userSchema = new Schema({
         type: Object,
         required: false
     },
+    defaultIngredients: {
+        type: Array,
+        required: false
+    },
     recipes: {
         type: [Schema.Types.ObjectId],
         ref: 'Recipe',

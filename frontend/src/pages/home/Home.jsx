@@ -1,14 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import {
-  Box,
-  ChakraProvider,
-  Flex,
-  Wrap,
-  WrapItem,
-  Tag,
-  TagLabel,
-  TagCloseButton,
-} from "@chakra-ui/react";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { Box, ChakraProvider, Flex, Text } from "@chakra-ui/react";
 import {
   DislikedRecipes,
   FoodPreferences,
@@ -47,6 +38,7 @@ const Home = () => {
   const { ingredients, setIngredients } = useContext(IngredientsContext);
   const [isGenerating, setIsGenerating] = useState(false);
   const { allergies, setAllergies } = useContext(AllergiesContext);
+  const [ defaultIngredients, setDefaultIngredients ] = useState([]);
   const { dislikedRecipes, setDislikedRecipes } = useContext(
     DislikedRecipesContext
   );
@@ -61,6 +53,8 @@ console.log({isGenerating})
         dispatch(setUserRecipes(response.data.recipes));
         setAllergies(response.data.allergies || []);
         setDislikedRecipes(response.data.dislikedRecipes || []);
+        setDefaultIngredients(response.data.defaultIngredients || []);
+        return response;
         if (response.data.preferences) {
           setPreferences(response.data.preferences);
         }
@@ -104,10 +98,11 @@ console.log({isGenerating})
   const handleGenerateRecipe = async () => {
     setIsGenerating(true);
     setErrorGenerating(false);
+    const ingredientList = ingredients.concat(defaultIngredients);
     try {
       const response = await api.get("/recipes/generate", {
         params: {
-          ingredients: ingredients,
+          ingredients: ingredientList,
           allergies: allergies,
           dislikedRecipes: dislikedRecipes,
           preferences: preferences,
@@ -139,21 +134,18 @@ console.log({isGenerating})
       // Append all recipe data
       Object.keys(recipe).forEach((key) => {
         if (key !== "image") {
-          formData.append(key, recipe[key]);
+         formData.append(key, recipe[key]);
         }
       });
-
       formData.append("userId", user.id);
 
       // Fetch the image and append it to formData
       const imageResponse = await fetch(recipe.image);
       const imageBlob = await imageResponse.blob();
       formData.append("image", imageBlob, "recipe_image.jpg");
-
       const response = await api.post("/recipes/", formData, {
         headers: {
           "auth-token": localStorage.getItem("authToken"),
-          "Content-Type": "multipart/form-data",
         },
       });
 

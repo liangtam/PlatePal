@@ -163,16 +163,8 @@ const handlePasswordReset = async (req, res) => {
 };
 
 const handleGetRecipesFromUser = async (req, res) => {
-  const { id } = req.params;
-  console.log(id);
-
-  // if (!email) {
-  //     return res.status(400).json({error: 'Email is required.'});
-  // }
-
-  // if (!validator.isEmail(email)) {
-  //     return res.status(400).json({ error: 'Invalid email.' });
-  // }
+    const {id} = req.params;
+    console.log(id)
 
   try {
     const user = await User.findById(id).populate("recipes");
