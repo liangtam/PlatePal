@@ -17,12 +17,12 @@ Standard Requirements
 - Have the AI generate the recipe based on the inputted ingredients :white_check_mark:
 - Favouriting recipes and viewing the saved recipes :white_check_mark:
 - Modifying saved recipes such as editing the ingredient list or changing an instruction :white_check_mark:
-- Sorting and filtering functionality for generated recipes 
+- Sorting for user recipes and filtering functionality for generated recipes :white_check_mark:
 - Upvoting/downvoting a recipe? :white_check_mark:
 - Regular image upload for recipe (if AI doesn’t work out) :white_check_mark:
 
 Stretch Requirements
-- (AI-generated) images of what the dish looks like
+- (AI-generated) images of what the dish looks like (instead used image API that is NOT ai generated)
 - Create a “Pinterest”-like dashboard for sharing among users :white_check_mark:
 
 
