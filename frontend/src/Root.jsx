@@ -18,10 +18,9 @@ const Root = () => {
 
   return (
     <BrowserRouter>
-      <Routes>
-        <ShowSignInContextProvider>
-          <ConditionalNavbar />
-
+      <ShowSignInContextProvider>
+        <ConditionalNavbar />
+        <Routes>
           <Route
             exact
             path="/"
@@ -41,48 +40,52 @@ const Root = () => {
             path="/privacy-policy"
             element={<PrivacyPolicy />}
           ></Route>
-        </ShowSignInContextProvider>
-        <Route
-          exact
-          path="/"
-          element={
-            <ShowSignInContextProvider>
-              <LandingPage />
-            </ShowSignInContextProvider>
-          }
-        />
-        <Route exact path="/users/:userId" element={<UserProfile />} />
-        <Route
-          exact
-          path="/explore"
-          element={
-            <IngredientsContextProvider>
-              <Explore />
-            </IngredientsContextProvider>
-          }
-        />
-        <Route
-          exact
-          path="/home"
-          element={
-            <FoodPreferencesContextProvider>
-              <AllergiesContextProvider>
-                <DislikedRecipesContextProvider>
-                  <IngredientsContextProvider>
-                    <Home />
-                  </IngredientsContextProvider>
-                </DislikedRecipesContextProvider>
-              </AllergiesContextProvider>
-            </FoodPreferencesContextProvider>
-          }
-        />
-        <Route
-          exact
-          path="/terms-of-service"
-          element={<TermsOfService />}
-        ></Route>
-        <Route exact path="/privacy-policy" element={<PrivacyPolicy />}></Route>
-      </Routes>
+          <Route
+            exact
+            path="/"
+            element={
+              <ShowSignInContextProvider>
+                <LandingPage />
+              </ShowSignInContextProvider>
+            }
+          />
+          <Route exact path="/users/:userId" element={<UserProfile />} />
+          <Route
+            exact
+            path="/explore"
+            element={
+              <IngredientsContextProvider>
+                <Explore />
+              </IngredientsContextProvider>
+            }
+          />
+          <Route
+            exact
+            path="/home"
+            element={
+              <FoodPreferencesContextProvider>
+                <AllergiesContextProvider>
+                  <DislikedRecipesContextProvider>
+                    <IngredientsContextProvider>
+                      <Home />
+                    </IngredientsContextProvider>
+                  </DislikedRecipesContextProvider>
+                </AllergiesContextProvider>
+              </FoodPreferencesContextProvider>
+            }
+          />
+          <Route
+            exact
+            path="/terms-of-service"
+            element={<TermsOfService />}
+          ></Route>
+          <Route
+            exact
+            path="/privacy-policy"
+            element={<PrivacyPolicy />}
+          ></Route>
+        </Routes>
+      </ShowSignInContextProvider>
     </BrowserRouter>
   );
 };

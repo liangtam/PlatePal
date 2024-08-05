@@ -4,11 +4,22 @@ import { useContext } from "react";
 import { ShowSignInContext } from "../../components/context/ShowSignInContext";
 import landingImg from "../../assets/455-landing-bg.png";
 import colorLogo from "../../assets/455-platepal-logo-color.png";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const LandingPage = () => {
   const { showSignIn, setShowSignIn } = useContext(ShowSignInContext);
+  const user = useSelector((state) => state.user.value);
+  const navigate = useNavigate();
   console.log("Landing pg: ", showSignIn);
 
+  const handleGetStartedClick = () => {
+    if (user) {
+      navigate("/home");
+    } else {
+      setShowSignIn(true)
+    }
+  }
   return (
     <div className={styles.landingPage}>
       <div className={styles.intro}>
@@ -21,7 +32,7 @@ const LandingPage = () => {
         <p className="font-size-5 padR-3 padY-4">
           Find and save recipe ideas for the ingredients you have at your home.
         </p>
-        <button className={styles.btn} onClick={() => setShowSignIn(true)}>
+        <button className={styles.btn} onClick={handleGetStartedClick}>
           <span>Get Started</span>
         </button>
       </div>
