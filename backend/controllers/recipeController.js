@@ -139,6 +139,7 @@ const handleGenerateRecipes = async (req, res) => {
       return res.status(400).json({ error: "Could not generate recipes." });
     }
 
+    console.log(recipes)
     const fullRecipes = await Promise.all(
       recipes.map(async (recipe) => {
         const encodedRecipeName = encodeURIComponent(recipe.name + " food");
@@ -193,25 +194,30 @@ const handleGetRecipe = async (req, res) => {
 };
 
 const handleCreateRecipe = async (req, res) => {
-  const { name, ingredients, instructions, estimatedTime, userId } = req.body;
+  const { name, estimatedTime, userId, ingredients, instructions} = req.body;
+  console.log(req.body)
+  // const ingredients = req.body['ingredients[]'];
+  // const instructions = req.body['instructions[]'];
+
   const foodProperties = await JSON.parse(req.body.foodProperties);
   let imageBase64 = null;
   if (req.file) {
     const base64String = req.file.buffer.toString("base64");
     imageBase64 = `data:${req.file.mimetype};base64,${base64String}`;
   }
+  console.log("ingredients: ", ingredients);
 
   try {
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    const ingredientList = ingredients.split(",").map((item) => item.trim());
-    const instructionList = instructions.split(",").map((item) => item.trim());
+    // const ingredientList = ingredients.split(",").map((item) => item.trim());
+    // const instructionList = instructions.split(",").map((item) => item.trim());
     const recipe = await Recipe.create({
       name,
-      ingredients: ingredientList,
-      instructions: instructionList,
+      ingredients,
+      instructions,
       image: imageBase64,
       estimatedTime,
       userId,

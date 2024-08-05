@@ -134,17 +134,23 @@ const Home = () => {
       alert("Please log in");
       return;
     }
+    console.log("Recipe to save: ", recipe)
     try {
       const formData = new FormData();
 
-      // Append all recipe data
       Object.keys(recipe).forEach((key) => {
-        if (key !== "image" && key!=="foodProperties") {
+        if (key !== "image" && key !=="foodProperties" && key !== "ingredients" && key !== "instructions") {
           formData.append(key, recipe[key]);
         }
       });
+      for (const ingredient of recipe.ingredients) {
+        console.log(ingredient)
+        formData.append("ingredients[]", ingredient);
+      }
+      for (const instruction of recipe.instructions) {
+        formData.append("instructions[]", instruction);
+      }
       formData.append("userId", user.id);
-      console.log("FD", recipe.foodProperties)
       formData.append("foodProperties", JSON.stringify(recipe.foodProperties))
       // Fetch the image and append it to formData
       const imageResponse = await fetch(recipe.image);

@@ -64,8 +64,13 @@ const EditRecipeModal = ({
     );
     const formData = new FormData();
     formData.append("name", name);
-    formData.append("ingredients", filteredIngredients);
-    formData.append("instructions", filteredInstructions);
+    for (const ingredient of filteredIngredients) {
+      console.log(ingredient)
+      formData.append("ingredients[]", ingredient);
+    }
+    for (const instruction of filteredInstructions) {
+      formData.append("instructions[]", instruction);
+    }
     formData.append("foodProperties", JSON.stringify(foodProperties))
     if (image) {
       formData.append("image", image);
