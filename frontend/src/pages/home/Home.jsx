@@ -43,8 +43,6 @@ const Home = () => {
     DislikedRecipesContext
   );
   const { preferences, setPreferences } = useContext(FoodPreferencesContext);
-console.log({isGenerating})
-  console.log(successMessage);
 
   const fetchUser = async (userId) => {
     try {
@@ -54,7 +52,6 @@ console.log({isGenerating})
         setAllergies(response.data.allergies || []);
         setDislikedRecipes(response.data.dislikedRecipes || []);
         setDefaultIngredients(response.data.defaultIngredients || []);
-        return response;
         if (response.data.preferences) {
           setPreferences(response.data.preferences);
         }
