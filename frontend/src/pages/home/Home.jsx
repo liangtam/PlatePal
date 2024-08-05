@@ -1,5 +1,14 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { Box, ChakraProvider, Flex, Wrap, WrapItem, TagLabel, TagCloseButton, Tag, } from "@chakra-ui/react";
+import {
+  Box,
+  ChakraProvider,
+  Flex,
+  Wrap,
+  WrapItem,
+  TagLabel,
+  TagCloseButton,
+  Tag,
+} from "@chakra-ui/react";
 import {
   DislikedRecipes,
   FoodPreferences,
@@ -38,12 +47,12 @@ const Home = () => {
   const { ingredients, setIngredients } = useContext(IngredientsContext);
   const [isGenerating, setIsGenerating] = useState(false);
   const { allergies, setAllergies } = useContext(AllergiesContext);
-  const [ defaultIngredients, setDefaultIngredients ] = useState([]);
+  const [defaultIngredients, setDefaultIngredients] = useState([]);
   const { dislikedRecipes, setDislikedRecipes } = useContext(
     DislikedRecipesContext
   );
   const { preferences, setPreferences } = useContext(FoodPreferencesContext);
-
+  console.log({ ingredients });
   const fetchUser = async (userId) => {
     try {
       const response = await api.get(`/users/${userId}`);
@@ -95,7 +104,8 @@ const Home = () => {
   const handleGenerateRecipe = async () => {
     setIsGenerating(true);
     setErrorGenerating(false);
-    const ingredientList = ingredients.concat(defaultIngredients);
+    const ingredientList = [...ingredients, ...defaultIngredients];
+    setIngredients(ingredientList);
     try {
       const response = await api.get("/recipes/generate", {
         params: {
@@ -131,7 +141,7 @@ const Home = () => {
       // Append all recipe data
       Object.keys(recipe).forEach((key) => {
         if (key !== "image") {
-         formData.append(key, recipe[key]);
+          formData.append(key, recipe[key]);
         }
       });
       formData.append("userId", user.id);
@@ -286,32 +296,66 @@ const Home = () => {
                 </Wrap>
               )}
               <Flex wrap="wrap" justify="center">
-                {recipeData.length === 0 && !isGenerating && !errorGenerating && (
-                  <Box className="dialog-container">
-                    {!ingredients || ingredients.length === 0 ? (
+                {recipeData.length === 0 &&
+                  !isGenerating &&
+                  !errorGenerating && (
+                    <Box className="dialog-container">
+                      {!ingredients || ingredients.length === 0 ? (
+                        <img
+                          src={landingImg}
+                          alt="plate pal"
+                          className="landing-image"
+                        />
+                      ) : (
+                        <img
+                          src={homeImg}
+                          alt="plate pal"
+                          className="landing-image"
+                        />
+                      )}
+                      {!ingredients || ingredients.length === 0 ? (
+                        <div className="dialog-text animated-text ">
+                          Let PlatePal help you get a recipe by entering your
+                          available ingredients! Adjust your preferences below.
+                        </div>
+                      ) : (
+                        <div className="dialog-text">
+                          <b>
+                            You've entered {ingredients.length} ingredient
+                            {ingredients.length > 1 ? "s" : ""}:
+                          </b>
+                          <Wrap mt={4} className="tag-container">
+                            {ingredients.map((ingredient, index) => (
+                              <WrapItem key={index}>
+                                <Tag
+                                  size="lg"
+                                  borderRadius="full"
+                                  className="tag"
+                                >
+                                  <TagLabel>{ingredient}</TagLabel>
+                                  <TagCloseButton
+                                    onClick={() => handleTagClose(ingredient)}
+                                    className="tag-close-button"
+                                  />
+                                </Tag>
+                              </WrapItem>
+                            ))}
+                          </Wrap>
+                        </div>
+                      )}
+                    </Box>
+                  )}
+                {recipeData.length === 0 &&
+                  isGenerating &&
+                  !errorGenerating && (
+                    <Box className="dialog-container">
                       <img
-                        src={landingImg}
+                        src={homeLoadingImg}
                         alt="plate pal"
                         className="landing-image"
                       />
-                    ) : (
-                      <img
-                        src={homeImg}
-                        alt="plate pal"
-                        className="landing-image"
-                      />
-                    )}
-                    {!ingredients || ingredients.length === 0 ? (
-                      <div className="dialog-text animated-text ">
-                        Let PlatePal help you get a recipe by entering your
-                        available ingredients! Adjust your preferences below.
-                      </div>
-                    ) : (
                       <div className="dialog-text">
-                        <b>
-                          You've entered {ingredients.length} ingredient
-                          {ingredients.length > 1 ? "s" : ""}:
-                        </b>
+                        <b>Generating recipes with ingredients </b>
                         <Wrap mt={4} className="tag-container">
                           {ingredients.map((ingredient, index) => (
                             <WrapItem key={index}>
@@ -330,59 +374,39 @@ const Home = () => {
                           ))}
                         </Wrap>
                       </div>
-                    )}
-                  </Box>
-                )}
-                {recipeData.length === 0 && isGenerating && !errorGenerating && (
-                  <Box className="dialog-container">
-                    <img
-                      src={homeLoadingImg}
-                      alt="plate pal"
-                      className="landing-image"
-                    />
-                    <div className="dialog-text">
-                      <b>Generating recipes with ingredients </b>
-                      <Wrap mt={4} className="tag-container">
-                        {ingredients.map((ingredient, index) => (
-                          <WrapItem key={index}>
-                            <Tag size="lg" borderRadius="full" className="tag">
-                              <TagLabel>{ingredient}</TagLabel>
-                              <TagCloseButton
-                                onClick={() => handleTagClose(ingredient)}
-                                className="tag-close-button"
-                              />
-                            </Tag>
-                          </WrapItem>
-                        ))}
-                      </Wrap>
-                    </div>
-                  </Box>
-                )}
-                                {recipeData.length === 0 && !isGenerating && errorGenerating && (
-                  <Box className="dialog-container">
-                    <img
-                      src={homeErrorImg}
-                      alt="plate pal"
-                      className="landing-image"
-                    />
-                    <div className="dialog-text">
-                      <b>Error generating recipes. Please try again.</b>
-                      <Wrap mt={4} className="tag-container">
-                        {ingredients.map((ingredient, index) => (
-                          <WrapItem key={index}>
-                            <Tag size="lg" borderRadius="full" className="tag">
-                              <TagLabel>{ingredient}</TagLabel>
-                              <TagCloseButton
-                                onClick={() => handleTagClose(ingredient)}
-                                className="tag-close-button"
-                              />
-                            </Tag>
-                          </WrapItem>
-                        ))}
-                      </Wrap>
-                    </div>
-                  </Box>
-                )}
+                    </Box>
+                  )}
+                {recipeData.length === 0 &&
+                  !isGenerating &&
+                  errorGenerating && (
+                    <Box className="dialog-container">
+                      <img
+                        src={homeErrorImg}
+                        alt="plate pal"
+                        className="landing-image"
+                      />
+                      <div className="dialog-text">
+                        <b>Error generating recipes. Please try again.</b>
+                        <Wrap mt={4} className="tag-container">
+                          {ingredients.map((ingredient, index) => (
+                            <WrapItem key={index}>
+                              <Tag
+                                size="lg"
+                                borderRadius="full"
+                                className="tag"
+                              >
+                                <TagLabel>{ingredient}</TagLabel>
+                                <TagCloseButton
+                                  onClick={() => handleTagClose(ingredient)}
+                                  className="tag-close-button"
+                                />
+                              </Tag>
+                            </WrapItem>
+                          ))}
+                        </Wrap>
+                      </div>
+                    </Box>
+                  )}
               </Flex>
               <Wrap justify={"center"} overflowY={"scroll"} maxHeight={"600px"}>
                 {recipeData &&
