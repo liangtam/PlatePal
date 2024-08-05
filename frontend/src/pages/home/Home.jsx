@@ -139,12 +139,13 @@ const Home = () => {
 
       // Append all recipe data
       Object.keys(recipe).forEach((key) => {
-        if (key !== "image") {
+        if (key !== "image" && key!=="foodProperties") {
           formData.append(key, recipe[key]);
         }
       });
       formData.append("userId", user.id);
-
+      console.log("FD", recipe.foodProperties)
+      formData.append("foodProperties", JSON.stringify(recipe.foodProperties))
       // Fetch the image and append it to formData
       const imageResponse = await fetch(recipe.image);
       const imageBlob = await imageResponse.blob();
@@ -266,7 +267,7 @@ const Home = () => {
     <ChakraProvider>
       <div
         className="flex-col align-items-center bg-base-100 padT-4 h-100"
-        style={{ height: "90vh" }}
+        style={{ minHeight: "90vh" }}
       >
         <Flex style={{ width: "85%" }} className="home-container">
           <Flex direction="column">

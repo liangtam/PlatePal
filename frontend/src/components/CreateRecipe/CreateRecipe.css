@@ -25,3 +25,7 @@
 .section-title {
     color: #d2691e;
 }
+
+.create-button {
+    background-color: var(--blue-400) !important;
+}

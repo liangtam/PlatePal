@@ -16,3 +16,4 @@ export { default as DislikedRecipesInputBar } from "./InputBars/DislikedRecipesI
 export { default as RoundTextLabel} from "./RoundTextLabel/RoundTextLabel";
 export { default as FoodPreferences} from "./FoodPreferences/FoodPreferences";
 export {default as ResponseMessage} from "./ResponseMessage/ResponseMessage";
+export { default as SavedRecipePopup} from "./SavedRecipePopup/SavedRecipePopup";

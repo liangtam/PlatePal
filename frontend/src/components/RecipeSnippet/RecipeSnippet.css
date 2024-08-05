@@ -61,4 +61,6 @@
 .recipe-snippet-properties {
     border: 1px solid rgb(232, 232, 232);
     border-radius: 10px;
+    width: fit-content;
+    padding: var(--spacing-1) var(--spacing-3);
 }

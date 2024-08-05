@@ -29,7 +29,7 @@
     background-color: var(--orange-300) !important;
 }
 .addButton:hover {
-    background-color: #ff9a42 !important;
+    background-color: var(--orange-400) !important;
 }
 
 .allergies {

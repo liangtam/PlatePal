@@ -29,34 +29,42 @@ const RecipeSnippet = ({ recipe, onClick, handleSave, handleDislike }) => {
               className="card-image"
               borderRadius="lg"
             />
-            <Stack mt="4" spacing="1">
+            <Stack mt="4" align={'space-evenly'}>
               <Heading size="md">{recipe.name}</Heading>
               <Text>Estimated cooking time: {recipe.estimatedTime} mins</Text>
-              {recipe.foodProperties && (recipe.foodProperties.isVegan || recipe.foodProperties.isSpicy || recipe.foodProperties.isLactoseFree) && (
-              <Flex justify="center" className="recipe-snippet-properties padY-1"gap={4}>
-                {recipe.foodProperties.isVegan && (
-                  <img
-                    src={vegIcon}
-                    className="recipe-snippet-icon"
-                    aria-label="Vegan"
-                  />
+              {recipe.foodProperties &&
+                (recipe.foodProperties.isVegan ||
+                  recipe.foodProperties.isSpicy ||
+                  recipe.foodProperties.isLactoseFree) && (
+                  <div className="w-100 flex-col align-items-center">
+                    <Flex
+                      className="recipe-snippet-properties "
+                      gap={4}
+                    >
+                      {recipe.foodProperties.isVegan && (
+                        <img
+                          src={vegIcon}
+                          className="recipe-snippet-icon"
+                          aria-label="Vegan"
+                        />
+                      )}
+                      {recipe.foodProperties.isLactoseFree && (
+                        <img
+                          src={lactoseFreeIcon}
+                          className="recipe-snippet-icon"
+                          aria-label="Lactose free"
+                        />
+                      )}
+                      {recipe.foodProperties.isSpicy && (
+                        <img
+                          src={spicyIcon}
+                          className="recipe-snippet-icon"
+                          aria-label="spicy"
+                        />
+                      )}
+                    </Flex>
+                  </div>
                 )}
-                {recipe.foodProperties.isLactoseFree && (
-                  <img
-                    src={lactoseFreeIcon}
-                    className="recipe-snippet-icon"
-                    aria-label="Lactose free"
-                  />
-                )}
-                {recipe.foodProperties.isSpicy && (
-                  <img
-                    src={spicyIcon}
-                    className="recipe-snippet-icon"
-                    aria-label="spicy"
-                  />
-                )}
-              </Flex>
-            )}
             </Stack>
           </CardBody>
         )}

@@ -18,6 +18,10 @@ const recipeSchema = new Schema({
         type: Number,
         required: true
     },
+    foodProperties: {
+        type: Object,
+        required: false
+    },
     image: {
         type: String,
         required: false

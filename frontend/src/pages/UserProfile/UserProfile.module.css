@@ -1,5 +1,5 @@
 .container {
-    height: 90vh;
+    min-height: 90vh;
     background-color: var(--base-100);
 }
 .noOfRecipes {
