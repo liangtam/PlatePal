@@ -51,7 +51,6 @@ const ProfileRecipeSnippet = ({ fetchingData, setFetchingData, recipe }) => {
     }
 
     const handleShare = async () => {
-      
       const formData = {shareToPublic: !isRecipeShared};
 
       try {
@@ -62,7 +61,11 @@ const ProfileRecipeSnippet = ({ fetchingData, setFetchingData, recipe }) => {
           }
       });
         if (response.status === 200) {
-            alert('Successfully Updated');
+            if (!isRecipeShared) {
+                alert(`Your recipe is now in the 'Explore' page!`);
+            } else {
+                alert(`Your recipe is now taken off the 'Explore' page.`);
+            }
             setFetchingData(!fetchingData);
            // dispatch(deleteUserRecipe(recipe._id));
         } else {
