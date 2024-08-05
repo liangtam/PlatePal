@@ -18,10 +18,10 @@ const Root = () => {
 
   return (
     <BrowserRouter>
-      <ShowSignInContextProvider>
-        <ConditionalNavbar />
+      <Routes>
+        <ShowSignInContextProvider>
+          <ConditionalNavbar />
 
-        <Routes>
           <Route
             exact
             path="/"
@@ -36,10 +36,12 @@ const Root = () => {
             path="/terms-of-service"
             element={<TermsOfService />}
           ></Route>
-          <Route exact path="/privacy-policy" element={<PrivacyPolicy />}></Route>
-        </Routes>
-      </ShowSignInContextProvider>
-      <Routes>
+          <Route
+            exact
+            path="/privacy-policy"
+            element={<PrivacyPolicy />}
+          ></Route>
+        </ShowSignInContextProvider>
         <Route
           exact
           path="/"
@@ -88,7 +90,9 @@ const Root = () => {
 const ConditionalNavbar = () => {
   const location = useLocation();
   // const showNavbar = ["/explore", "/home", "/users/:userId"].includes(location.pathname);
-  const showNavbar = ["/explore", "/home"].some(path => location.pathname.startsWith(path)) || location.pathname.startsWith("/users/");
+  const showNavbar =
+    ["/explore", "/home"].some((path) => location.pathname.startsWith(path)) ||
+    location.pathname.startsWith("/users/");
 
   return showNavbar ? <Navbar /> : null;
 };
