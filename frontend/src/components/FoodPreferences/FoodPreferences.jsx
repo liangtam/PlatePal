@@ -3,18 +3,49 @@ import { FoodPreferencesContext } from "../context/FoodPreferencesContext";
 import vegIcon from "../../assets/vegan_flaticon.png";
 import lactoseFreeIcon from "../../assets/lactose-free_flaticon.png";
 import spicyIcon from "../../assets/chili-pepper_flaticon.png";
+import notSpicyIcon from "../../assets/not-spicy.png";
 import timeIcon from "../../assets/time-left_flaticon.png";
 import styles from "./FoodPreferences.module.css";
-const FoodPreferences = () => {
+const FoodPreferences = ({ handleSave }) => {
   const { preferences, setPreferences } = useContext(FoodPreferencesContext);
   console.log(preferences);
+
+  const handleNotSpicyClick = () => {
+    if (preferences.isNotSpicy) {
+      setPreferences({
+        ...preferences,
+        isNotSpicy: false,
+      });
+      return;
+    }
+    setPreferences({
+      ...preferences,
+      isNotSpicy: true,
+      isSpicy: false,
+    });
+  };
+
+  const handleSpicyClick = () => {
+    if (preferences.isSpicy) {
+      setPreferences({
+        ...preferences,
+        isSpicy: false,
+      });
+      return;
+    }
+    setPreferences({
+      ...preferences,
+      isNotSpicy: false,
+      isSpicy: true,
+    });
+  };
 
   return (
     <div className={styles.preferenceOptions}>
       {/* <h1 className="font-size-5 font-weight-500 marT-1 flex-col base-50" style={{height: '100%', justifyContent: 'end'}}>Preferences</h1> */}
 
       <div
-        className={`${styles.option} ${
+        className={`${styles.shortOption} ${
           preferences.isVegan ? styles.checked : ""
         }`}
         onClick={() =>
@@ -25,7 +56,7 @@ const FoodPreferences = () => {
         }
       >
         <img src={vegIcon} className={styles.icon} />
-        <span className={styles.text}>Vegan only</span>
+        <span className={styles.text}>Vegan</span>
       </div>
       <div
         className={`${styles.option} ${
@@ -49,15 +80,19 @@ const FoodPreferences = () => {
         className={`${styles.option} ${
           preferences.isNotSpicy ? styles.checked : ""
         }`}
-        onClick={() =>
-          setPreferences({
-            ...preferences,
-            isNotSpicy: !preferences.isNotSpicy,
-          })
-        }
+        onClick={handleNotSpicyClick}
+      >
+        <img src={notSpicyIcon} className={styles.icon} />
+        <span className={styles.text}>No spicy</span>
+      </div>
+      <div
+        className={`${styles.shortOption} ${
+          preferences.isSpicy ? styles.checked : ""
+        }`}
+        onClick={handleSpicyClick}
       >
         <img src={spicyIcon} className={styles.icon} />
-        <span className={styles.text}>No spicy</span>
+        <span className={styles.text}>Spicy</span>
       </div>
       <div className={styles.time}>
         <img src={timeIcon} className={styles.icon} />
@@ -78,6 +113,9 @@ const FoodPreferences = () => {
           Max cooking time: {preferences.maxTime} min
         </div>
       </div>
+      <button className={styles.saveBtn} onClick={handleSave}>
+        Save
+      </button>
     </div>
   );
 };

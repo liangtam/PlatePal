@@ -17,6 +17,7 @@ code {
 
   --base-50: white;
   --base-100: #f3f2f1;
+  --base-200:  rgb(235, 232, 229);
   --base-1000: black;
 
   --yellow-100: rgb(255, 245, 214);
@@ -133,6 +134,14 @@ a {
 
 .border-box {
   box-sizing: border-box;
+}
+
+.base-200 {
+  color: var(--base-200);
+}
+
+.bg-base-200 {
+  background-color: var(--base-200);
 }
 
 .yellow-500 {

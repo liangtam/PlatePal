@@ -1,0 +1,20 @@
+.message {
+    width: 100%;
+    padding-left: var(--spacing-3);
+    padding-right: var(--spacing-3);
+    padding-top: var(--spacing-2);
+    padding-bottom: var(--spacing-2);
+    border-radius: 10px;
+}
+
+.error {
+    color: rgb(195, 56, 56);
+    background-color: rgb(255, 235, 235);
+    border: 1px solid rgb(249, 23, 23);
+}
+
+.success {
+    color: rgb(13, 200, 82);
+    background-color: rgb(242, 254, 241);
+    border: 1px solid rgb(15, 230, 94);
+}

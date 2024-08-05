@@ -44,36 +44,3 @@
     border-radius: 20px;
 }
 
-.tagContainer {
-    margin-top: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-}
-
-.allergyTag {
-    display: flex;
-    align-items: center;
-    background-color: #ffffff !important;
-    border: 1px solid rgb(190, 190, 190);
-    border-radius: 20px;
-    padding: var(--spacing-2);
-    border-radius: 25px;
-    font-size: 14px;
-    transition: background-color 0.3s ease !important;
-}
-
-.allergyTag:hover {
-    background-color: #f9f9f9;
-}
-
-.tagCloseButton {
-    margin-left: 10px;
-    cursor: pointer;
-    color: black;
-}
-
-.tagCloseButton:hover {
-    color: var(--orange-600);
-}

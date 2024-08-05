@@ -14,10 +14,13 @@ import {
   FoodPreferences,
   RecipeDetail,
   RecipeSnippet,
+  ResponseMessage,
   SearchBar,
 } from "../../components";
 import homeImg from "../../assets/455-home.png";
 import landingImg from "../../assets/455-landing-bg.png";
+import homeErrorImg from "../../assets/455-home-error.png";
+import homeLoadingImg from "../../assets/455-home-loading.png";
 import "./Home.css";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteRecipe, setRecipes } from "../../redux/recipes/recipesSlice";
@@ -27,6 +30,8 @@ import { IngredientsContext } from "../../components/context/IngredientsContext"
 import Allergies from "../../components/Allergies/Allergies";
 import { AllergiesContext } from "../../components/context/AllergiesContext";
 import { DislikedRecipesContext } from "../../components/context/DislikedRecipesContext";
+import { FoodPreferencesContext } from "../../components/context/FoodPreferencesContext";
+import { MessageType } from "../../constants/constants";
 
 const Home = () => {
   const recipeData = useSelector((state) => state.recipes.value);
@@ -35,12 +40,19 @@ const Home = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedFood, setSelectedFood] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [errorGenerating, setErrorGenerating] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { ingredients, setIngredients } = useContext(IngredientsContext);
   const [isGenerating, setIsGenerating] = useState(false);
   const { allergies, setAllergies } = useContext(AllergiesContext);
   const { dislikedRecipes, setDislikedRecipes } = useContext(
     DislikedRecipesContext
   );
+  const { preferences, setPreferences } = useContext(FoodPreferencesContext);
+console.log({isGenerating})
+  console.log(successMessage);
 
   const fetchUser = async (userId) => {
     try {
@@ -49,6 +61,9 @@ const Home = () => {
         dispatch(setUserRecipes(response.data.recipes));
         setAllergies(response.data.allergies || []);
         setDislikedRecipes(response.data.dislikedRecipes || []);
+        if (response.data.preferences) {
+          setPreferences(response.data.preferences);
+        }
       } else {
         console.error(
           "Request was not successful. Status code:",
@@ -62,6 +77,21 @@ const Home = () => {
     }
   };
 
+  const showErrorMessage = (message) => {
+    setTimeout(() => {
+      setErrorMessage(null);
+    }, 3000);
+    setErrorMessage(message);
+  };
+
+  const showSuccessMessage = (message) => {
+    setSuccessMessage(message);
+
+    setTimeout(() => {
+      setSuccessMessage(null);
+    }, 3000);
+  };
+
   const handleCardClick = (food) => {
     setSelectedFood(food);
     setIsModalOpen(true);
@@ -73,12 +103,14 @@ const Home = () => {
 
   const handleGenerateRecipe = async () => {
     setIsGenerating(true);
+    setErrorGenerating(false);
     try {
       const response = await api.get("/recipes/generate", {
         params: {
           ingredients: ingredients,
           allergies: allergies,
           dislikedRecipes: dislikedRecipes,
+          preferences: preferences,
         },
       });
       if (response.status >= 200 && response.status < 300) {
@@ -89,7 +121,7 @@ const Home = () => {
       }
       setIsGenerating(false);
     } catch (err) {
-      alert("Error fetching recipes. Please try again.");
+      setErrorGenerating(true);
       setIsGenerating(false);
       console.log(err);
     }
@@ -150,7 +182,8 @@ const Home = () => {
     setDislikedRecipes([...dislikedRecipes, recipe.name]);
   };
 
-  const handleSaveAllergies = async (e) => {
+  const handleSaveAllergies = async () => {
+    setIsLoading(true);
     try {
       const response = await api.patch(
         "/users/" + user.id,
@@ -162,12 +195,16 @@ const Home = () => {
           },
         }
       );
+      showSuccessMessage("Saved allergies/disliked ingredients!");
+      setIsLoading(false);
     } catch (err) {
-      alert("Error occurred updating allergies: ", err.message);
+      showErrorMessage(`Error occurred updating allergies:  ${err.message}`);
+      setIsLoading(false);
     }
   };
 
-  const handleSaveDislikedRecipes = async (e) => {
+  const handleSaveDislikedRecipes = async () => {
+    setIsLoading(true);
     try {
       const response = await api.patch(
         "/users/" + user.id,
@@ -179,9 +216,39 @@ const Home = () => {
           },
         }
       );
-      console.log(response.data);
+      showSuccessMessage("Saved disliked recipes!");
+      setIsLoading(false);
     } catch (err) {
-      alert("Error occurred updating disliked recipes: ", err.message);
+      showErrorMessage(
+        `Error occurred updating disliked recipes:  ${err.message}`
+      );
+      setIsLoading(false);
+      setIsLoading(false);
+    }
+  };
+
+  const handleSavePreferences = async () => {
+    setIsLoading(true);
+    console.log({ preferences });
+    try {
+      const response = await api.patch(
+        "/users/" + user.id,
+        { preferences },
+        {
+          headers: {
+            "auth-token": localStorage.getItem("authToken"),
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(response.data);
+      showSuccessMessage("Saved food preference settings!");
+      setIsLoading(false);
+    } catch (err) {
+      showErrorMessage(
+        `Error occurred updating user preferences:  ${err.message}`
+      );
+      setIsLoading(false);
     }
   };
 
@@ -198,11 +265,11 @@ const Home = () => {
   }, []);
 
   return (
-    <div
-      className="flex-col align-items-center bg-base-100 padT-4"
-      style={{ height: "100vh" }}
-    >
-      <ChakraProvider>
+    <ChakraProvider>
+      <div
+        className="flex-col align-items-center bg-base-100 padT-4 h-100"
+        style={{ height: "90vh" }}
+      >
         <Flex style={{ width: "85%" }} className="home-container">
           <Flex direction="column">
             <Flex
@@ -215,7 +282,7 @@ const Home = () => {
                 isGenerating={isGenerating}
               />
               {recipeData && recipeData.length > 0 && (
-                <Wrap mt={4} className="tag-container">
+                <Wrap mt={0} pb={3} className="tag-container">
                   {ingredients.map((ingredient, index) => (
                     <WrapItem key={index}>
                       <Tag size="lg" borderRadius="full" className="tag">
@@ -230,7 +297,7 @@ const Home = () => {
                 </Wrap>
               )}
               <Flex wrap="wrap" justify="center">
-                {recipeData.length === 0 && (
+                {recipeData.length === 0 && !isGenerating && !errorGenerating && (
                   <Box className="dialog-container">
                     {!ingredients || ingredients.length === 0 ? (
                       <img
@@ -248,7 +315,7 @@ const Home = () => {
                     {!ingredients || ingredients.length === 0 ? (
                       <div className="dialog-text animated-text ">
                         Let PlatePal help you get a recipe by entering your
-                        available ingredients!
+                        available ingredients! Adjust your preferences below.
                       </div>
                     ) : (
                       <div className="dialog-text">
@@ -277,8 +344,58 @@ const Home = () => {
                     )}
                   </Box>
                 )}
+                {recipeData.length === 0 && isGenerating && !errorGenerating && (
+                  <Box className="dialog-container">
+                    <img
+                      src={homeLoadingImg}
+                      alt="plate pal"
+                      className="landing-image"
+                    />
+                    <div className="dialog-text">
+                      <b>Generating recipes with ingredients </b>
+                      <Wrap mt={4} className="tag-container">
+                        {ingredients.map((ingredient, index) => (
+                          <WrapItem key={index}>
+                            <Tag size="lg" borderRadius="full" className="tag">
+                              <TagLabel>{ingredient}</TagLabel>
+                              <TagCloseButton
+                                onClick={() => handleTagClose(ingredient)}
+                                className="tag-close-button"
+                              />
+                            </Tag>
+                          </WrapItem>
+                        ))}
+                      </Wrap>
+                    </div>
+                  </Box>
+                )}
+                                {recipeData.length === 0 && !isGenerating && errorGenerating && (
+                  <Box className="dialog-container">
+                    <img
+                      src={homeErrorImg}
+                      alt="plate pal"
+                      className="landing-image"
+                    />
+                    <div className="dialog-text">
+                      <b>Error generating recipes. Please try again.</b>
+                      <Wrap mt={4} className="tag-container">
+                        {ingredients.map((ingredient, index) => (
+                          <WrapItem key={index}>
+                            <Tag size="lg" borderRadius="full" className="tag">
+                              <TagLabel>{ingredient}</TagLabel>
+                              <TagCloseButton
+                                onClick={() => handleTagClose(ingredient)}
+                                className="tag-close-button"
+                              />
+                            </Tag>
+                          </WrapItem>
+                        ))}
+                      </Wrap>
+                    </div>
+                  </Box>
+                )}
               </Flex>
-              <Wrap justify={"center"}>
+              <Wrap justify={"center"} overflowY={"scroll"} maxHeight={"600px"}>
                 {recipeData &&
                   recipeData.map((recipe, index) => (
                     <RecipeSnippet
@@ -299,7 +416,7 @@ const Home = () => {
                 />
               )}
             </Flex>
-           <FoodPreferences/>
+            <FoodPreferences handleSave={handleSavePreferences} />
           </Flex>
           <Flex direction="column" style={{ width: "30%" }} gap={4}>
             <div className="warningInfo pad-3 soft-light-shadow">
@@ -310,16 +427,31 @@ const Home = () => {
                 error.
               </b>
             </div>
-            {allergies && <div className="flex-col gap-2">
-              <Allergies handleSave={handleSaveAllergies} />
-              </div>}
+            {isLoading && <div>Saving...</div>}
+            {successMessage && (
+              <ResponseMessage
+                type={MessageType.SUCCESS}
+                message={successMessage}
+              />
+            )}
+            {errorMessage && (
+              <ResponseMessage
+                type={MessageType.ERROR}
+                message={errorMessage}
+              />
+            )}
+            {allergies && (
+              <div className="flex-col gap-2">
+                <Allergies handleSave={handleSaveAllergies} />
+              </div>
+            )}
             {dislikedRecipes && (
               <DislikedRecipes handleSave={handleSaveDislikedRecipes} />
             )}
           </Flex>
         </Flex>
-      </ChakraProvider>
-    </div>
+      </div>
+    </ChakraProvider>
   );
 };
 

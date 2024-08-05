@@ -16,6 +16,41 @@ background: linear-gradient(59deg, rgba(255,214,132,1) 16%, rgba(255,170,79,1) 1
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
 }
+
+.allergyTag {
+    display: flex;
+    align-items: center;
+    background-color: #ffffff !important;
+    border: 1px solid rgb(190, 190, 190);
+    border-radius: 20px;
+    padding: var(--spacing-2);
+    border-radius: 25px;
+    font-size: 14px;
+    transition: background-color 0.3s ease !important;
+}
+
+.allergyTag:hover {
+    background-color: #f9f9f9;
+}
+
+.tagContainer {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.tagCloseButton {
+    margin-left: 10px;
+    cursor: pointer;
+    color: black;
+}
+
+.tagCloseButton:hover {
+    color: var(--orange-600);
+}
+
 .btn {
   background-color: var(--base-100);
   transition: background-color 0.3s ease;
@@ -25,5 +60,5 @@ background: linear-gradient(59deg, rgba(255,214,132,1) 16%, rgba(255,170,79,1) 1
 }
 
 .btn:hover {
-  background-color: rgb(255, 187, 110);
+  background-color: var(--base-200);
 }

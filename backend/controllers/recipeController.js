@@ -2,20 +2,35 @@ const Recipe = require("../models/recipeModel");
 const User = require("../models/userModel");
 const Groq = require("groq-sdk");
 require("dotenv").config();
-const { v4: uuidv4 } = require('uuid');
+const { v4: uuidv4 } = require("uuid");
 
 const handleGenerateRecipes = async (req, res) => {
   console.log("Trying to generate recipes with groq", req.query);
   let givenIngredients = req.query.ingredients;
   let allergies = req.query.allergies;
   let dislikedRecipes = req.query.dislikedRecipes;
-
-
+  let preferences = req.query.preferences;
   try {
     const groq = new Groq({ apiKey: `${process.env.GROQ_API_KEY}` });
 
     const schema = {
       $defs: {
+        FoodProperties: {
+          properties: {
+            isVegan: { title: "Is the recipe vegan?", type: "boolean" },
+            isLactoseFree: {
+              title: "Is the recipe lactose free?",
+              type: "boolean",
+            },
+            isSpicy: {
+              title: "Does the recipe contain spicy ingredients like chili?",
+              type: "boolean",
+            },
+          },
+          required: ["isVegan", "isLactoseFree", "isSpicy"],
+          title: "FoodProperties",
+          type: "object",
+        },
         Recipe: {
           properties: {
             name: { title: "Recipe name", type: "string" },
@@ -30,10 +45,20 @@ const handleGenerateRecipes = async (req, res) => {
               type: "array",
             },
             estimatedTime: {
-                title: "Estimated recipe cooking time in minutes",
-                type: "integer"
+              title: "Estimated recipe cooking time in minutes",
+              type: "integer",
             },
-            required: ["name", "ingredients", "instructions", "estimatedTime"],
+            foodProperties: {
+              title: "Properties of the food",
+              type: "FoodProperties",
+            },
+            required: [
+              "name",
+              "ingredients",
+              "instructions",
+              "estimatedTime",
+              "foodProperties",
+            ],
             title: "Recipe",
             type: "object",
           },
@@ -62,13 +87,35 @@ const handleGenerateRecipes = async (req, res) => {
     }
 
     if (dislikedRecipes && dislikedRecipes.length > 0) {
-      message += `The recipes cannot be any of ${dislikedRecipes}.`;
+      message += `\n The recipes cannot be any of ${dislikedRecipes}.`;
     }
 
+    if (preferences) {
+      if (preferences.isVegan === "true") {
+        console.log("HEY");
+        message +=
+          " The recipes MUST be vegan. Do not generate any recipes with meat in it.";
+      }
+      if (preferences.isLactoseFree === "true") {
+        message += " The recipes must also be lactose free.";
+      }
 
-    message += `\nThe JSON object must use the schema: ${recipeSchema}.`
+      if (preferences.isSpicy === "true") {
+        message += " The recipes must be spicy.";
+        console.log("HERERERERERERERERERERER");
+      } else if (preferences.isNotSpicy === "true") {
+        message += " The recipes must NOT be spicy.";
+        console.log("BEEEP");
+      }
 
-    console.log(message)
+      if (preferences.maxTime === "true") {
+        message += `The recipes' estimated cooking time must be less than or equal to ${preferences.maxTime} minutes.`;
+      }
+    }
+    message += `\n If the recipe is vegan, lactose-free, or spicy indicate in the food properties.`;
+
+    message += `\nThe JSON object must use the schema: ${recipeSchema}.`;
+
     const chatCompletion = await groq.chat.completions.create({
       messages: [
         {
@@ -87,7 +134,6 @@ const handleGenerateRecipes = async (req, res) => {
       response_format: { type: "json_object" },
     });
 
-
     const json = await JSON.parse(chatCompletion.choices[0].message.content);
     const recipes = json.recipes;
 
@@ -95,29 +141,38 @@ const handleGenerateRecipes = async (req, res) => {
       return res.status(400).json({ error: "Could not generate recipes." });
     }
 
-    const fullRecipes = await Promise.all(recipes.map(async (recipe) => {
+    const fullRecipes = await Promise.all(
+      recipes.map(async (recipe) => {
         const encodedRecipeName = encodeURIComponent(recipe.name);
 
         try {
-            const response = await fetch(`https://api.pexels.com/v1/search?query=${encodedRecipeName}&per_page=2`, {
-                headers: {
-                    "Authorization": process.env.PEXEL_API_KEY
-                }
-            });
-            if (response.ok) {
-                const json = await response.json();
-                let imageUrl = "";
-                if (json.photos.length >= 1) {
-                    imageUrl = json.photos[0].src.medium;
-                }
-                return recipe = {...recipe, generatedId: uuidv4() , image: imageUrl};
+          const response = await fetch(
+            `https://api.pexels.com/v1/search?query=${encodedRecipeName}&per_page=2`,
+            {
+              headers: {
+                Authorization: process.env.PEXEL_API_KEY,
+              },
             }
+          );
+          if (response.ok) {
+            const json = await response.json();
+            let imageUrl = "";
+            if (json.photos.length >= 1) {
+              imageUrl = json.photos[0].src.medium;
+            }
+            return (recipe = {
+              ...recipe,
+              generatedId: uuidv4(),
+              image: imageUrl,
+            });
+          }
         } catch (err) {
-            console.log("Could not get image for recipe " + recipe.name);
-            console.log(err.message);
-            return recipe;
+          console.log("Could not get image for recipe " + recipe.name);
+          console.log(err.message);
+          return recipe;
         }
-    }))
+      })
+    );
 
     // console.log("Full recipes: ", fullRecipes);
     return res.status(200).json(fullRecipes);
@@ -140,34 +195,41 @@ const handleGetRecipe = (req, res) => {
 };
 
 const handleCreateRecipe = async (req, res) => {
-    const { name, ingredients, instructions, estimatedTime, userId } = req.body;
+  const { name, ingredients, instructions, estimatedTime, userId } = req.body;
 
-    let imageBase64 = null;
-    if (req.file) {
-        const base64String = req.file.buffer.toString('base64');
-        imageBase64 = `data:${req.file.mimetype};base64,${base64String}`;
+  let imageBase64 = null;
+  if (req.file) {
+    const base64String = req.file.buffer.toString("base64");
+    imageBase64 = `data:${req.file.mimetype};base64,${base64String}`;
+  }
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
-
-    try {
-        const user = await User.findById(userId);
-        if (!user) {
-            return res.status(404).json({message: "User not found"});
-        }
-        const recipe = await Recipe.create({ name, ingredients, instructions, image: imageBase64, estimatedTime, userId });
-        if (!recipe) {
-            return res.status(400).json({message: "Could not create recipe"});
-        }
-        user.recipes.push(recipe);
-        await user.save();
-
-        const io = req.io;
-        io.emit('newRecipe', {newRecipe: recipe});
-
-        return res.status(201).json(recipe);
-    } catch (err) {
-        console.error(`Error on create recipe ${err}`);
-        return res.status(500).json({ message: "Internal error" });
+    const recipe = await Recipe.create({
+      name,
+      ingredients,
+      instructions,
+      image: imageBase64,
+      estimatedTime,
+      userId,
+    });
+    if (!recipe) {
+      return res.status(400).json({ message: "Could not create recipe" });
     }
+    user.recipes.push(recipe);
+    await user.save();
+
+    const io = req.io;
+    io.emit("newRecipe", { newRecipe: recipe });
+
+    return res.status(201).json(recipe);
+  } catch (err) {
+    console.error(`Error on create recipe ${err}`);
+    return res.status(500).json({ message: "Internal error" });
+  }
 };
 
 const handleDeleteRecipe = async (req, res) => {
@@ -177,13 +239,13 @@ const handleDeleteRecipe = async (req, res) => {
     const result = await Recipe.findByIdAndDelete(id);
 
     if (!result) {
-        return res.status(404).json({ message: 'Recipe not found' });
+      return res.status(404).json({ message: "Recipe not found" });
     }
 
     const user = await User.findById(result.userId);
 
     if (!user) {
-        return res.status(404).json({error: "User not found."});
+      return res.status(404).json({ error: "User not found." });
     }
 
     user.recipes = user.recipes.filter(
@@ -203,10 +265,10 @@ const handleDeleteRecipe = async (req, res) => {
 const handleUpdateRecipe = async (req, res) => {
   try {
     const { id } = req.params;
-    const updatedRecipe = await Recipe.findOneAndUpdate({_id: id}, req.body, {
+    const updatedRecipe = await Recipe.findOneAndUpdate({ _id: id }, req.body, {
       new: true,
       runValidators: true,
-      upsert: true
+      upsert: true,
     });
 
     if (!updatedRecipe) {
@@ -214,110 +276,113 @@ const handleUpdateRecipe = async (req, res) => {
     }
 
     if (req.body.shareToPublic) {
-        const io = req.io;
-        io.emit('newRecipe', { newRecipe: updatedRecipe });
+      const io = req.io;
+      io.emit("newRecipe", { newRecipe: updatedRecipe });
     }
 
     return res.status(200).json(updatedRecipe);
   } catch (err) {
-      console.error(`Error on update recipe ${err}`);
+    console.error(`Error on update recipe ${err}`);
     return res.status(400).json({ message: err.message });
   }
 };
 
 // claud 3.5 sonnet 16:32 7/26/2024 get the correct favorite count on load
 const handleGetAllRecipes = async (req, res) => {
-    try {
-        const recipes = await Recipe.aggregate([
-            {
-                $lookup: {
-                    from: 'favorites',
-                    localField: '_id',
-                    foreignField: 'recipeId',
-                    as: 'favorites'
-                }
-            },
-            {
-                $addFields: {
-                    favoriteCount: { $size: "$favorites" }
-                }
-            },
-            {
-              $lookup: {
-                  from: 'users',
-                  localField: 'userId',
-                  foreignField: '_id',
-                  as: 'userDetails'
-              }
-          },
-          {
-            $unwind: '$userDetails'
+  try {
+    const recipes = await Recipe.aggregate([
+      {
+        $lookup: {
+          from: "favorites",
+          localField: "_id",
+          foreignField: "recipeId",
+          as: "favorites",
         },
-        {
-            $addFields: {
-                userEmail: '$userDetails.email'
-            }
+      },
+      {
+        $addFields: {
+          favoriteCount: { $size: "$favorites" },
         },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "userId",
+          foreignField: "_id",
+          as: "userDetails",
+        },
+      },
+      {
+        $unwind: "$userDetails",
+      },
+      {
+        $addFields: {
+          userEmail: "$userDetails.email",
+        },
+      },
 
-            {
-                $project: {
-                    favorites: 0 // Remove the favorites array from the output
-                }
-            }
-        ]);
-        res.json(recipes);
-    } catch (error) {
-        console.error('Error fetching recipes:', error);
-        res.status(500).json({ message: 'Error fetching recipes', error: error.message });
-    }
+      {
+        $project: {
+          favorites: 0, // Remove the favorites array from the output
+        },
+      },
+    ]);
+    res.json(recipes);
+  } catch (error) {
+    console.error("Error fetching recipes:", error);
+    res
+      .status(500)
+      .json({ message: "Error fetching recipes", error: error.message });
+  }
 };
-
 
 const handleGetRecipesToPublic = async (req, res) => {
   try {
-      const recipes = await Recipe.aggregate([
-          {
-              $match: { shareToPublic: true }
-          },
-          {
-              $lookup: {
-                  from: 'favorites',
-                  localField: '_id',
-                  foreignField: 'recipeId',
-                  as: 'favorites'
-              }
-          },
-          {
-              $addFields: {
-                  favoriteCount: { $size: "$favorites" }
-              }
-          },
-          {
-              $lookup: {
-                  from: 'users',
-                  localField: 'userId',
-                  foreignField: '_id',
-                  as: 'userDetails'
-              }
-          },
-          {
-              $unwind: '$userDetails'
-          },
-          {
-              $addFields: {
-                  userEmail: '$userDetails.email'
-              }
-          },
-          {
-              $project: {
-                  favorites: 0 // Remove the favorites array from the output
-              }
-          }
-      ]);
-      res.json(recipes);
+    const recipes = await Recipe.aggregate([
+      {
+        $match: { shareToPublic: true },
+      },
+      {
+        $lookup: {
+          from: "favorites",
+          localField: "_id",
+          foreignField: "recipeId",
+          as: "favorites",
+        },
+      },
+      {
+        $addFields: {
+          favoriteCount: { $size: "$favorites" },
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "userId",
+          foreignField: "_id",
+          as: "userDetails",
+        },
+      },
+      {
+        $unwind: "$userDetails",
+      },
+      {
+        $addFields: {
+          userEmail: "$userDetails.email",
+        },
+      },
+      {
+        $project: {
+          favorites: 0, // Remove the favorites array from the output
+        },
+      },
+    ]);
+    res.json(recipes);
   } catch (error) {
-      console.error('Error fetching recipes:', error);
-      res.status(500).json({ message: 'Error fetching recipes', error: error.message });
+    console.error("Error fetching recipes:", error);
+    res
+      .status(500)
+      .json({ message: "Error fetching recipes", error: error.message });
   }
 };
 
@@ -328,5 +393,5 @@ module.exports = {
   handleDeleteRecipe,
   handleUpdateRecipe,
   handleGetAllRecipes,
-  handleGetRecipesToPublic
+  handleGetRecipesToPublic,
 };

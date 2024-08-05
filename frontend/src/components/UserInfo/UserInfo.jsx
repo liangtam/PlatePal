@@ -13,10 +13,7 @@ const UserInfo = ({ fetchingData, setFetchingData, user, recipes, favouriteRecip
       <div className="h-1 bg-base-1000 marT-3 marB-5 w-100"></div>
       <div className="flex-col gap-2 align-items-start w-100">
       <span>
-        <b>Saved recipes: </b> {recipes.length}
-      </span>
-      <span>
-        <b>Created recipes: </b> {favouriteRecipes.length}
+        <b>Recipes: </b> {recipes.length}
       </span>
       <p>Bro's cooking today!</p>
       </div>

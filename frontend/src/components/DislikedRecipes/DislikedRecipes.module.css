@@ -42,5 +42,5 @@
 }
 
 .btn:hover {
-    background-color: rgb(255, 207, 152);
+    background-color:var(--base-200);
 }

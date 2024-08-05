@@ -36,7 +36,7 @@ const Allergies = ({ handleSave }) => {
               allergies.length > 0 &&
               allergies.map((allergy, index) => (
                 <WrapItem key={index}>
-                  <Tag size="lg" className="allergyTag">
+                  <Tag size="lg" className={styles.allergyTag}>
                     <TagLabel>{allergy}</TagLabel>
                     <TagCloseButton
                       onClick={() => handleTagClose(allergy)}

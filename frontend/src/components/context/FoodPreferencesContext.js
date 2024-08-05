@@ -7,7 +7,8 @@ export const FoodPreferencesContextProvider = ({ children }) => {
     isVegan: false,
     isLactoseFree: false,
     isNotSpicy: false,
-    maxTime: 1
+    isSpicy: false,
+    maxTime: 60
   });
 
   return (

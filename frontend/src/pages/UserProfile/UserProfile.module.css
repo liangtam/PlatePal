@@ -1,3 +1,6 @@
+.container {
+    height: 90vh;
+}
 .noOfRecipes {
     box-shadow: 1px 1px 5px grey;
     max-width: 300px;

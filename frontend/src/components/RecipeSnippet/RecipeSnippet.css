@@ -1,8 +1,6 @@
-
-
 .card-container {
     width: 300px;
-    height: 450px;
+    max-height: 450px;
     margin: 20px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
@@ -12,6 +10,7 @@
     overflow: hidden;
     background-color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    cursor: pointer;
 }
 
 .card-container:hover {
@@ -52,4 +51,14 @@
 
 .ghost-button:hover {
     background-color: rgba(255, 112, 67, 0.1);
+}
+
+.recipe-snippet-icon {
+    height: 20px;
+    width: auto;
+}
+
+.recipe-snippet-properties {
+    border: 1px solid rgb(232, 232, 232);
+    border-radius: 10px;
 }

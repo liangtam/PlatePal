@@ -28,7 +28,7 @@ function SearchBar({handleGenerateRecipe, isGenerating}) {
             <Box className="search-bar-container">
                 <InputGroup className="search-bar">
                     <Input
-                        placeholder="Enter one ingredient and press Enter"
+                        placeholder="Enter an ingredient and press 'enter' e.g. rice"
                         value={inputValue}
                         onChange={handleInputChange}
                         onKeyDown={handleKeyDown}

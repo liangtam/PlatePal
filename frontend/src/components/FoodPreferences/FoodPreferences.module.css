@@ -16,8 +16,8 @@
   z-index: 1;
   padding: var(--spacing-3);
   border-radius: 25px;
-  /* background: rgb(255,214,132);
-    background: radial-gradient(circle, rgb(255, 210, 121) 15%, rgb(255, 170, 79) 96%); */
+  background: rgb(255,214,132);
+    background: radial-gradient(circle, rgb(255, 210, 121) 15%, rgb(255, 170, 79) 96%);
   align-items: center;
   margin-top: 20px;
 }
@@ -79,10 +79,36 @@
   animation: fadeIn 0.5s ease-in forwards;
 }
 
+.shortOption {
+  background-color: white;
+  padding: var(--spacing-3);
+  border-radius: 25px;
+  box-shadow: 0px 3px 10px rgba(222, 148, 59, 0.4);
+  display: flex;
+  gap: var(--spacing-2);
+  align-items: center;
+  justify-content: space-evenly;
+  font-size: var(--font-size-4);
+  width: 65px;
+  transition: border 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease,
+  width 0.6s ease-in-out;
+}
+
+
+.shortOption:hover {
+  cursor: pointer;
+  width: 130px;
+}
+
+.shortOption:hover .text {
+  opacity: 1;
+  animation: fadeIn 0.5s ease-in forwards;
+}
+
 .checked {
   border: 3px solid rgb(91, 226, 91);
   box-shadow: 0px 3px 10px rgba(0, 255, 85, 0.5);
-  transform: translateY(-10px);
+  transform: scale(1.2);
 }
 
 /* gpt how to make bottom half rounded and colored */
@@ -113,4 +139,16 @@
   border-bottom-right-radius: 25px;
   z-index: -1;
   box-shadow: 0px 3px 8px rgba(222, 148, 59, 0.3);
+}
+
+.saveBtn {
+  border-radius: 25px;
+  background-color: var(--orange-600);
+  padding-left: var(--spacing-3);
+  padding-right: var(--spacing-3);
+  padding-top: var(--spacing-1);
+  padding-bottom: var(--spacing-1);
+  color: white;
+  font-weight: var(--font-weight-500);
+
 }
