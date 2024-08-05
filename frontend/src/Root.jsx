@@ -31,29 +31,6 @@ const Root = () => {
               </ShowSignInContextProvider>
             }
           />
-          <Route exact path="/users/:userId" element={<UserProfile />} />
-          <Route
-            exact
-            path="/explore"
-            element={
-              <IngredientsContextProvider>
-                <Explore />
-              </IngredientsContextProvider>
-            }
-          />
-          <Route
-            exact
-            path="/home"
-            element={
-              <AllergiesContextProvider>
-                <DislikedRecipesContextProvider>
-                  <IngredientsContextProvider>
-                    <Home />
-                  </IngredientsContextProvider>
-                </DislikedRecipesContextProvider>
-              </AllergiesContextProvider>
-            }
-          />
           <Route
             exact
             path="/terms-of-service"

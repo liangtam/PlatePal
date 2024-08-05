@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { Box, ChakraProvider, Flex, Text } from "@chakra-ui/react";
+import { Box, ChakraProvider, Flex, Wrap, WrapItem, TagLabel, TagCloseButton, Tag, } from "@chakra-ui/react";
 import {
   DislikedRecipes,
   FoodPreferences,

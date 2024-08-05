@@ -102,10 +102,8 @@ const handleGenerateRecipes = async (req, res) => {
 
       if (preferences.isSpicy === "true") {
         message += " The recipes must be spicy.";
-        console.log("HERERERERERERERERERERER");
       } else if (preferences.isNotSpicy === "true") {
         message += " The recipes must NOT be spicy.";
-        console.log("BEEEP");
       }
 
       if (preferences.maxTime === "true") {
