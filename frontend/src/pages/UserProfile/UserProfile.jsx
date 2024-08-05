@@ -7,12 +7,17 @@ import { setUserRecipes } from "../../redux/users/userSlice";
 
 const UserProfile = () => {
   const [fetchingData, setFetchingData] = useState(false);
+  const [sortBy, setSortBy] = useState("estimatedCookingTime");
   const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
 
   const fetchUserRecipes = async () => {
     try {
-      const response = await api.get('/users/recipes/' + user.id);
+      const response = await api.get('/users/recipes/' + user.id, {
+        params: {
+          sortBy
+        },
+      });
       if (response.status >= 200 && response.status < 300) {
         console.log('Request was successful:', response.data);
         dispatch(setUserRecipes(response.data));
@@ -28,13 +33,24 @@ const UserProfile = () => {
     fetchUserRecipes();
   }, [fetchingData]);
 
+  useEffect(() => {
+    fetchUserRecipes();
+  }, [sortBy])
+
   return (
-      <div className={`${styles.container} flex-col align-items-center padT-5 h-100 bg-radial`}>
+      <div className={`${styles.container} flex-col align-items-center padT-5 h-100`}>
         <div className="flex-row gap-6 h-100" style={{ width: "80%" }}>
           {user && user.recipes && <UserInfo user={user} fetchingData={fetchingData} setFetchingData={setFetchingData} recipes={user.recipes} favouriteRecipes={[]}/>}
           <div style={{overflow: 'auto', maxHeight: 'fit-content', height: '100%'}}>
           <div className="flex-col gap-3 align-items-start padL-5" style={{borderLeft: '1px solid white'}}>
-            <h1 className="font-size-7 font-weight-700" style={{color: "#b86c1c"}}> Saved recipes </h1>
+            <h1 className="font-size-7 font-weight-700"> Recipes </h1>
+            <div className="flex-row w-100">
+                    <select className={styles.sort} value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+                      <option value="estimatedCookingTime">Cooking Time</option>
+                      <option value="createdAt">Created date</option>
+                      <option value="name">Name</option>
+                    </select>
+                  </div>
           <div
             className={`${styles.recipes} flex-row gap-5 align-items-center padY-5`}
           >

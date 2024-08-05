@@ -1,5 +1,6 @@
 .container {
     height: 90vh;
+    background-color: var(--base-100);
 }
 .noOfRecipes {
     box-shadow: 1px 1px 5px grey;
@@ -10,8 +11,8 @@
     flex-wrap: wrap;
 }
 
-body {
-    /* background: radial-gradient(circle, rgba(255,237,173,1) 15%, rgba(255,203,139,1) 96%); */
-    background: white;
-    height: 100vh;
+.sort {
+    padding: var(--spacing-1);
+    border-radius: 5px;
+    border: 1px solid var(--base-200);
 }

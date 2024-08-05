@@ -52,7 +52,6 @@ const Home = () => {
     DislikedRecipesContext
   );
   const { preferences, setPreferences } = useContext(FoodPreferencesContext);
-  console.log({ ingredients });
   const fetchUser = async (userId) => {
     try {
       const response = await api.get(`/users/${userId}`);
@@ -408,19 +407,24 @@ const Home = () => {
                     </Box>
                   )}
               </Flex>
-              <Wrap justify={"center"} overflowY={"scroll"} maxHeight={"600px"}>
-                {recipeData &&
-                  recipeData.map((recipe, index) => (
-                    <RecipeSnippet
-                      key={index}
-                      recipe={recipe}
-                      onClick={() => handleCardClick(recipe)}
-                      handleSave={(e) => handleRecipeSave(e, recipe)}
-                      handleDislike={(e) => handleDislike(e, recipe)}
-                      handleClose={handleModalClose}
-                    />
-                  ))}
-              </Wrap>
+              {recipeData && recipeData.length > 0 && (
+                  <Wrap
+                    justify={"center"}
+                    overflowY={"scroll"}
+                    maxHeight={"600px"}
+                  >
+                    {recipeData.map((recipe, index) => (
+                      <RecipeSnippet
+                        key={index}
+                        recipe={recipe}
+                        onClick={() => handleCardClick(recipe)}
+                        handleSave={(e) => handleRecipeSave(e, recipe)}
+                        handleDislike={(e) => handleDislike(e, recipe)}
+                        handleClose={handleModalClose}
+                      />
+                    ))}
+                  </Wrap>
+              )}
               {selectedFood && (
                 <RecipeDetail
                   selectFood={selectedFood}

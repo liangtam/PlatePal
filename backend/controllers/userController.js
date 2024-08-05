@@ -164,10 +164,9 @@ const handlePasswordReset = async (req, res) => {
 
 const handleGetRecipesFromUser = async (req, res) => {
     const {id} = req.params;
-    console.log(id)
-
+    const {sortBy} = req.query;
   try {
-    const user = await User.findById(id).populate("recipes");
+    const user = await User.findById(id).populate({path: 'recipes', options: {sort: sortBy}});
     if (!user) {
       return res.status(404).json({ error: "User not found." });
     }
