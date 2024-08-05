@@ -106,7 +106,7 @@ const handleGenerateRecipes = async (req, res) => {
         message += " All the recipes must NOT be spicy.";
       }
 
-      if (preferences.maxTime === "true") {
+      if (preferences.maxTime) {
         message += `The recipes' estimated cooking time must be less than or equal to ${preferences.maxTime} minutes.`;
       }
     }
