@@ -2,11 +2,11 @@ import React, { useContext, useState } from 'react';
 import { ChakraProvider, Box, Input, Tag, TagLabel, TagCloseButton, Wrap, WrapItem, InputGroup, Button, InputLeftElement, IconButton } from '@chakra-ui/react';
 import styles from './InputBar.module.css';
 import { AddIcon } from '@chakra-ui/icons';
-import { AllergiesContext } from '../context/AllergiesContext';
+import { DislikedRecipesContext } from '../context/DislikedRecipesContext';
 
-function AllergiesInputBar() {
+function DislikedRecipesInputBar() {
     const [inputValue, setInputValue] = useState('');
-    const {allergies, setAllergies} = useContext(AllergiesContext);
+    const {dislikedRecipes, setDislikedRecipes} = useContext(DislikedRecipesContext);
 
     const handleInputChange = (event) => {
         setInputValue(event.target.value);
@@ -14,23 +14,22 @@ function AllergiesInputBar() {
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter' && inputValue.trim() !== '') {
-            setAllergies([...allergies, inputValue.trim()]);
+            setDislikedRecipes([...dislikedRecipes, inputValue.trim()]);
             setInputValue('');
         }
     };
 
-    const handleAddAllergy = () => {
-        setAllergies([...allergies, inputValue.trim()]);
+    const handleAddDislikedRecipes = () => {
+        setDislikedRecipes([...dislikedRecipes, inputValue.trim()]);
         setInputValue('');
     };
-
 
     return (
         <ChakraProvider>
             <Box className="w-100">
                 <InputGroup className={`${styles.inputBar} marY-3 gap-2`}>
                     <Input
-                        placeholder="Add allergy"
+                        placeholder="Add disliked recipe"
                         value={inputValue}
                         onChange={handleInputChange}
                         onKeyDown={handleKeyDown}
@@ -38,7 +37,7 @@ function AllergiesInputBar() {
                         style={{background: 'white'}}
                     />
 
-                    <IconButton icon={<AddIcon/>} onClick={handleAddAllergy} className={styles.addButton}/>
+                    <IconButton icon={<AddIcon/>} onClick={handleAddDislikedRecipes} className={styles.addButton}/>
                        
                 </InputGroup>
             </Box>
@@ -46,4 +45,4 @@ function AllergiesInputBar() {
     );
 }
 
-export default AllergiesInputBar;
+export default DislikedRecipesInputBar;

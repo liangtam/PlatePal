@@ -20,6 +20,10 @@ const userSchema = new Schema({
         type: Array,
         required: true
     },
+    preferences: {
+        type: Object,
+        required: false
+    },
     defaultIngredients: {
         type: Array,
         required: false

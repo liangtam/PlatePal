@@ -12,7 +12,7 @@
     flex-direction: column;
     width: 100vw;
     height: 100vh;
-    background: radial-gradient(circle, rgba(255,237,173,1) 15%, rgba(255,203,139,1) 96%);
+    background: radial-gradient(circle, rgb(255, 214, 132) 15%, rgb(255, 170, 79) 96%);
 }
 
 .intro {
@@ -46,8 +46,8 @@
 .landingImg {
     justify-content: center;
     display: flex;
-    background: radial-gradient(circle, rgba(255,237,173,1) 15%, rgba(255,203,139,1) 96%);
-  }
+    background: radial-gradient(circle, rgb(255, 214, 132) 15%, rgb(255, 170, 79) 96%);
+}
   
   .landingImg img {
     max-width: 100%;

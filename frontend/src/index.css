@@ -16,9 +16,14 @@ code {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 
   --base-50: white;
+  --base-100: #f3f2f1;
+  --base-200:  rgb(235, 232, 229);
   --base-1000: black;
 
+  --yellow-100: rgb(255, 245, 214);
   --yellow-400: #ffedad;
+  --yellow-500: rgb(255, 214, 132);
+  --orange-300: rgb(255, 170, 79);
   --orange-600: #ff7043;
   --turquoise-500: #0ebac5;
   --blue-400: rgb(86, 193, 255);
@@ -131,6 +136,37 @@ a {
   box-sizing: border-box;
 }
 
+.base-200 {
+  color: var(--base-200);
+}
+
+.bg-base-200 {
+  background-color: var(--base-200);
+}
+
+.yellow-500 {
+  color: var(--yellow-500)
+}
+
+.bg-yellow-500 {
+  background-color: var(--yellow-500);
+}
+.orange-300 {
+  color: var(--orange-300);
+}
+
+.bg-orange-300 {
+  background-color: var(--orange-300);
+}
+
+.base-100 {
+  color: var(--base-100);
+}
+
+.bg-base-100 {
+  background-color: var(--base-100);
+}
+
 .base-50 {
   color: var(--base-50);
 }
@@ -188,9 +224,12 @@ a {
 }
 
 .bg-radial {
-  background: radial-gradient(circle, rgba(255,237,173,1) 15%, rgba(255,203,139,1) 96%);
+  background: radial-gradient(circle, rgb(255, 214, 132) 15%, rgb(255, 170, 79) 96%);
 }
 
+.soft-light-shadow {
+  box-shadow: 0px 3px 8px rgba(255, 191, 113, 0.1);
+}
 .pad-1 {
   padding: var(--spacing-1);
 }
