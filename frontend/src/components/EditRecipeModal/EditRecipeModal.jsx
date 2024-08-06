@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import {
   Button,
@@ -16,7 +16,6 @@ import {
   IconButton,
   HStack,
   VStack,
-  useDisclosure,
 } from "@chakra-ui/react";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import { useDropzone } from "react-dropzone";
@@ -77,14 +76,6 @@ const EditRecipeModal = ({
     }
     formData.append("userId", userId);
     formData.append("estimatedTime", Number(estimatedTime));
-    // const data = {
-    //   name: name,
-    //   ingredients: filteredIngredients,
-    //   instructions: filteredInstructions,
-    //   userId: userId,
-    //   image: image,
-    //   estimatedTime: Number(estimatedTime),
-    // };
 
     try {
       const response = await api.patch("/recipes/" + recipe._id, formData, {

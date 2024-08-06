@@ -134,10 +134,7 @@
     rgb(255, 210, 121) 15%,
     rgb(255, 170, 79) 96%
   );
-  border-top-left-radius: 25px;
-  border-top-right-radius: 25px;
-  border-bottom-left-radius: 25px;
-  border-bottom-right-radius: 25px;
+  border-radius: 25px;
   z-index: -1;
   box-shadow: 0px 3px 8px rgba(222, 148, 59, 0.3);
 }
@@ -145,10 +142,7 @@
 .saveBtn {
   border-radius: 25px;
   background-color: var(--orange-600);
-  padding-left: var(--spacing-3);
-  padding-right: var(--spacing-3);
-  padding-top: var(--spacing-1);
-  padding-bottom: var(--spacing-1);
+  padding: var(--spacing-1) var(--spacing-3);
   color: white;
   font-weight: var(--font-weight-500);
 

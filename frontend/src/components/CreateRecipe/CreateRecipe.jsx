@@ -53,7 +53,6 @@ const CreateRecipe = ({ fetchingData, setFetchingData }) => {
     for (const instruction of filteredInstructions) {
       formData.append("instructions[]", instruction);
     }
-    // formData.append("instructions", filteredInstructions);
     formData.append("foodProperties", JSON.stringify(foodProperties))
     if (image) {
       formData.append("image", image);

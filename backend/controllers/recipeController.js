@@ -174,7 +174,6 @@ const handleGenerateRecipes = async (req, res) => {
       })
     );
 
-    // console.log("Full recipes: ", fullRecipes);
     return res.status(200).json(fullRecipes);
   } catch (err) {
     res.status(500).json({ error: "Could not generate recipes." });
@@ -196,9 +195,7 @@ const handleGetRecipe = async (req, res) => {
 
 const handleCreateRecipe = async (req, res) => {
   const { name, estimatedTime, userId, ingredients, instructions} = req.body;
-  console.log(req.body)
-  // const ingredients = req.body['ingredients[]'];
-  // const instructions = req.body['instructions[]'];
+  console.log(req.body);
 
   const foodProperties = await JSON.parse(req.body.foodProperties);
   let imageBase64 = null;
@@ -213,8 +210,6 @@ const handleCreateRecipe = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    // const ingredientList = ingredients.split(",").map((item) => item.trim());
-    // const instructionList = instructions.split(",").map((item) => item.trim());
     const recipe = await Recipe.create({
       name,
       ingredients,

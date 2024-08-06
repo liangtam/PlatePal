@@ -22,7 +22,7 @@ body {
     outline: none;
     transition: all 0.3s ease;
     background: white;
-    background-color: white; /* Smooth transition for focus state */
+    /* Smooth transition for focus state */
 }
 
 .search-bar input:focus {

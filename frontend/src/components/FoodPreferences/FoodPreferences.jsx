@@ -42,7 +42,6 @@ const FoodPreferences = ({ handleSave }) => {
 
   return (
     <div className={styles.preferenceOptions}>
-      {/* <h1 className="font-size-5 font-weight-500 marT-1 flex-col base-50" style={{height: '100%', justifyContent: 'end'}}>Preferences</h1> */}
 
       <div
         className={`${styles.shortOption} ${

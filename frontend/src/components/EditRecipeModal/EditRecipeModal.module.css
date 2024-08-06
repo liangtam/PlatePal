@@ -5,7 +5,6 @@
     flex-direction: column;
     border-radius: 10px;
     width: 450px;
-    height: 100%;
     height: 350px;
     padding: var(--spacing-4);
     box-shadow: 2px 5px 0px rgb(178, 213, 226);
@@ -55,7 +54,6 @@
 
 .shareBtn {
     color: white;
-    background-color: rgb(56, 146, 216);
     border: none;
     border-radius: 5px;
     padding: var(--spacing-2);

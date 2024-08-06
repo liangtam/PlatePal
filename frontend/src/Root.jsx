@@ -12,9 +12,6 @@ import { FoodPreferencesContextProvider } from "./components/context/FoodPrefere
 
 const Root = () => {
   const user = useSelector((state) => state.user.value);
-  // const location = useLocation();
-
-  // const showNavbar = ["/explore", "/home", "/users/:userId"].includes(location.pathname);
 
   return (
     <BrowserRouter>
@@ -92,7 +89,6 @@ const Root = () => {
 
 const ConditionalNavbar = () => {
   const location = useLocation();
-  // const showNavbar = ["/explore", "/home", "/users/:userId"].includes(location.pathname);
   const showNavbar =
     ["/explore", "/home"].some((path) => location.pathname.startsWith(path)) ||
     location.pathname.startsWith("/users/");

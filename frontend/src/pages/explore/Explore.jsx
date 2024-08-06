@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Box, ChakraProvider, Heading, Text, Image } from "@chakra-ui/react";
+import { Box, ChakraProvider, Heading, Text } from "@chakra-ui/react";
 import { ExploreBox, ExploreCardDetail } from "../../components";
 import api from "../../api";
 import './Explore.css';
-import whiteLogo from "../../assets/455-platepal-logo-white.png";
 import io from 'socket.io-client';
 import { motion, AnimatePresence } from "framer-motion";
 import {useSelector} from "react-redux";

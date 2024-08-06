@@ -71,7 +71,6 @@ const ProfileRecipeSnippet = ({ fetchingData, setFetchingData, recipe }) => {
           alert(`Your recipe is now taken off the 'Explore' page.`);
         }
         setFetchingData(!fetchingData);
-        // dispatch(deleteUserRecipe(recipe._id));
       } else {
         alert(response.data.error);
       }
@@ -165,20 +164,6 @@ const ProfileRecipeSnippet = ({ fetchingData, setFetchingData, recipe }) => {
               </button>
             </div>
           </div>
-          {/* <div className={`${styles.ingredients}`}>
-                        <b className="padB-2">Ingredients</b>
-                        {recipe && recipe.ingredients && Array.isArray(recipe.ingredients) &&
-                            recipe.ingredients.map((ingredient, index) => (
-                                <div key={index}>{ingredient}</div>
-                            ))}
-                    </div>
-                    <div className={`${styles.ingredients}`}>
-                        <b className="padB-2">Instructions</b>
-                        {recipe && recipe.instructions && Array.isArray(recipe.instructions) &&
-                            recipe.instructions.map((instruction, index) => (
-                                <div key={index}>{instruction}</div>
-                            ))}
-                    </div> */}
         </div>
       </div>
       {isEditModelShow && (

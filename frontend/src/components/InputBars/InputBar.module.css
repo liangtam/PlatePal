@@ -14,8 +14,8 @@
     font-size: 16px; /* Readable font size */
     outline: none;
     transition: all 0.3s ease;
+    /* Smooth transition for focus state */
     background: white;
-    background-color: white; /* Smooth transition for focus state */
 }
 
 .inputBar input:focus {

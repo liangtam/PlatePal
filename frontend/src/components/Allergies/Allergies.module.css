@@ -9,8 +9,6 @@
 
 .title {
   border-bottom: 1px solid var(--orange-300);
-  /* background: var(--yellow-500);
-background: linear-gradient(59deg, rgba(255,214,132,1) 16%, rgba(255,170,79,1) 100%); */
   width: 100%;
   padding: var(--spacing-3);
   border-top-left-radius: 20px;
@@ -22,7 +20,6 @@ background: linear-gradient(59deg, rgba(255,214,132,1) 16%, rgba(255,170,79,1) 1
     align-items: center;
     background-color: #ffffff !important;
     border: 1px solid rgb(190, 190, 190);
-    border-radius: 20px;
     padding: var(--spacing-2);
     border-radius: 25px;
     font-size: 14px;

@@ -1,7 +1,5 @@
 
 .exploreCard {
-    /* width: 400px !important;
-    height: 500px; */
     justify-content: space-between;
 
     width: 300px;
@@ -9,7 +7,6 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     border-radius: 25px !important;
     overflow: hidden;
     background-color: white;
