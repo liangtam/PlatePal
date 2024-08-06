@@ -112,7 +112,7 @@ const handleLogin = async (req, res) => {
       .json({
         message: "Login successful.",
         token: token,
-        user: { email: user.email, id: user._id },
+        user: { email: user.email, id: user._id, defaultIngredients: user.defaultIngredients },
       });
   } catch (error) {
     return res.status(500).json({ error: "Internal Server Error" });

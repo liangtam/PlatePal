@@ -7,7 +7,7 @@ const getUser = () => {
             return null;
         }
         const user = JSON.parse(userString);
-        return { ...user, recipes: Array.isArray(user.recipes) ? user.recipes : [] };
+        return { ...user, recipes: Array.isArray(user.recipes) ? user.recipes : [], defaultIngredients: user.defaultIngredients ?? [] };
     } catch (error) {
         console.error('Error parsing user data:', error);
         return null;

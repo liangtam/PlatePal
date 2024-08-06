@@ -47,7 +47,6 @@ const CreateRecipe = ({ fetchingData, setFetchingData }) => {
     const formData = new FormData();
     formData.append("name", name);
     for (const ingredient of filteredIngredients) {
-      console.log(ingredient)
       formData.append("ingredients[]", ingredient);
     }
     for (const instruction of filteredInstructions) {

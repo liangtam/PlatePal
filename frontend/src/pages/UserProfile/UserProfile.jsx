@@ -18,9 +18,7 @@ const UserProfile = () => {
           sortBy,
         },
       });
-      console.log({ sortBy });
       if (response.status >= 200 && response.status < 300) {
-        // console.log('Request was successful:', response.data);
         dispatch(setUserRecipes(response.data));
       } else {
         alert("An error occurred");
@@ -37,6 +35,7 @@ const UserProfile = () => {
   useEffect(() => {
     fetchUserRecipes();
   }, [sortBy]);
+  console.log(user);
 
   return (
     <div
@@ -49,7 +48,6 @@ const UserProfile = () => {
             fetchingData={fetchingData}
             setFetchingData={setFetchingData}
             recipes={user.recipes}
-            favouriteRecipes={[]}
           />
         )}
         <div
