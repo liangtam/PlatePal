@@ -4,7 +4,8 @@ import {
   Text,
   CardBody,
   Heading,
-  Card, IconButton
+  Card,
+  IconButton,
 } from "@chakra-ui/react";
 import { BiHeart, BiSolidHeart } from "react-icons/bi";
 import vegIcon from "../../assets/vegan_flaticon.png";
@@ -22,27 +23,36 @@ const ExploreBox = ({ recipe, onClick, onFavorite, isFavorite }) => {
   };
 
   return (
-      <Card
-          onClick={onClick}
-          className={`${styles.exploreCard}`}
-          display="flex"
-          flexDirection="column"
+    <Card
+      onClick={onClick}
+      className={`${styles.exploreCard}`}
+      display="flex"
+      flexDirection="column"
+    >
+      <CardBody
+        className={styles.body}
+        style={{ backgroundImage: `url(${recipe.image || noMedia})` }}
       >
-        <CardBody
-            className={styles.body}
-            style={{ backgroundImage: `url(${recipe.image || noMedia})` }}
-        >
-          <Flex justify="space-between">
-            <Flex className={styles.heading} gap="1" alignItems="center">
-              <IconButton
-                  icon={isFavorite ? <BiSolidHeart /> : <BiHeart />}
-                  onClick={handleFavorite}
-                  aria-label={isFavorite ? "Unfavorite" : "Favorite"}
-                  variant="ghost"
-                  colorScheme={isFavorite ? "red" : "gray"}
-              />
-              <Text>{recipe.favoriteCount || 0}</Text>
-            </Flex>
+        <Flex justify="space-between">
+          <Flex
+            className={styles.heading}
+            alignItems="center"
+            onClick={handleFavorite}
+          >
+            <IconButton
+              icon={isFavorite ? <BiSolidHeart /> : <BiHeart />}
+              onClick={handleFavorite}
+              aria-label={isFavorite ? "Unfavorite" : "Favorite"}
+              variant="ghost"
+              colorScheme={isFavorite ? "red" : "gray"}
+              style={{
+                minWidth: "0",
+                height: "auto",
+                padding: "var(--spacing-1)",
+              }}
+            />
+            <Text className="padR-1">{recipe.favoriteCount || 0}</Text>
+          </Flex>
           {recipe.foodProperties &&
             (recipe.foodProperties.isVegan ||
               recipe.foodProperties.isSpicy ||
@@ -79,18 +89,18 @@ const ExploreBox = ({ recipe, onClick, onFavorite, isFavorite }) => {
               </div>
             )}
         </Flex>
-
       </CardBody>
 
-      <div
-        className={styles.footer}
-      >
-        <Heading size="sm" fontSize={17} textAlign={'left'}>
+      <div className={styles.footer}>
+        <Heading size="sm" fontSize={17} textAlign={"left"}>
           {recipe.name}
         </Heading>
         <Text fontSize={15}>Estimated time: {recipe.estimatedTime} min</Text>
         <Flex flex="1" gap="3" alignItems="center" flexWrap="wrap">
-          <RoundTextLabel text={recipe.userEmail?.split("@")[0]} classNames={"font-weight-500 font-size-2"}/>
+          <RoundTextLabel
+            text={recipe.userEmail?.split("@")[0]}
+            classNames={"font-weight-500 font-size-2"}
+          />
         </Flex>
       </div>
     </Card>
