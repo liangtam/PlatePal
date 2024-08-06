@@ -89,23 +89,7 @@ const ExploreCardDetail = ({
                     </ModalBody>
 
                     <ModalFooter>
-                        <Flex align="center" mr={3}>
-                            <Text mr={2}>Favorites:</Text>
-                            <Box width="20px" height="24px" overflow="hidden" position="relative">
-                                <AnimatePresence initial={false}>
-                                    <motion.div
-                                        key={selectFood.favoriteCount}
-                                        initial={{ opacity: 0, y: 10 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, y: -10 }}
-                                        transition={{ duration: 0.3 }}
-                                        style={{ position: "absolute", width: "100%" }}
-                                    >
-                                        {selectFood.favoriteCount}
-                                    </motion.div>
-                                </AnimatePresence>
-                            </Box>
-                        </Flex>
+                    
                         <Button mr={3} onClick={handleClose}>
                             Close
                         </Button>
@@ -114,7 +98,6 @@ const ExploreCardDetail = ({
                             style={{
                                 color: "white",
                                 backgroundColor: "rgb(86, 193, 255)",
-                                width: "110px",
                             }}
                             onClick={handleFavorite}
                         >
