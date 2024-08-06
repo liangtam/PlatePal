@@ -104,7 +104,6 @@ const Home = () => {
     setIsGenerating(true);
     setErrorGenerating(false);
     const ingredientList = [...ingredients, ...defaultIngredients];
-    setIngredients(ingredientList);
     try {
       const response = await api.get("/recipes/generate", {
         params: {
