@@ -276,11 +276,10 @@ const Home = () => {
         style={{ minHeight: "90vh" }}
       >
         <Flex style={{ width: "85%" }} className="home-container">
-          <Flex direction="column">
+          <Flex direction="column" flex="1">
             <Flex
               direction="column"
               className="generate-container bg-radial soft-light-shadow"
-              justify={"flex-end"}
             >
               <SearchBar
                 handleGenerateRecipe={handleGenerateRecipe}

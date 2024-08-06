@@ -66,7 +66,7 @@ body {
 }
 
 .generate-container {
-  width: 1000px;
+  width: 100%;
   border-radius: 25px;
   overflow: hidden;
 }
