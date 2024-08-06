@@ -4,7 +4,7 @@ import {
   Text,
   CardBody,
   Heading,
-  Card
+  Card, IconButton
 } from "@chakra-ui/react";
 import { BiHeart, BiSolidHeart } from "react-icons/bi";
 import vegIcon from "../../assets/vegan_flaticon.png";
@@ -15,31 +15,34 @@ import noMedia from "../../assets/455-no-media.png";
 import styles from "./ExploreBox.module.css";
 import RoundTextLabel from "../RoundTextLabel/RoundTextLabel";
 
-const ExploreBox = ({ recipe, onClick, onLike, isFavorite }) => {
+const ExploreBox = ({ recipe, onClick, onFavorite, isFavorite }) => {
+  const handleFavorite = (e) => {
+    e.stopPropagation();
+    onFavorite(recipe._id);
+  };
+
   return (
-    <Card
-      onClick={() => onClick()}
-      className={`${styles.exploreCard}`}
-      display="flex"
-      flexDirection="column"
-    >
-      <CardBody
-        className={styles.body}
-        style={{ backgroundImage: `url(${recipe.image || noMedia})` }}
+      <Card
+          onClick={onClick}
+          className={`${styles.exploreCard}`}
+          display="flex"
+          flexDirection="column"
       >
-        <Flex justify="space-between">
-          <Flex className={styles.heading} gap="1" alignItems="center">
-            <div
-              className="w-100"
-              onClick={(e) => {
-                e.stopPropagation();
-                onLike();
-              }}
-            >
-              {isFavorite ? <BiSolidHeart /> : <BiHeart />}
-            </div>
-            <div className="w-100">{recipe.favoriteCount || 0}</div>
-          </Flex>
+        <CardBody
+            className={styles.body}
+            style={{ backgroundImage: `url(${recipe.image || noMedia})` }}
+        >
+          <Flex justify="space-between">
+            <Flex className={styles.heading} gap="1" alignItems="center">
+              <IconButton
+                  icon={isFavorite ? <BiSolidHeart /> : <BiHeart />}
+                  onClick={handleFavorite}
+                  aria-label={isFavorite ? "Unfavorite" : "Favorite"}
+                  variant="ghost"
+                  colorScheme={isFavorite ? "red" : "gray"}
+              />
+              <Text>{recipe.favoriteCount || 0}</Text>
+            </Flex>
           {recipe.foodProperties &&
             (recipe.foodProperties.isVegan ||
               recipe.foodProperties.isSpicy ||
