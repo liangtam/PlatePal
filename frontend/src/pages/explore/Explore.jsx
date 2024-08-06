@@ -104,7 +104,7 @@ const Explore = () => {
                 <Heading>
                     <Box>
                         {/* <Image className="image" src={whiteLogo} alt="PlatePal Logo" /> */}
-                        <Text className='w-100'>Recipe Plaza</Text>
+                        <Text className='w-100 marB-4'>Recipe Plaza</Text>
                     </Box>
                 </Heading>
 
