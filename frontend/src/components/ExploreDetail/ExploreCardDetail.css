@@ -1,9 +1,9 @@
-.animated-image {
-    width: 100%;
-    height: auto;
+.card-animated-image {
+    width: auto;
+    height: 300px;
     max-height: 300px;
-    border-radius: 50%;
     animation: pulse 2s infinite;
+    border-radius: 10px;
 }
 
 @keyframes pulse {
@@ -16,19 +16,6 @@
     100% {
         transform: scale(0.97);
     }
-}
-
-
-.modal-content {
-    width:500px;
-    height:500px;
-    background-color: white;
-    border: 2px solid var(--blue-400);
-}
-
-.modal-header {
-    color: white;
-    padding: 10px;
 }
 
 /* .section-title {

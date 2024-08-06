@@ -17,7 +17,7 @@ const Explore = () => {
     const [favoriteRecipes, setFavoriteRecipes] = useState([]);
     const user = useSelector((state) => state.user.value);
 
-    const handleCardClick = (food, favorite = false) => {
+    const handleCardClick = (food, favorite) => {
         setSelectedFood(food);
         setShowCardDetail(true);
         setShouldFavorite(favorite);
@@ -99,12 +99,12 @@ const Explore = () => {
     };
 
     return (
-        <div className="bg-radial">
+        <div className="flex-col align-items-center bg-base-100">
             <ChakraProvider>
                 <Heading>
                     <Box>
-                        <Image className="image" src={whiteLogo} alt="PlatePal Logo" />
-                        <Text color="white">Exploring Other users' Recipes...</Text>
+                        {/* <Image className="image" src={whiteLogo} alt="PlatePal Logo" /> */}
+                        <Text className='w-100'>Recipe Plaza</Text>
                     </Box>
                 </Heading>
 
@@ -123,13 +123,13 @@ const Explore = () => {
                                     y: { type: "spring", stiffness: 300, damping: 30 }
                                 }}
                             >
-                                <ExploreBox
+                                {favoriteRecipes && <ExploreBox
                                     recipe={recipe}
-                                    onClick={() => handleCardClick(recipe)}
+                                    onClick={() => handleCardClick(recipe, false)}
                                     onLike={() => handleCardClick(recipe, true)}
                                     isFavorite={favoriteRecipes.includes(recipe._id)}
                                     favoriteCount={recipe.favoriteCount}
-                                />
+                                />}
                             </motion.div>
                         ))}
                     </AnimatePresence>

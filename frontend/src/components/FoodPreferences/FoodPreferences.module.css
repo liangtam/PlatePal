@@ -106,7 +106,8 @@
 }
 
 .checked {
-  border: 3px solid rgb(91, 226, 91);
+  display: flex;
+  outline: 3px solid rgb(91, 226, 91);
   box-shadow: 0px 3px 10px rgba(0, 255, 85, 0.5);
   transform: scale(1.2);
 }

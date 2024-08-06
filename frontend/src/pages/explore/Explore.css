@@ -1,13 +1,12 @@
 .cards{
     display: flex;
-    align-items: center;
+    justify-content: center;
     text-align: center;
     position: relative;
     flex-direction: row;
     flex-wrap: wrap;
     min-height: 800px;
-    padding: 32px;
-
+    gap: var(--spacing-4);
 }
 
 .image{

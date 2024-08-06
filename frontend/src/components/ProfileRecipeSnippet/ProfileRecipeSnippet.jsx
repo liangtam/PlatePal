@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./ProfileRecipeSnippet.module.css";
 import api from "../../api";
-import defaultRecipeImage from "../../assets/455-platepal-logo-color.png";
+import noMedia from "../../assets/455-no-media.png";
 import { deleteUserRecipe } from "../../redux/users/userSlice";
 import { useDispatch } from "react-redux";
 import EditRecipeModal from "../EditRecipeModal/EditRecipeModal";
@@ -17,7 +17,7 @@ const ProfileRecipeSnippet = ({ fetchingData, setFetchingData, recipe }) => {
   const [isEditModelShow, setIsEditModelShow] = useState(false);
 
   const setFallback = (e) => {
-    e.target.src = defaultRecipeImage;
+    e.target.src = noMedia;
   };
   useEffect(() => {
     setIsRecipeShare(recipe.shareToPublic ?? false);
@@ -99,58 +99,71 @@ const ProfileRecipeSnippet = ({ fetchingData, setFetchingData, recipe }) => {
           {recipe && (
             <img
               className={styles.image}
-              src={recipe.image ? recipe.image : defaultRecipeImage}
+              src={recipe.image ? recipe.image : noMedia}
               onError={setFallback}
               alt={recipe.name}
             />
           )}
-          <div className="flex-col gap-2" style={{justifyContent: 'space-between'}}>
+          <div
+            className="flex-col gap-2"
+            style={{ justifyContent: "space-between" }}
+          >
             <div className="flex-col gap-2">
-            <div className="flex-col" style={{ alignItems: "start" }}>
-            <b>Estimated cooking time:</b>
-            {recipe.estimatedTime} min
-          </div>
-          {recipe.foodProperties && (recipe.foodProperties.isVegan || recipe.foodProperties.isSpicy || recipe.foodProperties.isLactoseFree) && (
-              <div justify="center" className="flex-row gap-2 recipe-snippet-properties padY-1">
-                {recipe.foodProperties.isVegan && (
-                  <img
-                    src={vegIcon}
-                    className="recipe-snippet-icon"
-                    aria-label="Vegan"
-                  />
-                )}
-                {recipe.foodProperties.isLactoseFree && (
-                  <img
-                    src={lactoseFreeIcon}
-                    className="recipe-snippet-icon"
-                    aria-label="Lactose free"
-                  />
-                )}
-                {recipe.foodProperties.isSpicy && (
-                  <img
-                    src={spicyIcon}
-                    className="recipe-snippet-icon"
-                    aria-label="spicy"
-                  />
-                )}
+              <div className="flex-row gap-2" style={{ alignItems: "start" }}>
+                <b>Cooking time:</b>
+                ~{recipe.estimatedTime} min
               </div>
-            )}
+              {recipe.favouriteCount && <div className="flex-row gap-2" style={{ alignItems: "start" }}>
+                <b>Likes:</b>
+                {recipe.favouriteCount}
+              </div>}
+              {recipe.foodProperties &&
+                (recipe.foodProperties.isVegan ||
+                  recipe.foodProperties.isSpicy ||
+                  recipe.foodProperties.isLactoseFree) && (
+                  <div
+                    justify="center"
+                    className="flex-row gap-2 recipe-snippet-properties padY-1"
+                  >
+                    {recipe.foodProperties.isVegan && (
+                      <img
+                        src={vegIcon}
+                        className="recipe-snippet-icon"
+                        aria-label="Vegan"
+                      />
+                    )}
+                    {recipe.foodProperties.isLactoseFree && (
+                      <img
+                        src={lactoseFreeIcon}
+                        className="recipe-snippet-icon"
+                        aria-label="Lactose free"
+                      />
+                    )}
+                    {recipe.foodProperties.isSpicy && (
+                      <img
+                        src={spicyIcon}
+                        className="recipe-snippet-icon"
+                        aria-label="spicy"
+                      />
+                    )}
+                  </div>
+                )}
             </div>
 
-          <div
-            className="flex-row w-100 gap-2"
-            style={{ justifyContent: "flex-end" }}
-          >
-            <button className={styles.editBtn} onClick={handleEdit}>
-              Edit
-            </button>
-            <button className={styles.shareBtn} onClick={handleShare}>
-              {isRecipeShared ? "Private" : "Share"}
-            </button>
-            <button className={styles.deleteBtn} onClick={handleDelete}>
-              Delete
-            </button>
-          </div>
+            <div
+              className="flex-row w-100 gap-2"
+              style={{ justifyContent: "flex-end" }}
+            >
+              <button className={styles.editBtn} onClick={handleEdit}>
+                Edit
+              </button>
+              <button className={styles.shareBtn} onClick={handleShare}>
+                {isRecipeShared ? "Unshare" : "Share"}
+              </button>
+              <button className={styles.deleteBtn} onClick={handleDelete}>
+                Delete
+              </button>
+            </div>
           </div>
           {/* <div className={`${styles.ingredients}`}>
                         <b className="padB-2">Ingredients</b>

@@ -38,7 +38,7 @@ const RecipeDetail = ({ selectFood, isModalOpen, handleClose }) => {
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button colorScheme="orange" mr={3} onClick={handleClose}>
+                        <Button mr={3} onClick={handleClose}>
                             Close
                         </Button>
                     </ModalFooter>

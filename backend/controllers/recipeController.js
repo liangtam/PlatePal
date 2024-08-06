@@ -92,12 +92,11 @@ const handleGenerateRecipes = async (req, res) => {
 
     if (preferences) {
       if (preferences.isVegan === "true") {
-        console.log("HEY");
         message +=
-          " The recipes MUST be vegan. Do not generate any recipes with meat in it.";
+          " All of the recipes MUST be vegan. Do NOT generate any recipes with meat in it.";
       }
       if (preferences.isLactoseFree === "true") {
-        message += " The recipes must also be lactose free.";
+        message += " ALl of the recipes must also be lactose free.";
       }
 
       if (preferences.isSpicy === "true") {
@@ -113,6 +112,8 @@ const handleGenerateRecipes = async (req, res) => {
     message += `\n If the recipe is vegan, lactose-free, or spicy indicate in the food properties.`;
 
     message += `\nThe JSON object must use the schema: ${recipeSchema}.`;
+
+    console.log(message)
 
     const chatCompletion = await groq.chat.completions.create({
       messages: [
@@ -273,10 +274,19 @@ const handleDeleteRecipe = async (req, res) => {
 };
 
 const handleUpdateRecipe = async (req, res) => {
-  let foodProperties = await JSON.parse(req.body.foodProperties)
+  let foodProperties;
+  if (req.body.foodProperties) {
+    foodProperties = JSON.parse(req.body.foodProperties);
+  }
+  let updateData;
+  if (foodProperties) {
+    updateData = {...req.body, foodProperties};
+  } else {
+    updateData = req.body;
+  }
   try {
     const { id } = req.params;
-    const updatedRecipe = await Recipe.findOneAndUpdate({ _id: id }, {...req.body, foodProperties}, {
+    const updatedRecipe = await Recipe.findOneAndUpdate({ _id: id }, updateData, {
       new: true,
       runValidators: true,
       upsert: true,
