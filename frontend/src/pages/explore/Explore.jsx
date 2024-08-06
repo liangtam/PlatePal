@@ -48,6 +48,7 @@ const Explore = () => {
         }
     };
 
+    // claude 3.5 sonnet 19:38 8/5/2024 move the API call from ExploreCardDetail.jsx to Explore.jsx
     const handleFavorite = async (recipeId) => {
         if (!user || processingFavorite) return;
 
