@@ -5,21 +5,20 @@ import api from "../../api";
 import './Explore.css';
 import io from 'socket.io-client';
 import { motion, AnimatePresence } from "framer-motion";
-import {useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 
 const Explore = () => {
     const [fetchingData, setFetchingData] = useState(false);
     const [recipes, setRecipes] = useState([]);
     const [showCardDetail, setShowCardDetail] = useState(false);
     const [selectedFood, setSelectedFood] = useState(null);
-    const [shouldFavorite, setShouldFavorite] = useState(false);
     const [favoriteRecipes, setFavoriteRecipes] = useState([]);
+    const [processingFavorite, setProcessingFavorite] = useState(false);
     const user = useSelector((state) => state.user.value);
 
-    const handleCardClick = (food, favorite) => {
+    const handleCardClick = (food) => {
         setSelectedFood(food);
         setShowCardDetail(true);
-        setShouldFavorite(favorite);
     };
 
     const fetchUserRecipes = async () => {
@@ -46,6 +45,57 @@ const Explore = () => {
             setFavoriteRecipes(response.data);
         } catch (error) {
             console.error("Error fetching favorite recipes:", error);
+        }
+    };
+
+    // claude 3.5 sonnet 19:38 8/5/2024 move the API call from ExploreCardDetail.jsx to Explore.jsx
+    const handleFavorite = async (recipeId) => {
+        if (!user || processingFavorite) return;
+
+        setProcessingFavorite(true);
+        const isFavorite = favoriteRecipes.includes(recipeId);
+
+        try {
+            // Optimistic update
+            setFavoriteRecipes(prev =>
+                isFavorite ? prev.filter(id => id !== recipeId) : [...prev, recipeId]
+            );
+            setRecipes(prev => {
+                const newRecipes = prev.map(recipe =>
+                    recipe._id === recipeId
+                        ? { ...recipe, favoriteCount: isFavorite ? recipe.favoriteCount - 1 : recipe.favoriteCount + 1 }
+                        : recipe
+                );
+
+                // Update selectedFood if it's the one being favorited
+                if (selectedFood && selectedFood._id === recipeId) {
+                    setSelectedFood(newRecipes.find(r => r._id === recipeId));
+                }
+
+                return newRecipes;
+            });
+
+            // API call
+            await api.post(
+                "/users/favorite",
+                {
+                    userId: user.id,
+                    recipeId: recipeId,
+                },
+                {
+                    headers: {
+                        "auth-token": localStorage.getItem("authToken"),
+                    },
+                }
+            );
+            // The server will emit the update via socket.io
+        } catch (error) {
+            console.error("Error favoriting recipe:", error);
+            // Revert the optimistic update if the API call fails
+            await fetchFavoriteRecipes();
+            await fetchUserRecipes();
+        } finally {
+            setProcessingFavorite(false);
         }
     };
 
@@ -86,23 +136,15 @@ const Explore = () => {
         return () => {
             socket.off('newRecipe');
             socket.off('favoriteUpdate');
+            socket.off('recipeRemoved');
         };
     }, [fetchingData]);
-
-    const handleFavoriteUpdate = (recipeId, newCount) => {
-        setRecipes((prevRecipes) =>
-            prevRecipes.map((recipe) =>
-                recipe._id === recipeId ? { ...recipe, favoriteCount: newCount } : recipe
-            )
-        );
-    };
 
     return (
         <div className="flex-col align-items-center bg-base-100">
             <ChakraProvider>
                 <Heading>
                     <Box>
-                        {/* <Image className="image" src={whiteLogo} alt="PlatePal Logo" /> */}
                         <Text className='w-100 marB-4'>Recipe Plaza</Text>
                     </Box>
                 </Heading>
@@ -124,10 +166,9 @@ const Explore = () => {
                             >
                                 {favoriteRecipes && <ExploreBox
                                     recipe={recipe}
-                                    onClick={() => handleCardClick(recipe, false)}
-                                    onLike={() => handleCardClick(recipe, true)}
+                                    onClick={() => handleCardClick(recipe)}
+                                    onFavorite={handleFavorite}
                                     isFavorite={favoriteRecipes.includes(recipe._id)}
-                                    favoriteCount={recipe.favoriteCount}
                                 />}
                             </motion.div>
                         ))}
@@ -139,11 +180,9 @@ const Explore = () => {
                         isModalOpen={showCardDetail}
                         handleClose={() => {
                             setShowCardDetail(false);
-                            setShouldFavorite(false);
                         }}
-                        onFavoriteUpdate={(newCount) => handleFavoriteUpdate(selectedFood._id, newCount)}
-                        shouldFavorite={shouldFavorite}
-                        onFavoriteToggle={fetchFavoriteRecipes}
+                        onFavorite={handleFavorite}
+                        isFavorite={favoriteRecipes.includes(selectedFood._id)}
                     />
                 )}
             </ChakraProvider>

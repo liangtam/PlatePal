@@ -3,7 +3,7 @@ import userAvatar from "../../assets/455-user-avatar.png";
 import CreateRecipe from "../CreateRecipe/CreateRecipe";
 import AddDefaultIngredient from "../AddDefaultIngredient/AddDefaultIngredient";
 
-const UserInfo = ({ fetchingData, setFetchingData, user, recipes, favouriteRecipes }) => {
+const UserInfo = ({ fetchingData, setFetchingData, user, recipes }) => {
   return (
     <div className={styles.container} >
         <div className="flex-col gap-2 align-items-center marB-3">
