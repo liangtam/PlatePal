@@ -58,7 +58,6 @@ const ExploreBox = ({ recipe, onClick, onFavorite, isFavorite }) => {
               recipe.foodProperties.isSpicy ||
               recipe.foodProperties.isLactoseFree) && (
               <div
-                justify="center"
                 className="flex-row gap-2 padY-1 padX-3 bg-base-50 align-items-center"
                 style={{
                   boxShadow: "0px 5px 10px rgba(113, 113, 113, 0.5)",
