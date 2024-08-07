@@ -1,4 +1,4 @@
-.cards{
+.cards {
     display: flex;
     justify-content: center;
     text-align: center;
@@ -9,9 +9,9 @@
     gap: var(--spacing-4);
 }
 
-.image{
-    width:100px;
+.image {
+    width: 100px;
     height: 100px;
-   margin: auto;
+    margin: auto;
 
 }

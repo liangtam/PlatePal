@@ -1,22 +1,22 @@
 .text {
-  display: flex;
-  gap: var(--spacing-2);
-  align-items: center;
-  background: rgb(255, 214, 132);
-  background: linear-gradient(
-    -59deg,
-    rgb(255, 204, 103) 16%,
-    rgb(255, 165, 68) 100%
-  );
-  border-radius: 25px;
-  color: white;
-  padding: var(--spacing-1) var(--spacing-3);
-  width: fit-content;
+    display: flex;
+    gap: var(--spacing-2);
+    align-items: center;
+    background: rgb(255, 214, 132);
+    background: linear-gradient(
+            -59deg,
+            rgb(255, 204, 103) 16%,
+            rgb(255, 165, 68) 100%
+    );
+    border-radius: 25px;
+    color: white;
+    padding: var(--spacing-1) var(--spacing-3);
+    width: fit-content;
 }
 
 
 .icon {
-  height: 20px;
+    height: 20px;
 }
 
 

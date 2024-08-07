@@ -1,18 +1,18 @@
 .container {
-  background-color: white;
-  border-radius: 20px;
-  height: auto;
-  width: 100%;
-  max-height: 320px;
-  border: 1px solid var(--orange-300);
+    background-color: white;
+    border-radius: 20px;
+    height: auto;
+    width: 100%;
+    max-height: 320px;
+    border: 1px solid var(--orange-300);
 }
 
 .title {
-  border-bottom: 1px solid var(--orange-300);
-  width: 100%;
-  padding: var(--spacing-3);
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
+    border-bottom: 1px solid var(--orange-300);
+    width: 100%;
+    padding: var(--spacing-3);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
 }
 
 .allergyTag {
@@ -49,13 +49,14 @@
 }
 
 .btn {
-  background-color: var(--base-100);
-  transition: background-color 0.3s ease;
+    background-color: var(--base-100);
+    transition: background-color 0.3s ease;
 }
+
 .btn:disabled {
-  display: none;
+    display: none;
 }
 
 .btn:hover {
-  background-color: var(--base-200);
+    background-color: var(--base-200);
 }

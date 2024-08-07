@@ -1,77 +1,69 @@
-import {
-  ChakraProvider,
-  Box,
-  Flex,
-  Button,
-  Tag,
-  TagLabel,
-  TagCloseButton,
-} from "@chakra-ui/react";
+import {ChakraProvider, Flex, Tag, TagCloseButton, TagLabel,} from "@chakra-ui/react";
 import styles from "./DislikedRecipes.module.css";
-import { useContext } from "react";
-import { DislikedRecipesContext } from "../context/DislikedRecipesContext";
+import {useContext} from "react";
+import {DislikedRecipesContext} from "../context/DislikedRecipesContext";
 import DislikedRecipesInputBar from "../InputBars/DislikedRecipesInputBar";
 
-const DislikedRecipes = ({ handleSave }) => {
-  const { dislikedRecipes, setDislikedRecipes } = useContext(
-    DislikedRecipesContext
-  );
-
-  const handleRemoveRecipe = (dislikedRecipeToRemove) => {
-    setDislikedRecipes(
-      dislikedRecipes.filter(
-        (dislikedRecipe) => dislikedRecipe !== dislikedRecipeToRemove
-      )
+const DislikedRecipes = ({handleSave}) => {
+    const {dislikedRecipes, setDislikedRecipes} = useContext(
+        DislikedRecipesContext
     );
-  };
 
-  return (
-    <ChakraProvider>
-      <Flex
-        className={`${styles.container} justify-content-between align-items-between soft-light-shadow`}
-        direction="column"
-      >
-        <div className={styles.title}>
-          <b>Disliked Recipes</b>
-        </div>
-        <div className="flex-col pad-3">
-          <DislikedRecipesInputBar />
-          {!dislikedRecipes || dislikedRecipes.length === 0 ? (
-            <div>
-              No disliked recipes. You can dislike generated recipes via the "I
-              don't like it" button.
-            </div>
-          ) : (
-            <div className="flex-col gap-2">
-              {dislikedRecipes.map((recipeName) => {
-                return (
-                  <Tag
-                    className={styles.dislikedRecipe}
-                    style={{ background: "white" }}
-                  >
-                    <TagLabel>{recipeName}</TagLabel>
-                    <TagCloseButton
-                      onClick={() => handleRemoveRecipe(recipeName)}
-                      className={styles.closeButton}
-                    />
-                  </Tag>
-                );
-              })}
-            </div>
-          )}
+    const handleRemoveRecipe = (dislikedRecipeToRemove) => {
+        setDislikedRecipes(
+            dislikedRecipes.filter(
+                (dislikedRecipe) => dislikedRecipe !== dislikedRecipeToRemove
+            )
+        );
+    };
 
-          <Flex justify="flex-end" className="marT-3">
-            <button
-              onClick={handleSave}
-              className={`${styles.btn} padY-2 padX-3 radius-5 yellow-400 font-weight-500`}
+    return (
+        <ChakraProvider>
+            <Flex
+                className={`${styles.container} justify-content-between align-items-between soft-light-shadow`}
+                direction="column"
             >
-              Save
-            </button>
-          </Flex>
-        </div>
-      </Flex>
-    </ChakraProvider>
-  );
+                <div className={styles.title}>
+                    <b>Disliked Recipes</b>
+                </div>
+                <div className="flex-col pad-3">
+                    <DislikedRecipesInputBar/>
+                    {!dislikedRecipes || dislikedRecipes.length === 0 ? (
+                        <div>
+                            No disliked recipes. You can dislike generated recipes via the "I
+                            don't like it" button.
+                        </div>
+                    ) : (
+                        <div className="flex-col gap-2">
+                            {dislikedRecipes.map((recipeName) => {
+                                return (
+                                    <Tag
+                                        className={styles.dislikedRecipe}
+                                        style={{background: "white"}}
+                                    >
+                                        <TagLabel>{recipeName}</TagLabel>
+                                        <TagCloseButton
+                                            onClick={() => handleRemoveRecipe(recipeName)}
+                                            className={styles.closeButton}
+                                        />
+                                    </Tag>
+                                );
+                            })}
+                        </div>
+                    )}
+
+                    <Flex justify="flex-end" className="marT-3">
+                        <button
+                            onClick={handleSave}
+                            className={`${styles.btn} padY-2 padX-3 radius-5 yellow-400 font-weight-500`}
+                        >
+                            Save
+                        </button>
+                    </Flex>
+                </div>
+            </Flex>
+        </ChakraProvider>
+    );
 };
 
 export default DislikedRecipes;

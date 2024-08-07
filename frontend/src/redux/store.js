@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit';
+import {configureStore} from '@reduxjs/toolkit';
 import userReducer from './users/userSlice';
 import recipesReducer from './recipes/recipesSlice';
 

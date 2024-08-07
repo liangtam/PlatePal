@@ -1,8 +1,8 @@
-import React, { useContext, useState } from 'react';
-import { ChakraProvider, Box, Input, InputGroup, Button } from '@chakra-ui/react';
+import React, {useContext, useState} from 'react';
+import {Box, Button, ChakraProvider, Input, InputGroup} from '@chakra-ui/react';
 import loadingCook from '../../assets/loadingCook.gif'
 import './SearchBar.css';
-import { IngredientsContext } from '../context/IngredientsContext';
+import {IngredientsContext} from '../context/IngredientsContext';
 
 function SearchBar({handleGenerateRecipe, isGenerating}) {
     const [inputValue, setInputValue] = useState('');
@@ -32,7 +32,7 @@ function SearchBar({handleGenerateRecipe, isGenerating}) {
                     />
                     <Box ml={4}>
                         {isGenerating ? (
-                            <img src={loadingCook} className="loading-gif" />
+                            <img src={loadingCook} className="loading-gif"/>
                         ) : (
                             <Button
                                 colorScheme="orange"

@@ -1,104 +1,107 @@
 body {
-  background-color: var(--base-100);
+    background-color: var(--base-100);
 }
+
 .dialog-container {
-  display: flex;
-  align-items: center;
-  text-align: center;
-  position: relative;
-  margin-top: 20px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    margin-top: 20px;
 }
+
 /* (A) SPEECH BOX */
 .dialog-text {
-  background-color: white;
-  border-radius: 10px; /* Rounded corners */
-  padding: 20px;
-  width: 50%;
-  max-width: 600px;
-  font-size: 20px;
-  color: black;
-  margin-bottom: 20px;
-  margin-top: 20px;
-  box-shadow: 0 5px 18px rgba(255, 106, 0, 0.3);
-  position: relative;
+    background-color: white;
+    border-radius: 10px; /* Rounded corners */
+    padding: 20px;
+    width: 50%;
+    max-width: 600px;
+    font-size: 20px;
+    color: black;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    box-shadow: 0 5px 18px rgba(255, 106, 0, 0.3);
+    position: relative;
 }
 
 /* (B) USE ::AFTER TO CREATE THE "CALLOUT" */
 .dialog-text::after {
-  display: block;
-  width: 0;
-  content: "";
-  border: 15px solid transparent;
+    display: block;
+    width: 0;
+    content: "";
+    border: 15px solid transparent;
 }
 
 .dialog-text.left::after {
-  border-right-color: #ffffff;
-  border-left: 0;
+    border-right-color: #ffffff;
+    border-left: 0;
 }
 
 .dialog-text {
-  position: relative;
-  margin: 30px;
+    position: relative;
+    margin: 30px;
 }
+
 .dialog-text::after {
-  position: absolute;
+    position: absolute;
 }
 
 .dialog-text.left::after {
-  left: -15px;
-  top: calc(50% - 15px);
+    left: -15px;
+    top: calc(50% - 15px);
 }
 
 .dialog-text::after {
-  border-right-color: white;
-  border-left: 0;
+    border-right-color: white;
+    border-left: 0;
 }
 
 .dialog-text::after {
-  left: -15px;
-  top: calc(50% - 15px);
+    left: -15px;
+    top: calc(50% - 15px);
 }
 
 .landing-image {
-  width: 50%;
-  height: auto;
-  margin-top: 40px;
+    width: 50%;
+    height: auto;
+    margin-top: 40px;
 }
 
 .generate-container {
-  width: 100%;
-  border-radius: 25px;
-  overflow: hidden;
+    width: 100%;
+    border-radius: 25px;
+    overflow: hidden;
 }
 
 .home-container {
-  display: flex;
-  gap: var(--spacing-5);
-  padding: var(--spacing-3);
+    display: flex;
+    gap: var(--spacing-5);
+    padding: var(--spacing-3);
 }
 
 .warningInfo {
-  color: black;
-  background-color: white;
-  border-radius: 20px;
+    color: black;
+    background-color: white;
+    border-radius: 20px;
 }
 
 @keyframes jump {
-  0%,
-  20%,
-  50%,
-  80%,
-  100% {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(-20px);
-  }
-  60% {
-    transform: translateY(-10px);
-  }
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-20px);
+    }
+    60% {
+        transform: translateY(-10px);
+    }
 }
 
 .animated-text {
-  animation: jump 2s infinite;
+    animation: jump 2s infinite;
 }

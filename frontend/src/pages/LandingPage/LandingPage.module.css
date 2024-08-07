@@ -7,6 +7,7 @@
 .logo {
     width: 120px;
 }
+
 .landingPage {
     display: flex;
     flex-direction: column;
@@ -48,14 +49,14 @@
     display: flex;
     background: radial-gradient(circle, rgb(255, 214, 132) 15%, rgb(255, 170, 79) 96%);
 }
-  
-  .landingImg img {
+
+.landingImg img {
     max-width: 100%;
     max-height: 500px;
     object-fit: contain;
     animation: squish 1.2s infinite linear alternate;
     transform-origin: bottom;
-  }
+}
 
 
 .btn span {
@@ -73,10 +74,10 @@
 @media screen and (min-width: 640px) {
     .logo {
         width: 170px;
-    }  
+    }
 }
 
-@media screen and (min-width: 768px){
+@media screen and (min-width: 768px) {
 
     .intro {
         align-items: start;
@@ -108,21 +109,22 @@
         flex-direction: row;
         height: 100vh;
     }
+
     .landingPage h1 {
         font-size: 80px;
     }
-    
+
     .landingPage h2 {
         font-size: 40px;
     }
-    
+
 }
 
 @media screen and (min-width: 1024px) {
     .intro {
         padding-left: var(--spacing-8);
     }
-    
+
 }
 
 

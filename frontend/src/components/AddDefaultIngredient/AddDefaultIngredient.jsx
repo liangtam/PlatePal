@@ -1,10 +1,12 @@
-import React, { useState, useCallback } from "react";
-import { useParams } from "react-router-dom";
+import React, {useState} from "react";
+import {useParams} from "react-router-dom";
 import {
     Button,
     ChakraProvider,
     FormControl,
     FormLabel,
+    HStack,
+    IconButton,
     Input,
     Modal,
     ModalBody,
@@ -13,41 +15,38 @@ import {
     ModalFooter,
     ModalHeader,
     ModalOverlay,
-    IconButton,
-    HStack,
-    VStack,
-    useDisclosure
+    useDisclosure,
+    VStack
 } from "@chakra-ui/react";
-import { AddIcon, MinusIcon } from "@chakra-ui/icons";
+import {AddIcon, MinusIcon} from "@chakra-ui/icons";
 import saltIcon from '../../assets/saltIcon.png'
-import { useDropzone } from 'react-dropzone';
 import api from "../../api";
 
-const AddDefaultIngredient = ({ fetchingData, setFetchingData, user }) => {
-    const { isOpen, onOpen, onClose } = useDisclosure();
+const AddDefaultIngredient = ({fetchingData, setFetchingData, user}) => {
+    const {isOpen, onOpen, onClose} = useDisclosure();
     const [seasonings, setSeasonings] = useState(user.defaultIngredients ?? [""]);
-    const { userId } = useParams();
+    const {userId} = useParams();
 
     const handleUpdateSeasoning = async () => {
         const filteredSeasoning = seasonings.filter(item => item.trim() !== "");
         try {
             const response = await api.patch(
-              "/users/" + userId,
-              { defaultIngredients: filteredSeasoning },
-              {
-                headers: {
-                  "auth-token": localStorage.getItem("authToken"),
-                  "Content-Type": "application/json",
-                },
-              }
+                "/users/" + userId,
+                {defaultIngredients: filteredSeasoning},
+                {
+                    headers: {
+                        "auth-token": localStorage.getItem("authToken"),
+                        "Content-Type": "application/json",
+                    },
+                }
             );
             setFetchingData(!fetchingData);
             onClose();
-          } catch (err) {
+        } catch (err) {
             alert("Error occurred updating allergies: ", err.message);
-          }
+        }
 
-        
+
     }
 
     const handleInputChange = (index, value, setter, state) => {
@@ -70,15 +69,15 @@ const AddDefaultIngredient = ({ fetchingData, setFetchingData, user }) => {
     return (
         <ChakraProvider>
             <Button onClick={onOpen} w="100%" p={3} my={5} border="1px solid grey" borderRadius="25px">
-                <img  width="30px" p={3} my={5} src={saltIcon}></img>
+                <img width="30px" p={3} my={5} src={saltIcon}></img>
                 Add Seasoning
             </Button>
 
             <Modal isOpen={isOpen} onClose={onClose}>
-                <ModalOverlay />
+                <ModalOverlay/>
                 <ModalContent className="modal-content">
                     <ModalHeader className="modal-header">Create Recipe</ModalHeader>
-                    <ModalCloseButton />
+                    <ModalCloseButton/>
                     <ModalBody>
 
                         <FormControl mt={4} isRequired>
@@ -92,13 +91,13 @@ const AddDefaultIngredient = ({ fetchingData, setFetchingData, user }) => {
                                             onChange={(e) => handleInputChange(index, e.target.value, setSeasonings, seasonings)}
                                         />
                                         <IconButton
-                                            icon={<MinusIcon />}
+                                            icon={<MinusIcon/>}
                                             onClick={() => removeField(index, setSeasonings, seasonings)}
                                             isDisabled={seasonings.length === 1}
                                             aria-label={"Remove Ingredient"}/>
                                     </HStack>
                                 ))}
-                                <Button onClick={() => addField(setSeasonings, seasonings)} leftIcon={<AddIcon />}>
+                                <Button onClick={() => addField(setSeasonings, seasonings)} leftIcon={<AddIcon/>}>
                                     Add Seasoning
                                 </Button>
                             </VStack>

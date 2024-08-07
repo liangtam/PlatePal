@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import {createSlice} from '@reduxjs/toolkit';
 
 const getUser = () => {
     try {
@@ -7,7 +7,11 @@ const getUser = () => {
             return null;
         }
         const user = JSON.parse(userString);
-        return { ...user, recipes: Array.isArray(user.recipes) ? user.recipes : [], defaultIngredients: user.defaultIngredients ?? [] };
+        return {
+            ...user,
+            recipes: Array.isArray(user.recipes) ? user.recipes : [],
+            defaultIngredients: user.defaultIngredients ?? []
+        };
     } catch (error) {
         console.error('Error parsing user data:', error);
         return null;
@@ -34,7 +38,7 @@ export const userSlice = createSlice({
         },
         addUserRecipe: (state, action) => {
             if (!state.value) {
-                state.value = { recipes: [] };
+                state.value = {recipes: []};
             }
             if (!state.value.recipes) {
                 state.value.recipes = [];
@@ -45,7 +49,7 @@ export const userSlice = createSlice({
             const idToDelete = action.payload;
             state.value.recipes = state.value.recipes.filter((recipe) => recipe._id !== idToDelete);
         },
-    
+
         updateUserRecipes: (state, action) => {
             let index = state.value.recipes.findIndex((recipe) => recipe._id === action.payload._id)
             state.value.recipes[index] = action.payload;
@@ -63,6 +67,14 @@ export const userSlice = createSlice({
     }
 });
 
-export const { login, logout, deleteUserRecipe, addUserRecipe, setUserRecipes, updateUserRecipes, updateUserRecipe } = userSlice.actions;
+export const {
+    login,
+    logout,
+    deleteUserRecipe,
+    addUserRecipe,
+    setUserRecipes,
+    updateUserRecipes,
+    updateUserRecipe
+} = userSlice.actions;
 
 export default userSlice.reducer;

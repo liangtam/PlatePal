@@ -33,6 +33,7 @@ body {
 .generate-button {
     background-color: #ff7043 !important;
 }
+
 .generate-button:hover {
     background-color: #ff5722 !important;
 }
@@ -50,7 +51,7 @@ body {
     display: flex;
     align-items: center;
     background-color: var(--base-100) !important;
-    color: white ;
+    color: white;
     padding: 10px 20px;
     border-radius: 25px;
     font-size: 14px;

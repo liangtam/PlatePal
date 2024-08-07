@@ -4,8 +4,8 @@ const RoundTextLabel = ({text, classNames, leftIcon}) => {
 
     return (
         <div className={`${styles.text} ${classNames}`}>
-            {leftIcon && 
-            <img src={leftIcon} className={styles.icon}/>}
+            {leftIcon &&
+                <img src={leftIcon} className={styles.icon}/>}
             {text}
         </div>
     )

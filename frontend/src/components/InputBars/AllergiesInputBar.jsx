@@ -1,8 +1,8 @@
-import React, { useContext, useState } from 'react';
-import { ChakraProvider, Box, Input, Tag, TagLabel, TagCloseButton, Wrap, WrapItem, InputGroup, Button, InputLeftElement, IconButton } from '@chakra-ui/react';
+import React, {useContext, useState} from 'react';
+import {Box, ChakraProvider, IconButton, Input, InputGroup} from '@chakra-ui/react';
 import styles from './InputBar.module.css';
-import { AddIcon } from '@chakra-ui/icons';
-import { AllergiesContext } from '../context/AllergiesContext';
+import {AddIcon} from '@chakra-ui/icons';
+import {AllergiesContext} from '../context/AllergiesContext';
 
 function AllergiesInputBar() {
     const [inputValue, setInputValue] = useState('');
@@ -39,7 +39,7 @@ function AllergiesInputBar() {
                     />
 
                     <IconButton icon={<AddIcon/>} onClick={handleAddAllergy} className={styles.addButton}/>
-                       
+
                 </InputGroup>
             </Box>
         </ChakraProvider>
