@@ -24,6 +24,8 @@ Standard Requirements
 Stretch Requirements
 - (AI-generated) images of what the dish looks like (instead used image API that is NOT ai generated)
 - Create a “Pinterest”-like dashboard for sharing among users :white_check_mark:
+- Users are able to add allergies when generating the recipe :white_check_mark:
+- More customization options for users (veggie option/ lactose free option) :white_check_mark:
 
 ## Our project and Course content 
 
