@@ -25,33 +25,6 @@ Stretch Requirements
 - (AI-generated) images of what the dish looks like (instead used image API that is NOT ai generated)
 - Create a “Pinterest”-like dashboard for sharing among users :white_check_mark:
 
-
-## Task Breakdown
-User login feature with username and password
-- Frontend form for the users to fill in login/registration info
-- Backend API to create new user
-- Implement JWT for end-to-end user login/registration
-
-Viewing the actual recipe instructions
-- Create recipe schema in backend
-- Backend API to fetch the generated recipe
-- Having a UI page to display the recipe and load the recipe content
-- Create frontend recipe component that parses recipe info from backend to user-friendly format
-
-
-## Team Members
-
-- Brian Chu: Software Development Intern
-- Elena Guo: 4th year BUCS student and aspiring product manager 
-- Tammie Liang: 3rd year CS student, currently in a work term
-- Abby Hong: 4th year CS+STATS student, currently in a SDE intern
-
-## Prototypes
-
-<img src ="images/sketch_main.png" width="400px">
-<img src ="images/sketch_canva.png" width="400px">
-<img src ="images/sketch_login.png" width="300px">
-
 ## Our project and Course content 
 
 ### Unit1 CSS and HTML
@@ -94,11 +67,31 @@ We use Mongoose, an object document mapping library, to make it easier to connec
 - Elena: Created the main landing page and integrated the sign-in/login component with the landing page. Implemented UI changes and routing behavior logic to nav bar. Dummy user and other integration bug fixes. Overall, I took a more product manager approach focusing on product validation and user experience.
 
 
+## Task Breakdown
+User login feature with username and password
+- Frontend form for the users to fill in login/registration info
+- Backend API to create new user
+- Implement JWT for end-to-end user login/registration
+
+Viewing the actual recipe instructions
+- Create recipe schema in backend
+- Backend API to fetch the generated recipe
+- Having a UI page to display the recipe and load the recipe content
+- Create frontend recipe component that parses recipe info from backend to user-friendly format
 
 
-User Case1:
--Tammie only has chicken and rice at home (she’s broke) she dont like cheese
--tammie log in the 
+## Team Members
+
+- Brian Chu: Software Development Intern
+- Elena Guo: 4th year BUCS student and aspiring product manager 
+- Tammie Liang: 3rd year CS student, currently in a work term
+- Abby Hong: 4th year CS+STATS student, currently in a SDE intern
+
+## Prototypes
+
+<img src ="images/sketch_main.png" width="400px">
+<img src ="images/sketch_canva.png" width="400px">
+<img src ="images/sketch_login.png" width="300px">
 
 
 
