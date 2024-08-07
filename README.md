@@ -79,12 +79,12 @@ We use Mongoose, an object document mapping library, to make it easier to connec
 
 
 ## Next Steps
-Dive deeper into the explore page by adding commenting and bookmarking features.
-Let users add a description to their recipes
-Add moderation to ensure recipes being shared are safe and do not contain dangerous ingredients such as inappropriate substances.
-Add search functionality to user profile recipes. Add user profile picture feature.
-If we have money, a better image API :))))))))))))))))))))
-Sorting the items in the Explore page in a meaningful way.
+- Dive deeper into the explore page by adding commenting and bookmarking features.
+- Let users add a description to their recipes
+- Add moderation to ensure recipes being shared are safe and do not contain dangerous ingredients such as inappropriate substances.
+- Add search functionality to user profile recipes. Add user profile picture feature.
+- If we have money, a better image API :))))))))))))))))))))
+- Sorting the items in the Explore page in a meaningful way.
 
 
 ## Team Members Contributions
