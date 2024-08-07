@@ -289,9 +289,21 @@ const handleUpdateRecipe = async (req, res) => {
         }
 
         const io = req.io;
+        console.log(updatedRecipe);
 
         if (req.body.shareToPublic) {
-            io.emit("newRecipe", {newRecipe: updatedRecipe});
+            // Fetch the user's email
+            const user = await User.findById(updatedRecipe.userId);
+            if (user) {
+                io.emit("newRecipe", {
+                    newRecipe: {...updatedRecipe.toObject(), userEmail: user.email},
+                });
+            } else {
+                console.error(`User not found for recipe ${updatedRecipe._id}`);
+                io.emit("newRecipe", {
+                    newRecipe: {...updatedRecipe.toObject(), userEmail: "Anonymous"},
+                });
+            }
         } else if (req.body.shareToPublic === false) {
             io.emit("recipeRemoved", {recipeId: id});
         }
