@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { Box, ChakraProvider, Heading, Text } from "@chakra-ui/react";
-import { ExploreBox, ExploreCardDetail } from "../../components";
+import React, {useEffect, useState} from "react";
+import {Box, ChakraProvider, Heading, Text} from "@chakra-ui/react";
+import {ExploreBox, ExploreCardDetail} from "../../components";
 import api from "../../api";
 import './Explore.css';
 import io from 'socket.io-client';
-import { motion, AnimatePresence } from "framer-motion";
-import { useSelector } from "react-redux";
+import {AnimatePresence, motion} from "framer-motion";
+import {useSelector} from "react-redux";
 
 const Explore = () => {
     const [fetchingData, setFetchingData] = useState(false);
@@ -41,7 +41,7 @@ const Explore = () => {
         }
         try {
             const response = await api.get(`/users/favorites/${user.id}`,
-                { headers: { 'auth-token': localStorage.getItem('authToken') } });
+                {headers: {'auth-token': localStorage.getItem('authToken')}});
             setFavoriteRecipes(response.data);
         } catch (error) {
             console.error("Error fetching favorite recipes:", error);
@@ -63,7 +63,7 @@ const Explore = () => {
             setRecipes(prev => {
                 const newRecipes = prev.map(recipe =>
                     recipe._id === recipeId
-                        ? { ...recipe, favoriteCount: isFavorite ? recipe.favoriteCount - 1 : recipe.favoriteCount + 1 }
+                        ? {...recipe, favoriteCount: isFavorite ? recipe.favoriteCount - 1 : recipe.favoriteCount + 1}
                         : recipe
                 );
 
@@ -116,16 +116,16 @@ const Explore = () => {
             setRecipes((prevRecipes) => [newRecipe, ...prevRecipes]);
         });
 
-        socket.on('favoriteUpdate', ({ recipeId, favoriteCount }) => {
+        socket.on('favoriteUpdate', ({recipeId, favoriteCount}) => {
             console.log(`Received update for recipe ${recipeId}: new count ${favoriteCount}`);
             setRecipes((prevRecipes) =>
                 prevRecipes.map((recipe) =>
-                    recipe._id === recipeId ? { ...recipe, favoriteCount } : recipe
+                    recipe._id === recipeId ? {...recipe, favoriteCount} : recipe
                 )
             );
         });
 
-        socket.on('recipeRemoved', ({ recipeId }) => {
+        socket.on('recipeRemoved', ({recipeId}) => {
             console.log(`Recipe removed: ${recipeId}`);
             setRecipes((prevRecipes) => prevRecipes.filter(recipe => recipe._id !== recipeId));
             if (selectedFood && selectedFood._id === recipeId) {
@@ -155,13 +155,13 @@ const Explore = () => {
                             <motion.div
                                 key={recipe._id}
                                 layout
-                                initial={{ opacity: 0, y: 50 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, scale: 0.5 }}
+                                initial={{opacity: 0, y: 50}}
+                                animate={{opacity: 1, y: 0}}
+                                exit={{opacity: 0, scale: 0.5}}
                                 transition={{
-                                    opacity: { duration: 0.2 },
-                                    layout: { duration: 0.3 },
-                                    y: { type: "spring", stiffness: 300, damping: 30 }
+                                    opacity: {duration: 0.2},
+                                    layout: {duration: 0.3},
+                                    y: {type: "spring", stiffness: 300, damping: 30}
                                 }}
                             >
                                 {favoriteRecipes && <ExploreBox

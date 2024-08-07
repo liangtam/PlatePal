@@ -28,6 +28,7 @@
     color: white !important;
     background-color: var(--orange-300) !important;
 }
+
 .addButton:hover {
     background-color: var(--orange-400) !important;
 }
@@ -37,9 +38,11 @@
     overflow-y: auto;
     flex-wrap: wrap;
 }
+
 .inputBar {
     display: flex;
 }
+
 .inputBar input {
     border-radius: 20px;
 }

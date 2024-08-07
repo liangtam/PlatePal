@@ -16,7 +16,7 @@ const favoriteSchema = new Schema({
 }, {timestamps: true});
 
 // Compound index to ensure a user can only favorite a recipe once
-favoriteSchema.index({ userId: 1, recipeId: 1 }, { unique: true });
+favoriteSchema.index({userId: 1, recipeId: 1}, {unique: true});
 
 const Favorite = mongoose.model('Favorite', favoriteSchema);
 module.exports = Favorite;

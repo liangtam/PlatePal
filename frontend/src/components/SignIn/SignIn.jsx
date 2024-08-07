@@ -3,12 +3,12 @@ Modified it to use enums instead of string
  */
 
 import {useEffect, useState} from 'react';
-import {DefaultButton, Dialog, Checkbox, Link} from '@fluentui/react';
+import {Checkbox, DefaultButton, Dialog, Link} from '@fluentui/react';
 import './SignIn.css';
 import api from "../../api.js";
 import {useDispatch} from "react-redux";
 import {login} from "../../redux/users/userSlice.js";
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 const Window = {
     Login: 'LOGIN',
@@ -211,13 +211,15 @@ const SignIn = (signInProps) => {
                                         id='agreeToTerms'
                                     />
                                     <label htmlFor='agreeToTerms' style={{marginLeft: '8px'}}>
-                                        I agree to the <Link href={'/terms-of-service'} target={'_blank'}>terms of service</Link> and <Link href={'/privacy-policy'} target={'_blank'}>privacy policy</Link>.
+                                        I agree to the <Link href={'/terms-of-service'} target={'_blank'}>terms of
+                                        service</Link> and <Link href={'/privacy-policy'} target={'_blank'}>privacy
+                                        policy</Link>.
                                     </label>
                                 </div>
                                 <DefaultButton
                                     onClick={handleSignUp}
                                     className="blue-dialog-button"
-                                    >
+                                >
                                     Sign Up
                                 </DefaultButton>
                             </div>

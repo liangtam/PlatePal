@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const { handleSignup, handleLogin, handlePasswordReset, handleGetRecipesFromUser, handleFavoriteRecipe, handleUpdateUser,
+const {
+    handleSignup, handleLogin, handlePasswordReset, handleGetRecipesFromUser, handleFavoriteRecipe, handleUpdateUser,
     handleGetFavoritesFromUser, handleGetUser
 } = require('../controllers/userController');
 const authMiddleware = require("../middleware/authMiddleware");

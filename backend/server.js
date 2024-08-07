@@ -45,4 +45,4 @@ io.on('connection', (socket) => {
     });
 });
 
-module.exports = { app, io };
+module.exports = {app, io};

@@ -1,23 +1,22 @@
 import React from "react";
 import {
+    Box,
     Button,
-    Modal,
-    ModalOverlay,
+    Checkbox,
+    Flex,
     Heading,
-    ModalContent,
-    ModalHeader,
-    ModalFooter,
+    Image,
+    Modal,
     ModalBody,
     ModalCloseButton,
-    Text,
-    Box,
-    Image,
-    Checkbox,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
     Stack,
-    Flex,
+    Text,
 } from "@chakra-ui/react";
-import { BiHeart, BiSolidHeart } from "react-icons/bi";
-import { AnimatePresence, motion } from "framer-motion";
+import {BiHeart, BiSolidHeart} from "react-icons/bi";
 import "../RecipeDetail/RecipeDetail.css";
 import "./ExploreCardDetail.css";
 import noMedia from "../../assets/455-no-media.png";
@@ -39,19 +38,19 @@ const ExploreCardDetail = ({
     return (
         <div>
             <Modal isOpen={isModalOpen} onClose={handleClose}>
-                <ModalOverlay />
+                <ModalOverlay/>
                 <ModalContent
                     className="modal-content"
-                    style={{ border: "1px solid var(--orange-300)", width: "400px" }}
+                    style={{border: "1px solid var(--orange-300)", width: "400px"}}
                 >
                     <ModalHeader
                         className="modal-header bg-orange-300"
-                        style={{ borderTopRightRadius: "5px", borderTopLeftRadius: "5px" }}
+                        style={{borderTopRightRadius: "5px", borderTopLeftRadius: "5px"}}
                     >
                         <Heading size="sm">{selectFood.name}</Heading>
                         <Text fontSize={15}>{"Shared from: " + selectFood.userEmail}</Text>
                     </ModalHeader>
-                    <ModalCloseButton />
+                    <ModalCloseButton/>
                     <ModalBody>
                         <Box>
                             <Flex justify={"center"}>
@@ -89,12 +88,12 @@ const ExploreCardDetail = ({
                     </ModalBody>
 
                     <ModalFooter>
-                    
+
                         <Button mr={3} onClick={handleClose}>
                             Close
                         </Button>
                         <Button
-                            leftIcon={isFavorite ? <BiSolidHeart /> : <BiHeart />}
+                            leftIcon={isFavorite ? <BiSolidHeart/> : <BiHeart/>}
                             style={{
                                 color: "white",
                                 backgroundColor: "rgb(86, 193, 255)",

@@ -5,11 +5,11 @@
     "react-router-dom": "^6.23.1"
   },
   "scripts": {
-        "install-server": "cd backend && npm install",
-        "start-server": "cd backend && node server.js",
-        "install-client": "cd frontend && npm install",
-        "build-client": "cd frontend && npm run build",
-        "start-client": "cd frontend && npm run dev",
-        "test": "vitest"
+    "install-server": "cd backend && npm install",
+    "start-server": "cd backend && node server.js",
+    "install-client": "cd frontend && npm install",
+    "build-client": "cd frontend && npm run build",
+    "start-client": "cd frontend && npm run dev",
+    "test": "vitest"
   }
 }

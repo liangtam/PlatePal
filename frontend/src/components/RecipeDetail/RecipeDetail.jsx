@@ -1,18 +1,32 @@
 import React from 'react';
-import { Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Text, Box, Image, Checkbox, Stack } from '@chakra-ui/react';
+import {
+    Box,
+    Button,
+    Checkbox,
+    Image,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    Stack,
+    Text
+} from '@chakra-ui/react';
 import './RecipeDetail.css';
 
-const RecipeDetail = ({ selectFood, isModalOpen, handleClose }) => {
+const RecipeDetail = ({selectFood, isModalOpen, handleClose}) => {
     const ingredients = selectFood.ingredients;
     const instructions = selectFood.instructions;
 
     return (
         <div>
             <Modal isOpen={isModalOpen} onClose={handleClose}>
-                <ModalOverlay />
+                <ModalOverlay/>
                 <ModalContent className="modal-content">
                     <ModalHeader className="modal-header bg-blue-400">{selectFood.name}</ModalHeader>
-                    <ModalCloseButton />
+                    <ModalCloseButton/>
                     <ModalBody>
                         <Box>
                             <Image
@@ -31,7 +45,8 @@ const RecipeDetail = ({ selectFood, isModalOpen, handleClose }) => {
                             <Text fontWeight="bold" mb={2} className="section-title">Instructions:</Text>
                             <Stack spacing={1} className="instruction-list">
                                 {instructions.map((instruction, index) => (
-                                    instruction && <Checkbox key={index} colorScheme="orange">{instruction.trim()}</Checkbox>
+                                    instruction &&
+                                    <Checkbox key={index} colorScheme="orange">{instruction.trim()}</Checkbox>
                                 ))}
                             </Stack>
                         </Box>

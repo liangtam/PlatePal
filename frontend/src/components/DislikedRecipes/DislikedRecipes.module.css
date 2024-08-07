@@ -34,13 +34,14 @@
 }
 
 .btn {
-    background-color:var(--base-100);
+    background-color: var(--base-100);
     transition: background-color 0.3s ease;
 }
+
 .btn:disabled {
     display: none;
 }
 
 .btn:hover {
-    background-color:var(--base-200);
+    background-color: var(--base-200);
 }
