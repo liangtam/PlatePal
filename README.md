@@ -50,7 +50,12 @@ We used GitHub actions to automatically deploy any commit or merge to our main b
 ## Above and beyond
 
 - We created an ad hoc gmail account platepalservice@gmail.com that sends password reset emails. If you forget your password, you can click "forgot password" and it'll send you a temporary password that can be used once and expires in one hour. We chose not to demo this because throwaway email services tend to be finicky and none of us wants to screenshare our personal inboxes. Ran into issues where gmail's authentication for nodemaile is different for regular user login.
+  
 - We used socket.io to have a live, real-time updating Explore page. If you like, share, or unshare/delete a recipe, all users looking at the Explore page will instantly see the update. Inspired by Pinterest, the goal for the Explore page was for users to find a community of foodies on our platform, and use Platepal for the social aspect of sharing and collaboration. This was annoying to get right. First of all, for a synchronized and smooth user experience, I opted to use a strategy called optimistic updating, where the frontend will update with the expected data before the backend confirms whether or not it's correct. Normal API calls get like the full recipe or the full recipe as a response, but we can't do that with socket.io because that would cause performance issues, meaning it has to send a "this item's like count increased/decreased" or "this item was added/deleted", and we had to implement proper frontend logic to implement. This took a lot of tweaking to ensure that the data across all clients is correct, especially since the like count is based off previous like count instead of pulling a hard number from the database. We also had to ensure the animations were smooth and keyframed correctly relevant to when it was updated. Finally, when deploying to render, the socket.io stopped working and we had to readjust the parameters to ensure it would pass render's firewall.
+
+- We implemented an api which integrates with the Groq AI API and Pexel API that returns a complex object for our application. By leveraging a new beta-feature of GroqAPI, we ensure the responses returned fit our definitions and schemas. Since it is a beta-feature, it was challenging to figure out how to use it based on its very limited documentation. GroqAI is also not as widely known and thus finding resources online proved to be challenging. Our prompt for the AI is dynamic as it differs depending on each user’s personal preferences and settings. We then used a separate image API, Pexel, to add an image to each recipe. The images are free-to-use and not AI-generated so there are no ethical concerns.
+
+- Our UI stands out with its visually stunning design, intuitive navigation that enhance user engagement. We also did research about the User Experience for the recipe application and found out the customization will enhance the user’s usability as a recipe application. We ended up choose to provide extensive customization options, allowing users to tailor the interface to their preferences while exploring and generating recipes. The design elements are thoughtfully crafted to create a seamless experience, making it not only functional but also a delight to use.
 
 
 ## Next Steps
@@ -64,8 +69,11 @@ We used GitHub actions to automatically deploy any commit or merge to our main b
 
 ## Team Members Contributions
 - Brian: Wrote the sign in/login page and all the backend for it. Account creation, login verification, password reset, etc. Also did the live Explore page for live upvote and new recipe creation using socket.io. Finally, made the CI/CD Discord notification bot.
+  
 - Tammie: AI generation feature from end-to-end, including allergies/disliked recipes features, and food preferences feature (vegan, spicy, etc.). Implemented redux, many of the recipe API endpoints, saving AI generated recipes to a user. UI revamps, some UI art, and many integration bugs.
+  
 - Abby: Wrote many frontend components for the generating recipe search bar, recipe details and recipe snippet with styling and animation. Implemented End to End social explore feature that allows users to share their recipe or keep it private. Implementing editing recipes and allow users to enter their default seasonings functionalities.
+  
 - Elena: Created the main landing page and integrated the sign-in/login component with the landing page. Implemented UI changes and routing behavior logic to nav bar. Dummy user and other integration bug fixes. Overall, I took a more product manager approach focusing on product validation and user experience.
 
 
