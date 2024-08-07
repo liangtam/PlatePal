@@ -56,6 +56,10 @@ Viewing the actual recipe instructions
 
 - We created an ad hoc gmail account platepalservice@gmail.com that sends password reset emails. If you forget your password, you can click "forgot password" and it'll send you a temporary password that can be used once and expires in one hour. We chose not to demo this because throaway email services tend to be finicky and none of us wants to screenshare our personal inboxes.
 - We used socket.io to have live updating Explore page. If you like, share, or unshare/delete a recipe, all users looking at the Explore page will instantly see the update.
+- 
+
+## What we did
+- Brian: Wrote sign in/login page and all the backend for it. Account creation, login verification, password reset, etc. Also did the live Explore page for live upvote and new recipe creation using socket.io. Finally, made the CI/CD Discor notification bot.
 
 <!-- ## Images -->
 
