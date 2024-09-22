@@ -46,15 +46,3 @@ jobs:
       - name: Deploy Frontend to Render
         run: |
           curl -X POST https://api.render.com/deploy/srv-cqiil50gph6c738q6vbg?key=90Fol7_z-Wc
-
-  notify:
-    runs-on: ubuntu-latest
-    needs: [ test, deploy ]
-
-    steps:
-      - name: Send Discord notification
-        run: |
-          curl -H "Content-Type: application/json" \
-               -X POST \
-               -d "{\"content\": \"The build and deployment for the workflow run ${{ github.run_id }} has completed with status: ${{ job.status }}. Repository: ${{ github.repository }}, Commit: ${{ github.sha }}, Author: ${{ github.actor }}, Event: ${{ github.event_name }}, Branch: ${{ github.ref }}\"}" \
-               ${{ secrets.DISCORD_WEBHOOK_URL }}
