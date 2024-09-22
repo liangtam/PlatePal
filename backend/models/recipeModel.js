@@ -17,7 +17,7 @@ const recipeSchema = new Schema({
     estimatedTime: {
         type: Number,
         required: true
-    }, 
+    },
     foodProperties: {
         type: Object,
         required: false

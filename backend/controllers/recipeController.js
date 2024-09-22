@@ -128,7 +128,7 @@ const handleGenerateRecipes = async (req, res) => {
                 },
             ],
             model: "llama3-8b-8192",
-            temperature: 0.6,
+            temperature: 0.9,
             stream: false,
             response_format: {type: "json_object"},
         });
