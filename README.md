@@ -1,5 +1,11 @@
 ![example workflow](https://github.com/ubc-cpsc455-2024S/project-23_moai/actions/workflows/ci.yml/badge.svg)
 # Group Moai🗿 - PlatePal
+Link: https://platepal-3hod.onrender.com
+![image](https://github.com/user-attachments/assets/88973b36-1ad0-4b8f-acc7-9e2df35b0465)
+![image](https://github.com/user-attachments/assets/f4a3f24f-6252-486a-a230-0e960a8c5342)
+![image](https://github.com/user-attachments/assets/681b95d1-6246-4f72-9665-c3d4815b171a)
+
+
 
 ## Project Description
 
@@ -70,7 +76,7 @@ We used GitHub actions to automatically deploy any commit or merge to our main b
 ## Team Members Contributions
 - Brian: Wrote the sign in/login page and all the backend for it. Account creation, login verification, password reset, etc. Also did the live Explore page for live upvote and new recipe creation using socket.io. Finally, made the CI/CD Discord notification bot.
   
-- Tammie: AI generation feature from end-to-end, including allergies/disliked recipes features, and food preferences feature (vegan, spicy, etc.). Implemented redux, many of the recipe API endpoints, saving AI generated recipes to a user. UI revamps, some UI art, and many integration bugs.
+- Tammie: AI generation feature from end-to-end, including allergies/disliked recipes features, and food preferences feature (vegan, spicy, etc.). Implemented features from end-to-end, Redux, many of the recipe API endpoints, saving AI generated recipes to a user. UI design, revamps, UI art, and many fix many bugs.
   
 - Abby: Wrote many frontend components for the generating recipe search bar, recipe details and recipe snippet with styling and animation. Implemented End to End social explore feature that allows users to share their recipe or keep it private. Implementing editing recipes and allow users to enter their default seasonings functionalities.
   
